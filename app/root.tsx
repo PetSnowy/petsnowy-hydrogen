@@ -1,4 +1,4 @@
-import {useNonce} from '@shopify/hydrogen';
+import {useNonce, Seo} from '@shopify/hydrogen';
 import {
   defer,
   type SerializeFrom,
@@ -23,7 +23,7 @@ import resetStyles from '~/styles/reset.css';
 import appStyles from '~/styles/app.css';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
-
+import swiperBundle from 'swiper/swiper-bundle.css';
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
  */
@@ -45,11 +45,21 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   return false;
 };
 
+export const handle = {
+  seo: {
+    title: 'petsnowy',
+    titleTemplate: '%s - A custom Hydrogen storefront',
+    description:
+      'Hydrogen is a React-based framework for building headless storefronts on Shopify.',
+  },
+};
+
 export function links() {
   return [
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: swiperBundle},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -119,6 +129,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
+        <Seo />
         <Links />
       </head>
       <body>
