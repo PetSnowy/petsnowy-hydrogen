@@ -19,9 +19,10 @@ import {
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
-import resetStyles from './styles/reset.css';
-import appStyles from './styles/app.css';
-import {Layout} from '~/components/Layout';
+import resetStyles from '~/styles/reset.css';
+import appStyles from '~/styles/app.css';
+import {Layout, LayoutProps} from '~/components/Layout';
+import styles from 'tailwind.css';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -48,6 +49,7 @@ export function links() {
   return [
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
+    {rel: 'stylesheet', href: styles},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -109,7 +111,7 @@ export async function loader({context}: LoaderFunctionArgs) {
 
 export default function App() {
   const nonce = useNonce();
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>() as unknown as LayoutProps;
 
   return (
     <html lang="en">
