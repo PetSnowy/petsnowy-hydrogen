@@ -8,7 +8,7 @@ import type {
 } from 'storefrontapi.generated';
 import Swiper from '~/components/Swiper';
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: 'petsnowy | Home'}];
 };
 
@@ -26,7 +26,7 @@ export default function Homepage() {
   >() as any;
   return (
     <div className="home">
-      <Swiper swiperData={['1', '2']} />
+      <Swiper swiperData={['1', '2', '3', '4']} />
       <FeaturedCollection collection={featuredCollection} />
       <RecommendedProducts products={recommendedProducts} />
     </div>

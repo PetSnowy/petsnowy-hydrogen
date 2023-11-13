@@ -45,13 +45,13 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
   return false;
 };
 
+const seo = ({data}: any) => ({
+  title: data?.product?.seo?.title,
+  description: data?.product?.seo?.description,
+});
+
 export const handle = {
-  seo: {
-    title: 'petsnowy',
-    titleTemplate: '%s - A custom Hydrogen storefront',
-    description:
-      'Hydrogen is a React-based framework for building headless storefronts on Shopify.',
-  },
+  seo,
 };
 
 export function links() {

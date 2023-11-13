@@ -117,7 +117,6 @@ aside li {
   pointer-events: auto;
   visibility: visible;
 }
-
 /* reveal aside */
 .overlay:target aside {
   transform: translateX(calc(var(--aside-width) * -1));
