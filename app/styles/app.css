@@ -3,7 +3,7 @@
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
-  --header-height: 64px;
+  --header-height: 90px;
   --color-dark: #000;
   --color-light: #fff;
 }
@@ -117,6 +117,7 @@ aside li {
   pointer-events: auto;
   visibility: visible;
 }
+
 /* reveal aside */
 .overlay:target aside {
   transform: translateX(calc(var(--aside-width) * -1));
@@ -127,52 +128,6 @@ aside li {
 * components/Header
 * --------------------------------------------------
 */
-.header {
-  align-items: center;
-  background: #fff;
-  display: flex;
-  height: var(--header-height);
-  padding: 0 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-@media (min-width: 48em) {
-  .header-menu-mobile-toggle {
-    display: none;
-  }
-}
-
-.header-menu-mobile {
-  display: flex;
-  flex-direction: column;
-  grid-gap: 1rem;
-}
-
-.header-menu-desktop {
-  display: none;
-  grid-gap: 1rem;
-}
-@media (min-width: 45em) {
-  .header-menu-desktop {
-    display: flex;
-    grid-gap: 1rem;
-    margin-left: 3rem;
-  }
-}
-
-.header-menu-item {
-  cursor: pointer;
-}
-
-.header-ctas {
-  align-items: center;
-  display: flex;
-  grid-gap: 1rem;
-  margin-left: auto;
-}
-
 /*
 * --------------------------------------------------
 * components/Footer
@@ -314,12 +269,12 @@ aside li {
 .featured-collection-image {
   aspect-ratio: 1/1;
 }
+
 @media (min-width: 45em) {
   .featured-collection-image {
     aspect-ratio: 16/9;
   }
 }
-
 .featured-collection img {
   height: auto;
   max-height: 100%;
@@ -331,12 +286,12 @@ aside li {
   grid-gap: 1.5rem;
   grid-template-columns: repeat(2, 1fr);
 }
+
 @media (min-width: 45em) {
   .recommended-products-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
 .recommended-product img {
   height: auto;
 }
@@ -366,12 +321,12 @@ aside li {
   margin-bottom: 1rem;
   max-width: 95%;
 }
+
 @media (min-width: 45em) {
   .collection-description {
     max-width: 600px;
   }
 }
-
 .products-grid {
   display: grid;
   grid-gap: 1.5rem;
@@ -392,13 +347,13 @@ aside li {
 .product {
   display: grid;
 }
+
 @media (min-width: 45em) {
   .product {
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
   }
 }
-
 .product h1 {
   margin-top: 0;
 }
@@ -482,5 +437,19 @@ aside li {
 .account-logout {
   display: inline-block;
 }
+
+
+@media screen and (max-width: 900px) {
+  .container {
+    min-width: 100%;
+  }
+}
+@media screen and (min-width: 901px) {
+  .container {
+    min-width: 1200px;
+    margin: 0 auto;
+  }
+}
+/* container */
 
 /*# sourceMappingURL=app.css.map */

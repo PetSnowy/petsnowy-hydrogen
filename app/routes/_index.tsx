@@ -8,8 +8,11 @@ import type {
 } from 'storefrontapi.generated';
 import Swiper from '~/components/Swiper';
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: 'petsnowy | Home'}];
+export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
+  const {
+    shop: {description, name},
+  } = data;
+  return [{title: `${name ?? ''}`}, {description: `${description ?? ''}`}];
 };
 
 export async function loader({context}: LoaderFunctionArgs) {
@@ -17,7 +20,8 @@ export async function loader({context}: LoaderFunctionArgs) {
   const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
-  return defer({featuredCollection, recommendedProducts});
+  const {shop} = await storefront.query(GET_SHOP_INFO);
+  return defer({featuredCollection, recommendedProducts, shop});
 }
 
 export default function Homepage() {
@@ -92,6 +96,16 @@ function RecommendedProducts({
     </div>
   );
 }
+
+const GET_SHOP_INFO = `#graphql
+query shop {
+  shop {
+    description
+    name
+    id
+  }
+}
+` as const;
 
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {

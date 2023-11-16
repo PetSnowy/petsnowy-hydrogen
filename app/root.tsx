@@ -17,16 +17,15 @@ import {
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
+import {cssBundleHref} from '@remix-run/css-bundle';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
-import resetStyles from '~/styles/reset.css';
-import appStyles from '~/styles/app.css';
+import '~/styles/reset.css';
+import '~/styles/app.css';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
 import swiperBundle from 'swiper/swiper-bundle.css';
-/**
- * This is important to avoid re-fetching root queries on sub-navigations
- */
+
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
   currentUrl,
@@ -56,8 +55,6 @@ export const handle = {
 
 export function links() {
   return [
-    {rel: 'stylesheet', href: resetStyles},
-    {rel: 'stylesheet', href: appStyles},
     {rel: 'stylesheet', href: styles},
     {rel: 'stylesheet', href: swiperBundle},
     {
@@ -69,6 +66,9 @@ export function links() {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
+
+    //配置remix 样式的自动导入
+    ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
   ];
 }
 
