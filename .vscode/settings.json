@@ -5,7 +5,12 @@
     "cssnano",
     "isbot",
     "petsnowy",
+    "swiper",
     "tailwindcss",
     "typecheck"
-  ]
+  ],
+  "files.exclude": {
+    "**/*.css": true,
+    "**/*.css.map": true
+  }
 }

@@ -7,3 +7,5 @@ node_modules
 /.mf
 .env
 .shopify
+*.css
+*.css.map

@@ -27,8 +27,11 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
+export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
+  return [
+    {title: `${data?.product.seo.title ?? ''}`},
+    {description: `${data?.product.seo.description ?? ''}`},
+  ];
 };
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -114,7 +117,7 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants} = useLoaderData<typeof loader>();
+  const {product, variants} = useLoaderData<typeof loader>() as any;
   const {selectedVariant} = product;
   return (
     <div className="product">
@@ -426,3 +429,13 @@ const VARIANTS_QUERY = `#graphql
     }
   }
 ` as const;
+
+const getProductSeo = `#graphql query Product {
+  product(handle: "snow-self-cleaning-litter-box") {
+    seo {
+      title
+      description
+    }
+    title
+  }
+}` as const;
