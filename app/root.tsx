@@ -22,7 +22,6 @@ import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
 import '~/styles/reset.css';
 import '~/styles/app.css';
-import '~/styles/font.css';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
 import swiperBundle from 'swiper/swiper-bundle.css';
