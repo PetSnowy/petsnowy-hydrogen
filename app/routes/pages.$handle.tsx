@@ -1,7 +1,12 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from '@remix-run/react';
+import {useLoaderData, type MetaFunction, useLocation} from '@remix-run/react';
+import WhyPetsnowy from '~/components/whyPetsnowy';
+import WhyPetsnowyBanner from '~/components/whyPetsnowy/Banner';
+import AboutUs from '~/components/aboutUs';
+import AboutUsBanner from '~/components/aboutUs/Banner';
+import {Fragment, ReactNode} from 'react';
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
+export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
 };
 
@@ -25,14 +30,37 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 
 export default function Page() {
   const {page} = useLoaderData<typeof loader>();
-
+  const {pathname} = useLocation();
   return (
     <div className="page">
       <header>
         <h1>{page.title}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
+      <AnalysisPageComponent routerName={pathname} />
     </div>
+  );
+}
+
+function AnalysisPageComponent({
+  routerName,
+  children,
+}: {
+  routerName: string;
+  children?: ReactNode;
+}) {
+  const components = new Map([
+    ['/pages/why-petsnowy', [<WhyPetsnowy />, <WhyPetsnowyBanner />]],
+    ['/pages/about-us', [<AboutUs />, <AboutUsBanner />]],
+  ]);
+
+  const componentArray = components.get(routerName);
+  return (
+    <>
+      {componentArray?.map((component, index) => (
+        <Fragment key={index}>{component}</Fragment>
+      ))}
+      {children ?? <Fragment>{children}</Fragment>}
+    </>
   );
 }
 

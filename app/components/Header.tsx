@@ -1,9 +1,11 @@
-import {Await, NavLink} from '@remix-run/react';
+import {Await, NavLink, useLocation} from '@remix-run/react';
 import {Suspense} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
 import '~/styles/header/header.css';
+import headerLogo from '~/assets/petsnowy/header_logo.png';
+import headerIndexLogo from '~/assets/petsnowy/header_index_logo.png';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -11,11 +13,19 @@ type Viewport = 'desktop' | 'mobile';
 
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
+  const {pathname} = useLocation();
+
   return (
-    <header className="header">
+    <header className={'header'}>
       <div className="container flex">
         <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-          <strong>{shop.name}</strong>
+          <img
+            className="header-logo"
+            src={pathname === '/' ? headerIndexLogo : headerLogo}
+            alt="petsnowy"
+            loading="lazy"
+            decoding="async"
+          />
         </NavLink>
         <HeaderMenu
           menu={menu}
