@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "HelveticaBold";
+  src: url("../assets/font/HelveticaNowDisplay-Bold.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/font/HelveticaNowDisplay-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "HelveticaNowDisplayXBlk";
+  src: url("../assets/font/HelveticaNowDisplay-XBlk.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url("../assets/font/LeagueSpartan-Regular.otf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "LeagueSpartanBold";
+  src: url("../assets/font/LeagueSpartan-Bold.otf") format("truetype");
+  font-display: swap;
+  font-weight: 900;
+}
+@font-face {
+  font-family: "LeagueSpartanBlack";
+  src: url("../assets/font/LeagueSpartan-Black.otf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SUISSE_INT_L_MEDIUM";
+  src: url("https://cdn.shopify.com/s/files/1/0683/5293/4210/files/SUISSE_INT_L_MEDIUM.TTF?v=1672313068") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "FS_JOEY-REGULAR";
+  src: url("https://cdn.shopify.com/s/files/1/0683/5293/4210/files/FS_JOEY-REGULAR.ttf?v=1672313182") format("truetype");
+  font-display: swap;
+}
+
+/*# sourceMappingURL=font.css.map */
