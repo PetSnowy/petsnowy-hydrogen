@@ -1,15 +1,20 @@
 import {Await, NavLink, useLocation} from '@remix-run/react';
+import {type LinksFunction} from '@shopify/remix-oxygen';
 import {Suspense} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
-import '~/styles/header/header.css';
+import headerStyle from '~/styles/header/header.css';
 import headerLogo from '~/assets/petsnowy/header_logo.png';
 import headerIndexLogo from '~/assets/petsnowy/header_index_logo.png';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
 type Viewport = 'desktop' | 'mobile';
+
+export const links: LinksFunction = () => [
+  {rel: 'stylesheet', href: headerStyle},
+];
 
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;

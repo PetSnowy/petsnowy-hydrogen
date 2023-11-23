@@ -17,12 +17,12 @@ import {
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
-import {cssBundleHref} from '@remix-run/css-bundle';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
-import '~/styles/reset.css';
-import '~/styles/app.css';
-import '~/styles/font.css';
+import reset from '~/styles/reset.css';
+import app from '~/styles/app.css';
+import font from '~/styles/font.css';
+import {links as headerStyle} from './components/Header';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
 import swiperBundle from 'swiper/swiper-bundle.css';
@@ -68,8 +68,10 @@ export function links() {
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
 
-    //配置remix 样式的自动导入
-    ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
+    {rel: 'stylesheet', href: reset},
+    {rel: 'stylesheet', href: app},
+    {rel: 'stylesheet', href: font},
+    ...headerStyle(),
   ];
 }
 
