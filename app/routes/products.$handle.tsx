@@ -238,7 +238,13 @@ function ProductForm({
         options={product.options}
         variants={variants}
       >
-        {({option}) => <ProductOptions key={option.name} option={option} />}
+        {({option}) => (
+          <ProductOptions
+            key={option.name}
+            option={option}
+            variants={variants}
+          />
+        )}
       </VariantSelector>
       <br />
       <AddToCartButton
@@ -262,8 +268,13 @@ function ProductForm({
     </div>
   );
 }
-
-function ProductOptions({option}: {option: VariantOption}) {
+function ProductOptions({
+  option,
+  variants,
+}: {
+  option: VariantOption;
+  variants: Array<ProductVariantFragment>;
+}) {
   return (
     <div className="product-options" key={option.name}>
       <h5>{option.name}</h5>
@@ -283,6 +294,11 @@ function ProductOptions({option}: {option: VariantOption}) {
               }}
             >
               {value}
+              {/* <VariantImg
+                name={option.name}
+                value={value}
+                variants={variants}
+              /> */}
             </Link>
           );
         })}
@@ -290,6 +306,29 @@ function ProductOptions({option}: {option: VariantOption}) {
       <br />
     </div>
   );
+}
+
+function VariantImg({
+  name,
+  value,
+  variants,
+}: {
+  name: string;
+  value: string;
+  variants: Array<ProductVariantFragment>;
+}) {
+  const variant = variants.map((v) =>
+    v.selectedOptions
+      .map((o: {name: string; value: string}) => {
+        if (o.name === name && o.value === value) {
+          return v.image?.url;
+        }
+      })
+      .filter((v) => v !== undefined),
+  );
+
+  console.log(variant);
+  return <p></p>;
 }
 
 function AddToCartButton({
