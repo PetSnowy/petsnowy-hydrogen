@@ -22,10 +22,10 @@ import favicon from '../public/favicon.svg';
 import reset from '~/styles/reset.css';
 import app from '~/styles/app.css';
 import font from '~/styles/font.css';
-import {links as headerStyle} from './components/Header';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
 import swiperBundle from 'swiper/swiper-bundle.css';
+import {cssBundleHref} from '@remix-run/css-bundle';
 
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
@@ -71,7 +71,7 @@ export function links() {
     {rel: 'stylesheet', href: reset},
     {rel: 'stylesheet', href: app},
     {rel: 'stylesheet', href: font},
-    ...headerStyle(),
+    ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
   ];
 }
 
