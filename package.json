@@ -39,6 +39,7 @@
 		"@vanilla-extract/css": "^1.13.0",
 		"autoprefixer": "^10.4.16",
 		"concurrently": "^8.2.2",
+		"cssnano": "^6.0.1",
 		"eslint": "^8.20.0",
 		"eslint-plugin-hydrogen": "0.12.2",
 		"postcss": "^8.4.31",

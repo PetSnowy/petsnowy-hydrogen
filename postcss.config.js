@@ -1,6 +1,7 @@
 const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 
-module.exports = {
+const config = {
 	plugins: [
 		autoprefixer({
 			overrideBrowserslist: [
@@ -11,6 +12,9 @@ module.exports = {
 				"iOS 7",
 				"last 3 iOS versions"
 			]
-		})
+		}),
+		cssnano()
 	],
 };
+
+module.exports = config
