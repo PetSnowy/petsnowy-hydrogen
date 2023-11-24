@@ -1,5 +1,5 @@
 import {Await, NavLink, useLocation} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useEffect, useRef} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
@@ -14,9 +14,27 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   const {pathname} = useLocation();
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (pathname !== '/') return;
+      const scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 0 && headerRef.current) {
+        headerRef.current.style.backgroundColor = '#000000';
+      } else if (scrollTop <= 0 && headerRef.current) {
+        headerRef.current.style.backgroundColor = 'transparent';
+      }
+    };
+    window.addEventListener('scroll', scroll);
+    return () => {
+      window.removeEventListener('scroll', scroll);
+    };
+  }, [pathname]);
 
   return (
-    <header className={'header'}>
+    <header className="header transition" ref={headerRef}>
       <div className="container flex">
         <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
           <img

@@ -2,15 +2,20 @@ import {useEffect, useRef, useState} from 'react';
 
 export default function Video({
   pcDataSrc,
+  pcPoster,
   mbDataSrc,
+  mbPoster,
 }: {
   pcDataSrc?: string;
+  pcPoster?: string;
   mbDataSrc?: string;
+  mbPoster?: string;
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const targetRef = useRef(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const targetRef = useRef<HTMLVideoElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [src, setSrc] = useState<string | undefined>('');
+  const [poster, setPoster] = useState<string | undefined>('');
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -42,10 +47,12 @@ export default function Video({
   useEffect(() => {
     if (isMobile && isVisible) {
       setSrc(mbDataSrc);
+      setPoster(mbPoster);
     } else if (!isMobile && isVisible) {
       setSrc(pcDataSrc);
+      setPoster(pcPoster);
     }
-  }, [pcDataSrc, mbDataSrc, isMobile, isVisible]);
+  }, [isMobile, isVisible]);
 
   return (
     <video
@@ -54,6 +61,7 @@ export default function Video({
       autoPlay={true}
       playsInline={true}
       src={src}
+      poster={poster}
     ></video>
   );
 }
