@@ -5,11 +5,11 @@
 .header {
 	align-items: center;
 	display: flex;
-	height: var(--header-height);
 	position: sticky;
 	top: 0;
-	z-index: 999;
+	z-index: 1;
 	background-color: #fff;
+	transition: all 0.3s ease;
 
 
 	.header-menu-mobile {
@@ -35,10 +35,40 @@
 	}
 
 	@media screen and (min-width: 901px) {
+		& {
+			height: 90px;
+			justify-content: space-between;
+
+			&.index {
+				background-color: antiquewhite;
+			}
+
+			&.active {
+				background-color: #000000;
+
+				span,
+				a,
+				p {
+					color: #fff;
+				}
+
+				svg {
+					color: #fff;
+				}
+			}
+		}
+
+
+
 		.header-menu-desktop {
 			display: flex;
-			grid-gap: 1rem;
-			margin-left: 3rem;
+			grid-gap: 20px;
+			margin-left: auto;
+
+			span,
+			a {
+				text-transform: uppercase;
+			}
 		}
 
 		.header-menu-mobile-toggle {
@@ -49,6 +79,78 @@
 			width: 243px;
 			height: 40px;
 			display: block;
+		}
+
+		$item: 5;
+
+		details {
+
+			summary {
+				display: flex;
+				align-items: center;
+
+				svg {
+					display: block;
+					width: 15px;
+					height: 15px;
+					margin-left: 5px;
+					transition: all 0.3s ease;
+				}
+			}
+
+			a {
+				opacity: 0;
+			}
+
+			&[open] {
+				svg {
+					transform: rotate(180deg);
+				}
+
+				@for $i from 1 through $item {
+					a:nth-child(#{$i}) {
+						animation: unfold 0.4s ease-in-out #{$i * 0.05}s forwards;
+					}
+				}
+
+				@keyframes unfold {
+					0% {
+						opacity: 0;
+						transform: translateY(-20px);
+					}
+
+					100% {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+			}
+		}
+
+		.item-wrapper {
+			overflow: hidden;
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+			gap: 10px;
+			position: absolute;
+			top: 70px;
+			transform: translateX(-50%);
+			width: 100%;
+			background-color: #fff;
+			left: 50%;
+			padding: 5px;
+
+			a {
+				position: relative;
+
+				span {
+					position: absolute;
+					top: 10px;
+					left: 10px;
+					text-transform: uppercase;
+
+				}
+			}
 		}
 	}
 

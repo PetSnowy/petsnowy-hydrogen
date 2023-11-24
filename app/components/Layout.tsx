@@ -35,7 +35,7 @@ export function Layout({
     <>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside menu={header.menu} shop={header.shop} />
+      {/* <MobileMenuAside menu={header.menu} shop={header.shop} /> */}
       <ActiveBar>
         <CountDown />
       </ActiveBar>
@@ -91,20 +91,20 @@ function SearchAside() {
   );
 }
 
-function MobileMenuAside({
-  menu,
-  shop,
-}: {
-  menu: HeaderQuery['menu'];
-  shop: HeaderQuery['shop'];
-}) {
-  return (
-    <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu
-        menu={menu}
-        viewport="mobile"
-        primaryDomainUrl={shop.primaryDomain.url}
-      />
-    </Aside>
-  );
-}
+// function MobileMenuAside({
+//   menu,
+//   shop,
+// }: {
+//   menu: HeaderQuery['menu'];
+//   shop: HeaderQuery['shop'];
+// }) {
+//   return (
+//     <Aside id="mobile-menu-aside" heading="MENU">
+//       <HeaderMenu
+//         menu={menu}
+//         viewport="mobile"
+//         primaryDomainUrl={shop.primaryDomain.url}
+//       />
+//     </Aside>
+//   );
+// }

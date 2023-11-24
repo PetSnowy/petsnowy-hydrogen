@@ -1,20 +1,80 @@
 import {Await, NavLink, useLocation} from '@remix-run/react';
-import {Suspense, useEffect, useRef} from 'react';
+import {Suspense, useEffect, useRef, useState} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
 import '~/styles/header/header.css';
 import headerLogo from '~/assets/petsnowy/header_logo.png';
 import headerIndexLogo from '~/assets/petsnowy/header_index_logo.png';
+import litterBox from '~/assets/index/litter_box.png';
+import petFeeder from '~/assets/index/pet_feeder.png';
+import accessories from '~/assets/index/accessories.png';
+import waterFountain from '~/assets/index/water_fountain.png';
+import catToy from '~/assets/index/cat_toy.png';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
 type Viewport = 'desktop' | 'mobile';
 
+type MenuItem = {
+  name: string;
+  unfold?: {
+    name: string;
+    link: string;
+    img: string;
+  }[];
+  link?: string;
+};
+
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
-  const {shop, menu} = header;
   const {pathname} = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
+  const [scroll, setScroll] = useState<string | null>(null);
+
+  const menu: MenuItem[] = [
+    {
+      name: 'SHOP SNOW⁺',
+      unfold: [
+        {
+          name: 'snow self cleaning litter box',
+          link: '/products/snow-self-cleaning-litter-box',
+          img: litterBox,
+        },
+        {
+          name: 'snow pet feeder',
+          link: '/products/snow-pet-feeder',
+          img: petFeeder,
+        },
+        {
+          name: 'snow water fountain',
+          link: '/products/snow-water-fountain',
+          img: waterFountain,
+        },
+        {
+          name: 'snow roly poly cat toy',
+          link: '/products/snow-roly-poly-cat-toy',
+          img: catToy,
+        },
+        {
+          name: 'accessories',
+          link: '/collections/accessories',
+          img: accessories,
+        },
+      ],
+    },
+    {
+      name: 'why petsnowy',
+      link: '/pages/why-petsnowy',
+    },
+    {
+      name: 'Our Story',
+      link: '/pages/about-us',
+    },
+    {
+      name: 'Contact Us',
+      link: '/pages/contact',
+    },
+  ];
 
   useEffect(() => {
     const scroll = () => {
@@ -22,9 +82,9 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
       const scrollTop =
         document.documentElement.scrollTop || document.body.scrollTop;
       if (scrollTop > 0 && headerRef.current) {
-        headerRef.current.style.backgroundColor = '#000000';
+        setScroll('active');
       } else if (scrollTop <= 0 && headerRef.current) {
-        headerRef.current.style.backgroundColor = 'transparent';
+        setScroll('disable');
       }
     };
     window.addEventListener('scroll', scroll);
@@ -34,9 +94,12 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
   }, [pathname]);
 
   return (
-    <header className="header transition" ref={headerRef}>
+    <header
+      className={`header ${pathname === '/' ? 'index' : ''} ${scroll}`}
+      ref={headerRef}
+    >
       <div className="container flex">
-        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+        <NavLink prefetch="intent" to="/" end>
           <img
             className="header-logo"
             src={pathname === '/' ? headerIndexLogo : headerLogo}
@@ -45,11 +108,7 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
             decoding="async"
           />
         </NavLink>
-        <HeaderMenu
-          menu={menu}
-          viewport="desktop"
-          primaryDomainUrl={header.shop.primaryDomain.url}
-        />
+        <HeaderMenu menu={menu} viewport="desktop" />
         <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
       </div>
     </header>
@@ -58,14 +117,11 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
 
 export function HeaderMenu({
   menu,
-  primaryDomainUrl,
   viewport,
 }: {
-  menu: HeaderProps['header']['menu'];
-  primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
+  menu: MenuItem[];
   viewport: Viewport;
 }) {
-  const {publicStoreDomain} = useRootLoaderData();
   const className = `header-menu-${viewport}`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -76,41 +132,57 @@ export function HeaderMenu({
   }
 
   return (
-    <nav className={className} role="navigation">
+    <nav className={`${className} items-center`} role="navigation">
       {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
+        <NavLink end onClick={closeAside} prefetch="intent" to="/">
           Home
         </NavLink>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
+      {menu.map((item, index) => {
+        if (item.unfold)
+          return (
+            <details key={index}>
+              <summary className="cursor-pointer relative select-none">
+                <span>{item.name}</span>
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  role="presentation"
+                  className="icon icon-caret"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </summary>
+              <div className="item-wrapper">
+                {item.unfold.map((v, sub) => (
+                  <NavLink key={sub} to={v.link} end>
+                    <span>{v.name}</span>
+                    <img
+                      src={v.img}
+                      alt={v.name}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </NavLink>
+                ))}
+              </div>
+            </details>
+          );
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item text-white px-4 sm:px-8 py-2 sm:py-3 bg-sky-700 hover:bg-sky-800 flex"
-            end
-            key={item.id}
-            onClick={closeAside}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
+        if (item.link)
+          return (
+            <NavLink prefetch="intent" key={index} to={item.link} end>
+              {item.name}
+            </NavLink>
+          );
+
+        return null;
       })}
     </nav>
   );
@@ -123,7 +195,7 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      <NavLink prefetch="intent" to="/account">
         {isLoggedIn ? 'Account' : 'Sign in'}
       </NavLink>
       {/* <SearchToggle /> */}
@@ -159,59 +231,4 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
       </Await>
     </Suspense>
   );
-}
-
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/collections',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
-    },
-  ],
-};
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
 }
