@@ -7,6 +7,7 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import Swiper from '~/components/Swiper';
+import Video from '~/components/Video';
 
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   const {
@@ -30,6 +31,10 @@ export default function Homepage() {
   >() as any;
   return (
     <div className="home">
+      <Video
+        pcDataSrc="https://cdn.shopify.com/videos/c/o/v/85c7ad8fc6e74e3fa6f8961f103ba778.mp4"
+        mbDataSrc="https://cdn.shopify.com/videos/c/o/v/1746fd8ffc9248a78d697693f1f94958.mp4"
+      />
       <Swiper swiperData={['1', '2', '3', '4']} />
       <FeaturedCollection collection={featuredCollection} />
       <RecommendedProducts products={recommendedProducts} />

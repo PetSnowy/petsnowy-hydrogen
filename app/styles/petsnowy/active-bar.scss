@@ -1,0 +1,148 @@
+@function vw($px-vw, $base-vw: 750px) {
+	@return calc(($px-vw * 100vw) / $base-vw);
+}
+
+.active-bar {
+	display: flex;
+	background-color: #E4A41A;
+	align-items: center;
+	width: 100%;
+	transition: all 0.3s ease;
+	overflow: hidden;
+
+	p {
+		line-height: normal;
+	}
+
+	.page-width {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.discounts {
+		display: flex;
+
+		.title {
+			font-family: LeagueSpartanBlack;
+			font-weight: 900;
+			color: #000000;
+			margin: 0px;
+		}
+
+		.left-button {
+			background: #000000;
+			font-family: LeagueSpartan;
+			font-weight: 400;
+			color: #D59E27;
+			text-align: center;
+		}
+	}
+
+	.count-down {
+		display: flex;
+		align-items: center;
+	}
+
+	.time {
+		display: flex;
+
+		p {
+			text-align: center;
+			font-family: LeagueSpartan;
+			font-weight: 400;
+			color: #000000;
+		}
+	}
+
+	.count-down-button {
+		font-family: LeagueSpartanBlack;
+		font-weight: 900;
+		color: #FFFFFF;
+		background: #000000;
+		text-align: center;
+		display: block;
+	}
+}
+
+@media screen and (min-width: 901px) {
+	.active-bar {
+		height: 90px;
+
+		.discounts {
+
+			.title {
+				font-size: 44px;
+				margin-right: 15px;
+			}
+
+			.left-button {
+				width: 154px;
+				height: 32px;
+				border-radius: 8px;
+				font-size: 20px;
+			}
+		}
+
+		.time {
+			column-gap: 30px;
+
+			p {
+				font-size: 37px;
+			}
+
+			p:nth-child(2) {
+				font-size: 15px;
+			}
+		}
+
+		.count-down-button {
+			font-size: 24px;
+			width: 201px;
+			height: 45px;
+			border-radius: 23px;
+			margin-left: 30px;
+			line-height: 50px;
+			cursor: pointer;
+		}
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.active-bar {
+		height: vw(95px);
+
+		.discounts {
+
+			.title {
+				width: vw(112px);
+				font-size: vw(38px);
+			}
+
+			.left-button {
+				display: none;
+			}
+		}
+
+		.time {
+			column-gap: vw(30px);
+
+			p {
+				font-size: vw(37px);
+			}
+
+			p:nth-child(2) {
+				font-size: vw(17px);
+			}
+		}
+
+		.count-down-button {
+			font-size: vw(24px);
+			padding: 0px vw(10px);
+			height: vw(43px);
+			border-radius: vw(24px);
+			margin-left: vw(22px);
+			line-height: vw(50px);
+		}
+	}
+}

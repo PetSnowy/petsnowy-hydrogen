@@ -8,6 +8,8 @@ import type {
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
+import ActiveBar from '~/components/ActiveBar';
+import CountDown from '~/components/CountDown';
 import {CartMain} from '~/components/Cart';
 import {
   PredictiveSearchForm,
@@ -34,6 +36,9 @@ export function Layout({
       <CartAside cart={cart} />
       <SearchAside />
       <MobileMenuAside menu={header.menu} shop={header.shop} />
+      <ActiveBar>
+        <CountDown />
+      </ActiveBar>
       <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
       <main>{children}</main>
       <Suspense>
