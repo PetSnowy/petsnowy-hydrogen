@@ -24,7 +24,6 @@ import app from '~/styles/app.css';
 import font from '~/styles/font.css';
 import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
-import swiperBundle from 'swiper/swiper-bundle.css';
 import {cssBundleHref} from '@remix-run/css-bundle';
 
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -57,7 +56,6 @@ export const handle = {
 export function links() {
   return [
     {rel: 'stylesheet', href: styles},
-    {rel: 'stylesheet', href: swiperBundle},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
