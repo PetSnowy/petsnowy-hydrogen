@@ -57,7 +57,7 @@ export const handle = {
 export function links() {
   return [
     {rel: 'stylesheet', href: styles},
-    // {rel: 'stylesheet', href: swiperBundle},
+    {rel: 'stylesheet', href: swiperBundle},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -131,6 +131,11 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="default-src='self' 'nonce-87d98ea876a378580538ea0da054ff6a' 'https://cdn.shopify.com https://shopify.com'
+					font-src 'self' https://cdn.shopify.com https://shopify.com;"
+        />
         <Meta />
         <Seo />
         <Links />
