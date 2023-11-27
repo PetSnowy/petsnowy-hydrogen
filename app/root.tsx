@@ -133,8 +133,7 @@ export default function App() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta
           http-equiv="Content-Security-Policy"
-          content="default-src='self' 'nonce-87d98ea876a378580538ea0da054ff6a' 'https://cdn.shopify.com https://shopify.com'
-					font-src 'self' https://cdn.shopify.com https://shopify.com;"
+          content="default-src 'self' 'nonce-da0c81a9c6ee8804d0eecbe3f1fac00b'; font-src 'self' data:;"
         />
         <Meta />
         <Seo />
