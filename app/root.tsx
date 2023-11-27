@@ -57,7 +57,7 @@ export const handle = {
 export function links() {
   return [
     {rel: 'stylesheet', href: styles},
-    {rel: 'stylesheet', href: swiperBundle},
+    // {rel: 'stylesheet', href: swiperBundle},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
