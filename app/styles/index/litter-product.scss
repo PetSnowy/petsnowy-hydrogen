@@ -1,0 +1,275 @@
+@function vw($px-vw, $base-vw: 750px) {
+	@return calc(($px-vw * 100vw) / $base-vw);
+}
+
+.new-index-litter {
+	background: #E0D5C1;
+
+	p,
+	span {
+		line-height: normal;
+	}
+
+	picture,
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		display: block;
+		transform: scale(0.9);
+		transform-origin: bottom;
+		transition: 1s cubic-bezier(.42, 0, .002, 1) .3s;
+	}
+
+
+
+	.sub-title,
+	.title {
+		display: none;
+	}
+
+
+	.sub-title {
+		font-family: LeagueSpartan;
+	}
+
+	.title {
+		span {
+			display: block;
+			font-family: LeagueSpartanBlack;
+			color: #504030;
+			white-space: nowrap;
+
+			&:first-child::first-letter {
+				color: #D75F23;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 901px) {
+
+	.new-index-litter {
+
+		.litter-content {
+
+			.sub-title,
+			.title {
+				display: block;
+			}
+		}
+
+		height: 690px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+
+
+		.container {
+			width: 1200px;
+			display: flex;
+			padding: 93px 0 111px;
+			height: 690px;
+			box-sizing: border-box;
+			justify-content: center;
+		}
+
+
+		img {
+			width: 612px;
+			height: auto;
+			object-fit: contain;
+		}
+
+
+		.options {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+
+			.item {
+				p {
+					font-family: LeagueSpartanBlack;
+					font-size: 35px;
+					font-weight: 800;
+					color: #837464;
+					text-transform: uppercase;
+					text-align: center;
+				}
+			}
+
+			.line {
+				display: block;
+				width: 2px;
+				height: 67px;
+				background: #504030;
+				margin: 0px 39px;
+			}
+		}
+
+		.sub-title {
+			font-size: 32px;
+			font-weight: 400;
+			color: #504030;
+			line-height: 35px;
+			margin-bottom: 18px;
+			text-align: right;
+		}
+
+		.title {
+			margin: 0px;
+			margin-bottom: 50px;
+
+			span {
+				font-size: 63px;
+				font-weight: 900;
+				line-height: 60px;
+				text-align: right;
+				color: #504030;
+			}
+		}
+
+		.button {
+			all: unset;
+			display: block;
+			width: 280px;
+			cursor: pointer;
+			height: 79px;
+			background: #504030;
+			border-radius: 26px;
+			text-align: center;
+			font-size: 24px;
+			line-height: 84px;
+			margin-top: 65px;
+			font-size: 36px;
+			font-family: LeagueSpartanBlack;
+			font-weight: 800;
+			color: #FFFFFF;
+			text-transform: uppercase;
+			margin-left: auto;
+			transition: all 0.3s ease;
+
+			&::after,
+			&::before {
+				display: none;
+			}
+
+			&:hover {
+				color: #504030;
+				background-color: #FFFFFF;
+			}
+		}
+
+		.mb-options {
+			display: none;
+		}
+
+	}
+}
+
+
+@media screen and (max-width: 900px) {
+	.new-index-litter {
+		padding: vw(124px) 0px vw(78px);
+		box-sizing: border-box;
+		position: relative;
+
+
+		.litter-content {
+
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: column-reverse;
+
+			.sub-title,
+			.title {
+				display: none;
+			}
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			flex-direction: column;
+		}
+
+		.title {
+			font-size: vw(62px);
+			font-weight: 900;
+			line-height: vw(58px);
+			padding-right: vw(53px);
+			margin: 0px;
+			display: block;
+			text-align: right;
+
+			&::first-letter {
+				color: #D75F23;
+			}
+		}
+
+		.play {
+			width: vw(522px);
+			height: vw(432px);
+			margin: 0px auto vw(70px);
+		}
+
+		.sub-title {
+			font-size: vw(29px);
+			font-weight: 400;
+			color: #504030;
+			line-height: vw(31px);
+			text-align: center;
+			margin-bottom: vw(55px);
+			display: block;
+		}
+
+		.button {
+			all: unset;
+			display: block;
+			text-transform: uppercase;
+
+			&::after,
+			&::before {
+				display: none;
+			}
+
+			width: vw(280px);
+			height: vw(79px);
+			background: #504030;
+			border-radius: vw(39px);
+			font-size: vw(36px);
+			font-family: LeagueSpartanBlack;
+			font-weight: 800;
+			color: #FFFFFF;
+			line-height: vw(85px);
+			text-align: center;
+			margin: 0px auto vw(77px);
+		}
+
+		.options {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			p {
+				font-size: vw(28px);
+				font-family: LeagueSpartanBlack;
+				font-weight: 800;
+				color: #504030;
+				line-height: vw(32px);
+				text-align: center;
+				text-transform: uppercase;
+			}
+
+			.line {
+				width: vw(1px);
+				height: vw(53px);
+				background: #504030;
+				margin: 0px vw(32px);
+				display: block;
+			}
+		}
+	}
+}

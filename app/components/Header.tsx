@@ -29,7 +29,7 @@ type MenuItem = {
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {pathname} = useLocation();
   const headerRef = useRef<HTMLElement | null>(null);
-  const [scroll, setScroll] = useState<string | null>(null);
+  const [scroll, setScroll] = useState<string>('disable');
 
   const menu: MenuItem[] = [
     {
@@ -123,6 +123,8 @@ export function HeaderMenu({
   viewport: Viewport;
 }) {
   const className = `header-menu-${viewport}`;
+  const {pathname} = useLocation();
+  const detailsRef = useRef<HTMLDetailsElement>(null);
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
     if (viewport === 'mobile') {
@@ -130,6 +132,10 @@ export function HeaderMenu({
       window.location.href = event.currentTarget.href;
     }
   }
+
+  useEffect(() => {
+    detailsRef.current?.removeAttribute('open');
+  }, [pathname]);
 
   return (
     <nav className={`${className} items-center`} role="navigation">
@@ -141,7 +147,7 @@ export function HeaderMenu({
       {menu.map((item, index) => {
         if (item.unfold)
           return (
-            <details key={index}>
+            <details key={index} ref={detailsRef}>
               <summary className="cursor-pointer relative select-none">
                 <span>{item.name}</span>
                 <svg

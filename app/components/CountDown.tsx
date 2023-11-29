@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export default function CountDown() {
   const [time, setTime] = useState('');
 
   useEffect(() => {
-    const targetTime = '2023-11-28 00:00:00';
+    const targetTime = '2023-11-28 16:00:00';
     const timer = setInterval(() => {
       const nowTime = new Date().getTime();
       const inputTime = new Date(targetTime).getTime();
@@ -13,6 +13,8 @@ export default function CountDown() {
       const h = Math.floor((times % (60 * 60 * 24)) / (60 * 60));
       const m = Math.floor((times % (60 * 60)) / 60);
       const s = Math.floor(times % 60);
+
+      if (times <= 0) return;
 
       const countdownHTML = `
         <div>

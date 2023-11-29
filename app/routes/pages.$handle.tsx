@@ -4,7 +4,9 @@ import WhyPetsnowy from '~/components/whyPetsnowy';
 import WhyPetsnowyBanner from '~/components/whyPetsnowy/Banner';
 import AboutUs from '~/components/aboutUs';
 import AboutUsBanner from '~/components/aboutUs/Banner';
-import {Fragment, ReactNode} from 'react';
+import {Fragment, ReactNode, useEffect, useRef} from 'react';
+import {PageRenderer} from '~/components/Common';
+import {deviceVisibility} from '~/utils';
 
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
@@ -31,36 +33,18 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 export default function Page() {
   const {page} = useLoaderData<typeof loader>();
   const {pathname} = useLocation();
+  const componentsMap = new Map([
+    ['/pages/why-petsnowy', [<WhyPetsnowy />, <WhyPetsnowyBanner />]],
+    ['/pages/about-us', [<AboutUs />, <AboutUsBanner />]],
+  ]);
+
   return (
     <div className="page">
       <header>
         <h1>{page.title}</h1>
       </header>
-      <AnalysisPageComponent routerName={pathname} />
+      <PageRenderer pageName={pathname} pageComponents={componentsMap} />
     </div>
-  );
-}
-
-function AnalysisPageComponent({
-  routerName,
-  children,
-}: {
-  routerName: string;
-  children?: ReactNode;
-}) {
-  const components = new Map([
-    ['/pages/why-petsnowy', [<WhyPetsnowy />, <WhyPetsnowyBanner />]],
-    ['/pages/about-us', [<AboutUs />, <AboutUsBanner />]],
-  ]);
-
-  const componentArray = components.get(routerName);
-  return (
-    <>
-      {componentArray?.map((component, index) => (
-        <Fragment key={index}>{component}</Fragment>
-      ))}
-      {children ?? <Fragment>{children}</Fragment>}
-    </>
   );
 }
 

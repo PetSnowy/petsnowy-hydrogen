@@ -31,3 +31,10 @@ table {
 details summary {
 	list-style-type: none;
 }
+
+@media screen and (min-width: 901px) {
+
+	html {
+		min-width: 1200px;
+	}
+}

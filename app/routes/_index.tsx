@@ -1,16 +1,18 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useLayoutEffect, useRef, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import Swiper from '~/components/Swiper';
-import Video from '~/components/Video';
+import {Video} from '~/components/Common';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
-
+import LitterProduct from '~/components/index/LitterProduct';
+import litterProductStyles from '~/styles/index/litter-product.css';
+import {getActiveHeaderHeight} from '~/utils';
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   const {
     shop: {description, name},
@@ -27,10 +29,17 @@ export async function loader({context}: LoaderFunctionArgs) {
   return defer({featuredCollection, recommendedProducts, shop});
 }
 
+export function links() {
+  return [{rel: 'stylesheet', href: litterProductStyles}];
+}
+
 export default function Homepage() {
-  const {featuredCollection, recommendedProducts} = useLoaderData<
-    typeof loader
-  >() as any;
+  // const {featuredCollection, recommendedProducts} = useLoaderData<
+  //   typeof loader
+  // >() as any;
+
+  const top = 300;
+
   return (
     <div className="home">
       <Video
@@ -38,10 +47,12 @@ export default function Homepage() {
         pcPoster={pcIndexVideoPoster}
         mbDataSrc="https://cdn.shopify.com/videos/c/o/v/1746fd8ffc9248a78d697693f1f94958.mp4"
         mbPoster={mbIndexVideoPoster}
+        height={getActiveHeaderHeight()}
       />
-      <Swiper swiperData={['1', '2', '3', '4']} />
-      <FeaturedCollection collection={featuredCollection} />
-      <RecommendedProducts products={recommendedProducts} />
+      <LitterProduct top={top} />
+
+      {/* <FeaturedCollection collection={featuredCollection} />
+      <RecommendedProducts products={recommendedProducts} /> */}
     </div>
   );
 }

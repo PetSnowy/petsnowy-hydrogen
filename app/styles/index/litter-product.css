@@ -1,0 +1,218 @@
+.new-index-litter {
+  background: #E0D5C1;
+}
+.new-index-litter p,
+.new-index-litter span {
+  line-height: normal;
+}
+.new-index-litter picture,
+.new-index-litter img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transform: scale(0.9);
+  transform-origin: bottom;
+  transition: 1s cubic-bezier(0.42, 0, 0.002, 1) 0.3s;
+}
+.new-index-litter .sub-title,
+.new-index-litter .title {
+  display: none;
+}
+.new-index-litter .sub-title {
+  font-family: LeagueSpartan;
+}
+.new-index-litter .title span {
+  display: block;
+  font-family: LeagueSpartanBlack;
+  color: #504030;
+  white-space: nowrap;
+}
+.new-index-litter .title span:first-child::first-letter {
+  color: #D75F23;
+}
+
+@media screen and (min-width: 901px) {
+  .new-index-litter {
+    height: 690px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .new-index-litter .litter-content .sub-title,
+  .new-index-litter .litter-content .title {
+    display: block;
+  }
+  .new-index-litter .container {
+    width: 1200px;
+    display: flex;
+    padding: 93px 0 111px;
+    height: 690px;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+  .new-index-litter img {
+    width: 612px;
+    height: auto;
+    object-fit: contain;
+  }
+  .new-index-litter .options {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .new-index-litter .options .item p {
+    font-family: LeagueSpartanBlack;
+    font-size: 35px;
+    font-weight: 800;
+    color: #837464;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .new-index-litter .options .line {
+    display: block;
+    width: 2px;
+    height: 67px;
+    background: #504030;
+    margin: 0px 39px;
+  }
+  .new-index-litter .sub-title {
+    font-size: 32px;
+    font-weight: 400;
+    color: #504030;
+    line-height: 35px;
+    margin-bottom: 18px;
+    text-align: right;
+  }
+  .new-index-litter .title {
+    margin: 0px;
+    margin-bottom: 50px;
+  }
+  .new-index-litter .title span {
+    font-size: 63px;
+    font-weight: 900;
+    line-height: 60px;
+    text-align: right;
+    color: #504030;
+  }
+  .new-index-litter .button {
+    all: unset;
+    display: block;
+    width: 280px;
+    cursor: pointer;
+    height: 79px;
+    background: #504030;
+    border-radius: 26px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 84px;
+    margin-top: 65px;
+    font-size: 36px;
+    font-family: LeagueSpartanBlack;
+    font-weight: 800;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    margin-left: auto;
+    transition: all 0.3s ease;
+  }
+  .new-index-litter .button::after, .new-index-litter .button::before {
+    display: none;
+  }
+  .new-index-litter .button:hover {
+    color: #504030;
+    background-color: #FFFFFF;
+  }
+  .new-index-litter .mb-options {
+    display: none;
+  }
+}
+@media screen and (max-width: 900px) {
+  .new-index-litter {
+    padding: 16.5333333333vw 0px 10.4vw;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .new-index-litter .litter-content {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+  }
+  .new-index-litter .litter-content .sub-title,
+  .new-index-litter .litter-content .title {
+    display: none;
+  }
+  .new-index-litter .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .new-index-litter .title {
+    font-size: 8.2666666667vw;
+    font-weight: 900;
+    line-height: 7.7333333333vw;
+    padding-right: 7.0666666667vw;
+    margin: 0px;
+    display: block;
+    text-align: right;
+  }
+  .new-index-litter .title::first-letter {
+    color: #D75F23;
+  }
+  .new-index-litter .play {
+    width: 69.6vw;
+    height: 57.6vw;
+    margin: 0px auto 9.3333333333vw;
+  }
+  .new-index-litter .sub-title {
+    font-size: 3.8666666667vw;
+    font-weight: 400;
+    color: #504030;
+    line-height: 4.1333333333vw;
+    text-align: center;
+    margin-bottom: 7.3333333333vw;
+    display: block;
+  }
+  .new-index-litter .button {
+    all: unset;
+    display: block;
+    text-transform: uppercase;
+    width: 37.3333333333vw;
+    height: 10.5333333333vw;
+    background: #504030;
+    border-radius: 5.2vw;
+    font-size: 4.8vw;
+    font-family: LeagueSpartanBlack;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 11.3333333333vw;
+    text-align: center;
+    margin: 0px auto 10.2666666667vw;
+  }
+  .new-index-litter .button::after, .new-index-litter .button::before {
+    display: none;
+  }
+  .new-index-litter .options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .new-index-litter .options p {
+    font-size: 3.7333333333vw;
+    font-family: LeagueSpartanBlack;
+    font-weight: 800;
+    color: #504030;
+    line-height: 4.2666666667vw;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .new-index-litter .options .line {
+    width: 0.1333333333vw;
+    height: 7.0666666667vw;
+    background: #504030;
+    margin: 0px 4.2666666667vw;
+    display: block;
+  }
+}
+
+/*# sourceMappingURL=litter-product.css.map */

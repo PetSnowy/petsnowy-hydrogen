@@ -1,0 +1,9 @@
+@function vw($px-vw, $base-vw: 750px) {
+	@return calc(($px-vw * 100vw) / $base-vw);
+}
+
+// pc端
+@media screen and (min-width: 901px) {}
+
+// 移动端
+@media screen and (max-width: 900px) {}

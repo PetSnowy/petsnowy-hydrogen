@@ -1,3 +1,7 @@
+@function vw($px-vw, $base-vw: 750px) {
+	@return calc(($px-vw * 100vw) / $base-vw);
+}
+
 :root {
 	--aside-width: 400px;
 	--cart-aside-summary-height-with-discount: 300px;
@@ -349,55 +353,10 @@ aside li {
 * routes/products.$handle.tsx
 * --------------------------------------------------
 */
-.product {
-	display: grid;
-}
 
-@media (min-width: 45em) {
-	.product {
-		grid-template-columns: 1fr 1fr;
-		grid-gap: 4rem;
-	}
-}
 
-.product h1 {
-	margin-top: 0;
-}
 
-.product-images {
-	display: grid;
-	grid-gap: 1rem;
-}
 
-.product-image img {
-	height: auto;
-	width: 100%;
-}
-
-.product-main {
-	align-self: start;
-	position: sticky;
-	top: 6rem;
-}
-
-.product-price-on-sale {
-	display: flex;
-	grid-gap: 0.5rem;
-}
-
-.product-price-on-sale s {
-	opacity: 0.5;
-}
-
-.product-options-grid {
-	display: flex;
-	flex-wrap: wrap;
-	grid-gap: 0.75rem;
-}
-
-.product-options-item {
-	padding: 0.25rem 0.5rem;
-}
 
 /*
 * --------------------------------------------------
@@ -448,6 +407,7 @@ aside li {
 @media screen and (max-width: 900px) {
 	.container {
 		min-width: 100%;
+		padding: 0px vw(38px);
 	}
 }
 

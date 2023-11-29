@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Fragment, ReactNode, Suspense} from 'react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Await,
@@ -6,6 +6,7 @@ import {
   useLoaderData,
   type MetaFunction,
   type FetcherWithComponents,
+  useLocation,
 } from '@remix-run/react';
 import type {
   ProductFragment,
@@ -26,7 +27,16 @@ import type {
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
+import LitterBox from '~/components/product/LitterBox';
+import {PageRenderer, Video} from '~/components/Common';
+import LitterBoxStyle from '~/styles/product/litter-box.css';
+import LitterProductVideoImg from '~/assets/product/video-banner-litter-box.png';
+import mbLitterProductVideoImg from '~/assets/product/mb_product-video_img.png';
+import {getActiveHeaderHeight} from '~/utils';
 
+export function links() {
+  return [{rel: 'stylesheet', href: LitterBoxStyle}];
+}
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   return [
     {title: `${data?.product.seo.title ?? ''}`},
@@ -119,13 +129,43 @@ function redirectToFirstVariant({
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>() as any;
   const {selectedVariant} = product;
+  const {pathname} = useLocation();
+
+  const componentsMap = new Map([
+    [
+      '/products/snow-self-cleaning-litter-box',
+      [
+        <Video
+          pcDataSrc="https://cdn.shopify.com/videos/c/o/v/9922252ba3cd4c79aa3c23c6aeb5e46b.mp4"
+          pcPoster={LitterProductVideoImg}
+          mbDataSrc="https://cdn.shopify.com/videos/c/o/v/8ebcb13e4a354fafb21ac5cee19f6d0d.mp4"
+          mbPoster={mbLitterProductVideoImg}
+          height={getActiveHeaderHeight()}
+        />,
+        <LitterBox />,
+      ],
+    ],
+    [
+      '*',
+      [
+        <div className="product-main">
+          <ProductImage image={selectedVariant?.image} />
+          <ProductMain
+            selectedVariant={selectedVariant}
+            product={product}
+            variants={variants}
+          />
+        </div>,
+      ],
+    ],
+  ]);
+
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
+      <PageRenderer
+        pageName={pathname}
+        pageComponents={componentsMap}
+        excludedPages={['/products/snow-self-cleaning-litter-box']}
       />
     </div>
   );
@@ -306,29 +346,6 @@ function ProductOptions({
       <br />
     </div>
   );
-}
-
-function VariantImg({
-  name,
-  value,
-  variants,
-}: {
-  name: string;
-  value: string;
-  variants: Array<ProductVariantFragment>;
-}) {
-  const variant = variants.map((v) =>
-    v.selectedOptions
-      .map((o: {name: string; value: string}) => {
-        if (o.name === name && o.value === value) {
-          return v.image?.url;
-        }
-      })
-      .filter((v) => v !== undefined),
-  );
-
-  console.log(variant);
-  return <p></p>;
 }
 
 function AddToCartButton({
