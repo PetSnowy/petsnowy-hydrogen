@@ -88,12 +88,11 @@ export function Video({
   }, [pathname, targetRef.current]);
 
   useEffect(() => {
-    if (isMobile && isVisible) {
-      setSrc(mbDataSrc);
-      setPoster(mbPoster);
-    } else if (!isMobile && isVisible) {
-      setSrc(pcDataSrc);
-      setPoster(pcPoster);
+    if (isVisible) {
+      const src = isMobile ? mbDataSrc ?? pcDataSrc : pcDataSrc ?? mbDataSrc;
+      const poster = isMobile ? mbPoster ?? pcPoster : pcPoster ?? mbPoster;
+      setSrc(src);
+      setPoster(poster);
     }
   }, [isMobile, isVisible, mbDataSrc, mbPoster, pcDataSrc, pcPoster]);
 
@@ -156,12 +155,11 @@ export function LazyImage({pcImg, mobileImg, alt}: LazyImageProps) {
   }, [pathname, targetRef.current]);
 
   useEffect(() => {
-    if (isMobile && isVisible && mobileImg && targetRef.current) {
-      targetRef.current.src = mobileImg;
-    } else if (!isMobile && isVisible && pcImg && targetRef.current) {
-      targetRef.current.src = pcImg;
+    if (isVisible && targetRef.current) {
+      const imgSrc = isMobile ? mobileImg ?? pcImg : pcImg ?? mobileImg;
+      targetRef.current.src = imgSrc!;
     }
-  }, [isMobile, isVisible]);
+  }, [isMobile, isVisible, pcImg, mobileImg]);
 
   return <img alt={alt} decoding="async" loading="lazy" ref={targetRef} />;
 }
