@@ -1,6 +1,5 @@
 import {useLocation} from '@remix-run/react';
 import {ReactNode, Fragment, useEffect, useRef, useState} from 'react';
-import {deviceVisibility} from '~/utils';
 
 // 配置不同页面渲染不同的组件
 export function PageRenderer({
@@ -51,10 +50,44 @@ export function Video({
   const targetRef = useRef<HTMLVideoElement | null>(null);
   const [src, setSrc] = useState<string | undefined>('');
   const [poster, setPoster] = useState<string | undefined>('');
-  const {isVisible, isMobile} = deviceVisibility(targetRef.current!);
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const {pathname} = useLocation();
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  };
 
   useEffect(() => {
-    console.log(isMobile, isVisible);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(entry.isIntersecting);
+        }
+      });
+    }, options);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 900);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [pathname, targetRef.current]);
+
+  useEffect(() => {
     if (isMobile && isVisible) {
       setSrc(mbDataSrc);
       setPoster(mbPoster);
@@ -86,7 +119,41 @@ type LazyImageProps = {
 
 export function LazyImage({pcImg, mobileImg, alt}: LazyImageProps) {
   const targetRef = useRef<HTMLImageElement | null>(null);
-  const {isVisible, isMobile} = deviceVisibility(targetRef.current!);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const {pathname} = useLocation();
+  const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1,
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(entry.isIntersecting);
+        }
+      });
+    }, options);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 900);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    if (targetRef.current) {
+      observer.observe(targetRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [pathname, targetRef.current]);
 
   useEffect(() => {
     if (isMobile && isVisible && mobileImg && targetRef.current) {

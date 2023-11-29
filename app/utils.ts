@@ -64,39 +64,3 @@ export const getActiveHeaderHeight = () => {
 	}, []);
 	return height
 }
-
-export const deviceVisibility = (target: HTMLDivElement | HTMLImageElement | HTMLVideoElement | HTMLElement) => {
-	const [isMobile, setIsMobile] = useState(false);
-	const [isVisible, setIsVisible] = useState<boolean>(false);
-	const { pathname } = useLocation();
-	const options = {
-		root: null,
-		rootMargin: '0px',
-		threshold: 0.1,
-	};
-
-	useEffect(() => {
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					setIsVisible(entry.isIntersecting);
-				}
-			});
-		}, options);
-		const handleResize = () => {
-			setIsMobile(window.innerWidth < 900);
-		};
-		handleResize();
-		window.addEventListener('resize', handleResize);
-		if (target) observer.observe(target);
-
-		return () => {
-			observer.disconnect();
-			window.removeEventListener('resize', handleResize);
-		};
-	}, [pathname, target]);
-
-	return {
-		isMobile, isVisible
-	}
-}
