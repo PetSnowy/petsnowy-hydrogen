@@ -56,7 +56,6 @@ export const handle = {
 
 export function links() {
   return [
-    {rel: 'stylesheet', href: styles},
     {rel: 'stylesheet', href: swiperBundle},
     {
       rel: 'preconnect',
@@ -67,11 +66,11 @@ export function links() {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
-
     {rel: 'stylesheet', href: reset},
     {rel: 'stylesheet', href: app},
     {rel: 'stylesheet', href: font},
     ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
+    {rel: 'stylesheet', href: styles},
   ];
 }
 

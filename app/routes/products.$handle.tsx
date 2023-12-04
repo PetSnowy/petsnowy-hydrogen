@@ -14,18 +14,8 @@ import type {
   ProductVariantFragment,
 } from 'storefrontapi.generated';
 
-import {
-  Image,
-  Money,
-  VariantSelector,
-  type VariantOption,
-  getSelectedProductOptions,
-  CartForm,
-} from '@shopify/hydrogen';
-import type {
-  CartLineInput,
-  SelectedOption,
-} from '@shopify/hydrogen/storefront-api-types';
+import {Image, getSelectedProductOptions} from '@shopify/hydrogen';
+import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
 import LitterBox from '~/components/product/LitterBox';
 import {PageRenderer, Video} from '~/components/Common';
@@ -33,6 +23,7 @@ import LitterBoxStyle from '~/styles/product/litter-box.css';
 import LitterProductVideoImg from '~/assets/product/video-banner-litter-box.png';
 import mbLitterProductVideoImg from '~/assets/product/mb_product-video_img.png';
 import {getActiveHeaderHeight} from '~/utils';
+import {ProductForm, ProductPrice} from '~/components/product/ProductCommon';
 
 export function links() {
   return [{rel: 'stylesheet', href: LitterBoxStyle}];
@@ -50,13 +41,11 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   const selectedOptions = getSelectedProductOptions(request).filter(
     (option) =>
-      // Filter out Shopify predictive search query params
       !option.name.startsWith('_sid') &&
       !option.name.startsWith('_pos') &&
       !option.name.startsWith('_psq') &&
       !option.name.startsWith('_ss') &&
       !option.name.startsWith('_v') &&
-      // Filter out third party tracking params
       !option.name.startsWith('fbclid'),
   );
 
@@ -64,7 +53,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw new Error('Expected product handle to be defined');
   }
 
-  // await the query for the critical product data
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
   });
@@ -84,47 +72,39 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   if (firstVariantIsDefault) {
     product.selectedVariant = firstVariant;
   } else {
-    // if no selected variant was returned from the selected options,
-    // we redirect to the first variant's url with it's selected options applied
     if (!product.selectedVariant) {
-      throw redirectToFirstVariant({product, request});
+      // throw redirectToFirstVariant({product, request});
     }
   }
-
-  // In order to show which variants are available in the UI, we need to query
-  // all of them. But there might be a *lot*, so instead separate the variants
-  // into it's own separate query that is deferred. So there's a brief moment
-  // where variant options might show as available when they're not, but after
-  // this deffered query resolves, the UI will update.
   const variants = storefront.query(VARIANTS_QUERY, {
     variables: {handle},
   });
 
   return defer({product, variants});
 }
+// 默认选中第一个变体
+// function redirectToFirstVariant({
+//   product,
+//   request,
+// }: {
+//   product: ProductFragment;
+//   request: Request;
+// }) {
+//   const url = new URL(request.url);
+//   const firstVariant = product.variants.nodes[0];
 
-function redirectToFirstVariant({
-  product,
-  request,
-}: {
-  product: ProductFragment;
-  request: Request;
-}) {
-  const url = new URL(request.url);
-  const firstVariant = product.variants.nodes[0];
-
-  return redirect(
-    getVariantUrl({
-      pathname: url.pathname,
-      handle: product.handle,
-      selectedOptions: firstVariant.selectedOptions,
-      searchParams: new URLSearchParams(url.search),
-    }),
-    {
-      status: 302,
-    },
-  );
-}
+//   return redirect(
+//     getVariantUrl({
+//       pathname: url.pathname,
+//       handle: product.handle,
+//       selectedOptions: firstVariant.selectedOptions,
+//       searchParams: new URLSearchParams(url.search),
+//     }),
+//     {
+//       status: 302,
+//     },
+//   );
+// }
 
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>() as any;
@@ -142,7 +122,7 @@ export default function Product() {
           mbPoster={mbLitterProductVideoImg}
           height={getActiveHeaderHeight()}
         />,
-        <LitterBox />,
+        <LitterBox product={product} variants={variants} />,
       ],
     ],
     [
@@ -234,152 +214,6 @@ function ProductMain({
       <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       <br />
     </div>
-  );
-}
-
-function ProductPrice({
-  selectedVariant,
-}: {
-  selectedVariant: ProductFragment['selectedVariant'];
-}) {
-  return (
-    <div className="product-price">
-      {selectedVariant?.compareAtPrice ? (
-        <>
-          <p>Sale</p>
-          <br />
-          <div className="product-price-on-sale">
-            {selectedVariant ? <Money data={selectedVariant.price} /> : null}
-            <s>
-              <Money data={selectedVariant.compareAtPrice} />
-            </s>
-          </div>
-        </>
-      ) : (
-        selectedVariant?.price && <Money data={selectedVariant?.price} />
-      )}
-    </div>
-  );
-}
-
-function ProductForm({
-  product,
-  selectedVariant,
-  variants,
-}: {
-  product: ProductFragment;
-  selectedVariant: ProductFragment['selectedVariant'];
-  variants: Array<ProductVariantFragment>;
-}) {
-  return (
-    <div className="product-form">
-      <VariantSelector
-        handle={product.handle}
-        options={product.options}
-        variants={variants}
-      >
-        {({option}) => (
-          <ProductOptions
-            key={option.name}
-            option={option}
-            variants={variants}
-          />
-        )}
-      </VariantSelector>
-      <br />
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          window.location.href = window.location.href + '#cart-aside';
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                },
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-      </AddToCartButton>
-    </div>
-  );
-}
-function ProductOptions({
-  option,
-  variants,
-}: {
-  option: VariantOption;
-  variants: Array<ProductVariantFragment>;
-}) {
-  return (
-    <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
-      <div className="product-options-grid">
-        {option.values.map(({value, isAvailable, isActive, to}) => {
-          return (
-            <Link
-              className="product-options-item"
-              key={option.name + value}
-              prefetch="intent"
-              preventScrollReset
-              replace
-              to={to}
-              style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
-                opacity: isAvailable ? 1 : 0.3,
-              }}
-            >
-              {value}
-              {/* <VariantImg
-                name={option.name}
-                value={value}
-                variants={variants}
-              /> */}
-            </Link>
-          );
-        })}
-      </div>
-      <br />
-    </div>
-  );
-}
-
-function AddToCartButton({
-  analytics,
-  children,
-  disabled,
-  lines,
-  onClick,
-}: {
-  analytics?: unknown;
-  children: React.ReactNode;
-  disabled?: boolean;
-  lines: CartLineInput[];
-  onClick?: () => void;
-}) {
-  return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
-      {(fetcher: FetcherWithComponents<any>) => (
-        <>
-          <input
-            name="analytics"
-            type="hidden"
-            value={JSON.stringify(analytics)}
-          />
-          <button
-            type="submit"
-            onClick={onClick}
-            disabled={disabled ?? fetcher.state !== 'idle'}
-          >
-            {children}
-          </button>
-        </>
-      )}
-    </CartForm>
   );
 }
 
