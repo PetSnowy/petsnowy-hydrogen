@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {createSlice, configureStore} from '@reduxjs/toolkit';
 import classicProductImg from '~/assets/product/classic_product.png';
 import classicShowImg from '~/assets/product/classic_show.png';
@@ -10,7 +10,7 @@ import {
   ProductVariantFragment,
   ProductVariantsQuery,
 } from 'storefrontapi.generated';
-import {Await, Link} from '@remix-run/react';
+import {Await, Link, useMatches, useLoaderData} from '@remix-run/react';
 import {
   AddToCartButton,
   ProductPrice,
@@ -101,26 +101,53 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
-  console.log(product, 'product');
+  const [lines, setLines] = useState<
+    {merchandiseId: string; quantity: number}[]
+  >([]);
+
+  const [selectedVariantCount, setSelectedVariantCount] = useState(1);
+
+  const handleLines = (selectedVariant: ProductFragment['selectedVariant']) => {
+    window.location.hash = 'cart-aside';
+    const selectVariant = [
+      {
+        merchandiseId: selectedVariant?.id!,
+        quantity: selectedVariantCount,
+      },
+    ];
+
+    const selectMountings: {merchandiseId: string; quantity: number}[] = [];
+    const selectElement = document.querySelectorAll(
+      '.product .gift-item,.product .add-on-item',
+    );
+    const selected = selectElement ? Array.from(selectElement) : [];
+
+    for (let i = 0; i < selected.length; i++) {
+      const element = selected[i];
+      const input = element.querySelector('input');
+      if (input?.checked) {
+        selectMountings.push({
+          merchandiseId: input.value!,
+          quantity: 1,
+        });
+      }
+    }
+    const updatedLines = [...selectVariant, ...selectMountings];
+    setLines((prevLines) => {
+      return [...prevLines, ...updatedLines];
+    });
+  };
+
   return (
     <>
       <SelectColor />
       <Variants variants={variants} />
+      <GetGift />
+      <AddOns />
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          window.location.href = window.location.href + '#cart-aside';
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                },
-              ]
-            : []
-        }
+        onClick={() => handleLines(selectedVariant)}
+        lines={lines}
       >
         {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
       </AddToCartButton>
@@ -194,6 +221,92 @@ function SelectColor() {
           </div>
         );
       })}
+    </div>
+  );
+}
+type Price = {
+  amount: string;
+  currencyCode: string;
+};
+type Edges = {
+  node: {
+    id: string;
+  };
+};
+type Gift = {
+  product: {
+    handle: string;
+    id: string;
+    priceRange: {
+      maxVariantPrice: Price;
+      minVariantPrice: Price;
+    };
+    featuredImage: {
+      url: string;
+    };
+    variants: {
+      edges: Edges[];
+    };
+  };
+};
+
+function GetGift() {
+  const {giftList}: {giftList: Gift[]} = useLoaderData() as any;
+  return (
+    <div className="gift flex w-full flex-wrap">
+      {giftList.map(({product}, index) => (
+        <div className="gift-item w-full" key={index} data-category="gift">
+          <input
+            type="radio"
+            id={product.id}
+            name="gift"
+            value={product.variants.edges[0].node.id}
+          />
+          <label htmlFor={product.id}>
+            <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
+              <LazyImage
+                alt={product.handle}
+                pcImg={product.featuredImage.url}
+              />
+            </div>
+            <p className="price">
+              <s>{product.priceRange.maxVariantPrice.amount}</s>
+              <span>{product.priceRange.minVariantPrice.amount}</span>
+            </p>
+          </label>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AddOns() {
+  const {addOnsList}: {addOnsList: Gift[]} = useLoaderData() as any;
+  return (
+    <div className="addOns flex">
+      {addOnsList.map(({product}, index) => (
+        <div className="add-on-item w-full" key={index} data-category="addons">
+          <input
+            type="checkbox"
+            name="addons"
+            id={product.id}
+            value={product.variants.edges[0].node.id}
+          />
+          <label htmlFor={product.id}>
+            <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
+              <LazyImage
+                alt={product.handle}
+                pcImg={product.featuredImage.url}
+              />
+            </div>
+            <p className="title">{product.handle}</p>
+            <p className="price">
+              <s>{product.priceRange.maxVariantPrice.amount}</s>
+              <span>{product.priceRange.minVariantPrice.amount}</span>
+            </p>
+          </label>
+        </div>
+      ))}
     </div>
   );
 }

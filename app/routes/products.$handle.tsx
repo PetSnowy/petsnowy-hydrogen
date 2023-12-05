@@ -14,7 +14,7 @@ import type {
   ProductVariantFragment,
 } from 'storefrontapi.generated';
 
-import {Image, getSelectedProductOptions} from '@shopify/hydrogen';
+import {Image, Storefront, getSelectedProductOptions} from '@shopify/hydrogen';
 import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
 import LitterBox from '~/components/product/LitterBox';
@@ -60,7 +60,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
-
   const firstVariant = product.variants.nodes[0];
   const firstVariantIsDefault = Boolean(
     firstVariant.selectedOptions.find(
@@ -80,8 +79,70 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
+  if (handle === 'snow-self-cleaning-litter-box') {
+    return litterLoader(handle, storefront, variants, product);
+  }
+
   return defer({product, variants});
 }
+// 获取猫砂盆配件
+async function litterLoader(
+  handle: string,
+  storefront: Storefront,
+  variants: Promise<ProductVariantsQuery>,
+  product: any,
+) {
+  // 获取gift产品id
+  const giftId = await storefront.query(GET_METAFIELD_LIST, {
+    cache: storefront.CacheLong(),
+    variables: {
+      productHandle: handle,
+      metafieldKey: 'gift',
+      metafieldNamespace: 'custom',
+    },
+  });
+
+  const metafieldGiftList: any = JSON.parse(giftId.product.metafield.value);
+
+  // 使用gift产品id获取产品详情
+  const giftList = await Promise.all(
+    metafieldGiftList.map(async (item: string) => {
+      const result = await storefront.query(GET_PRODUCT_DETAILS, {
+        cache: storefront.CacheLong(),
+        variables: {
+          id: item,
+        },
+      });
+      return result;
+    }),
+  );
+
+  // 获取addons产品
+  const addOnsId = await storefront.query(GET_METAFIELD_LIST, {
+    cache: storefront.CacheLong(),
+    variables: {
+      productHandle: handle,
+      metafieldKey: 'addons_product',
+      metafieldNamespace: 'custom',
+    },
+  });
+
+  const metafieldAddOnsList: any = JSON.parse(addOnsId.product.metafield.value);
+
+  const addOnsList = await Promise.all(
+    metafieldAddOnsList.map(async (item: string) => {
+      const result = await storefront.query(GET_PRODUCT_DETAILS, {
+        cache: storefront.CacheLong(),
+        variables: {
+          id: item,
+        },
+      });
+      return result;
+    }),
+  );
+  return defer({product, variants, giftList, addOnsList});
+}
+
 // 默认选中第一个变体
 // function redirectToFirstVariant({
 //   product,
@@ -329,3 +390,44 @@ const getProductSeo = `#graphql query Product {
     title
   }
 }` as const;
+
+const GET_METAFIELD_LIST = `
+  query GetGiftList($productHandle: String!, $metafieldKey: String!, $metafieldNamespace: String!) {
+    product(handle: $productHandle) {
+      metafield(key: $metafieldKey, namespace: $metafieldNamespace) {
+        id
+        key
+        value
+      }
+    }
+  }
+` as const;
+
+const GET_PRODUCT_DETAILS = `
+query GetProductDetails	($id: ID!){
+	product(id: $id) {
+		handle
+		id
+    featuredImage {
+      url
+    }
+		priceRange {
+			maxVariantPrice {
+				amount
+				currencyCode
+			}
+			minVariantPrice {
+				amount
+				currencyCode
+			}
+		}
+		variants(first: 10){
+			edges {
+        node {
+          id
+        }
+      }
+		}
+	}
+}
+`;

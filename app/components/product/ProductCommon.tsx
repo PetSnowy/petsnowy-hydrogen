@@ -85,15 +85,13 @@ function ProductOptions({
   option: VariantOption;
   variants: Array<ProductVariantFragment>;
 }) {
-  useEffect(() => {
-    console.log(variants);
-  }, []);
+  console.log('variants,variants', variants);
+
   return (
     <div className="product-options" key={option.name}>
       <h5>{option.name}</h5>
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
-          console.log(to);
           return (
             <Link
               className="product-options-item"

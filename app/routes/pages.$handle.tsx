@@ -6,7 +6,6 @@ import AboutUs from '~/components/aboutUs';
 import AboutUsBanner from '~/components/aboutUs/Banner';
 import {Fragment, ReactNode, useEffect, useRef} from 'react';
 import {PageRenderer} from '~/components/Common';
-import {deviceVisibility} from '~/utils';
 
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
