@@ -36,9 +36,9 @@ export function Layout({
       <CartAside cart={cart} />
       <SearchAside />
       {/* <MobileMenuAside menu={header.menu} shop={header.shop} /> */}
-      <ActiveBar>
+      {/* <ActiveBar>
         <CountDown />
-      </ActiveBar>
+      </ActiveBar> */}
       <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
       <main>{children}</main>
       <Suspense>

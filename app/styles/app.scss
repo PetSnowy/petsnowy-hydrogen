@@ -403,6 +403,48 @@ aside li {
 	display: inline-block;
 }
 
+.error {
+	color: rgb(224, 43, 39);
+	font-size: 14px;
+}
+
+.disabled {
+	opacity: 0.5;
+	pointer-events: none;
+	cursor: not-allowed;
+	user-select: none;
+}
+
+.load {
+	opacity: 0.5;
+	pointer-events: none;
+	user-select: none;
+	cursor: no-drop;
+}
+
+.loading {
+	width: 30px;
+	height: 30px;
+	border: 2px solid #2d2929;
+	border-top-color: transparent;
+	border-radius: 100%;
+	animation: circle infinite 0.75s linear;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+}
+
+@keyframes circle {
+	0% {
+		transform: translate(-50%, -50%) rotate(0);
+	}
+
+	100% {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+
 
 @media screen and (max-width: 900px) {
 	.container {

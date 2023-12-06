@@ -11,8 +11,9 @@ import {Video} from '~/components/Common';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
 import LitterProduct from '~/components/index/LitterProduct';
-import litterProductStyles from '~/styles/index/litter-product.css';
+import indexStyle from '~/styles/index/index.css';
 import {getActiveHeaderHeight} from '~/utils';
+import ActiveBar from '~/components/index/ActiveBar';
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   const {
     shop: {description, name},
@@ -30,7 +31,7 @@ export async function loader({context}: LoaderFunctionArgs) {
 }
 
 export function links() {
-  return [{rel: 'stylesheet', href: litterProductStyles}];
+  return [{rel: 'stylesheet', href: indexStyle}];
 }
 
 export default function Homepage() {
@@ -49,6 +50,7 @@ export default function Homepage() {
         mbPoster={mbIndexVideoPoster}
         height={getActiveHeaderHeight()}
       />
+      <ActiveBar />
       <LitterProduct top={top} />
 
       {/* <FeaturedCollection collection={featuredCollection} />

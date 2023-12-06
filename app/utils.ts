@@ -54,7 +54,7 @@ export const getActiveHeaderHeight = () => {
 		const activeBar = document.querySelector('.active-bar') as HTMLElement;
 		const header = document.querySelector('header') as HTMLElement;
 		const updateHeight = () => {
-			setHeight(activeBar?.offsetHeight + header?.offsetHeight);
+			setHeight(activeBar ? activeBar?.offsetHeight : 0 + header?.offsetHeight);
 		};
 		updateHeight();
 		window.addEventListener('resize', updateHeight);

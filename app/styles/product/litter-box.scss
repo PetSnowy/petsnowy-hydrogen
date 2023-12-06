@@ -2,8 +2,111 @@
 	@return calc(($px-vw * 100vw) / $base-vw);
 }
 
+$border-color: #f0b42d;
+$background: #e9e0cf;
+
+.LitterBox {
+	background: $background;
+}
+
 // pc端
-@media screen and (min-width: 901px) {}
+@media screen and (min-width: 901px) {
+	.LitterBox {
+
+		input[type=radio]:checked+label,
+		input[type=checkbox]:checked+label {
+			border-color: $border-color;
+		}
+
+		label {
+			border: 2px solid $background;
+			transition: all .3s ease;
+			cursor: pointer;
+		}
+
+		input[type=radio],
+		input[type=checkbox] {
+			width: 0px;
+			height: 0px;
+			display: none;
+		}
+
+
+		.variants .active .variants-item {
+			border-color: $border-color;
+		}
+
+		.variants-item {
+			border: 2px solid $background;
+			transition: all 0.3s ease;
+		}
+
+		.product-price {
+			margin-top: 14px;
+			margin-bottom: 22px;
+			font-family: LeagueSpartanBlack;
+			font-weight: 900;
+			font-size: 23px;
+
+			div {
+				color: #d75f23;
+			}
+
+			s,
+			s div {
+				color: #7e6e5f;
+			}
+		}
+
+		.select-color {
+			.select-color-item label {
+				border-radius: 12px;
+				background: #FFFFFF;
+			}
+		}
+
+		.gift {
+			.gift-item:nth-child(1) label {
+				background: url('~/assets/product/pc-gift-1.png') no-repeat center/cover;
+			}
+
+			.gift-item:nth-child(2) label {
+				background: url('~/assets/product/pc-gift-2.png') no-repeat center/cover;
+			}
+		}
+
+		.add-on-item {
+			img {
+				width: 70px;
+				height: 70px;
+				object-fit: contain;
+			}
+		}
+
+		.add-to-cart {
+			width: 259px;
+			height: 52px;
+			background: #7E6E5F;
+			border-radius: 24px;
+			color: #FFFFFF;
+			transition: all 0.3s ease;
+
+			button {
+				width: 259px;
+				height: 52px;
+				font-family: LeagueSpartanBlack;
+				font-size: 24px;
+				text-transform: uppercase;
+				position: relative;
+			}
+
+			&:hover {
+				color: #7E6E5F;
+				background-color: #FFFFFF
+			}
+		}
+	}
+}
 
 // 移动端
 @media screen and (max-width: 900px) {}

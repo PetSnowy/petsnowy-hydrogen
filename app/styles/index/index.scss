@@ -2,6 +2,7 @@
 	@return calc(($px-vw * 100vw) / $base-vw);
 }
 
+
 .new-index-litter {
 	background: #E0D5C1;
 
@@ -43,6 +44,61 @@
 			&:first-child::first-letter {
 				color: #D75F23;
 			}
+		}
+	}
+}
+
+.active-index {
+	background: #E0D5C1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+	}
+
+	p {
+		font-family: LeagueSpartanBlack;
+		color: #504030;
+
+		span {
+			color: #D75F23;
+		}
+	}
+
+	p:nth-child(2) {
+
+		i {
+			display: inline-block;
+			background: #504030;
+		}
+	}
+
+	.bar-btn {
+		background: #504030;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: LeagueSpartanBlack;
+		text-transform: uppercase;
+		cursor: pointer;
+		color: #FFFFFF;
+		transition: all 0.3s ease;
+		position: relative;
+
+		&::after {
+			content: '';
+			display: block;
+			position: absolute;
+		}
+
+		&:hover {
+			color: #504030;
+			background-color: #FFFFFF;
 		}
 	}
 }
@@ -166,6 +222,47 @@
 		}
 
 	}
+
+	.active-index {
+		height: 189px;
+		margin: 80px 0px;
+
+		.container {
+			column-gap: 80px;
+			height: 100%;
+			height: 150px;
+			background: url('~/assets/index/active-bar.png') no-repeat center/cover;
+		}
+
+		p {
+			font-size: 42px;
+		}
+
+		p:nth-child(2) {
+			margin-top: 5px;
+
+			i {
+				display: inline-block;
+				width: 3px;
+				height: 33px;
+			}
+		}
+
+		.bar-btn {
+			width: 307px;
+			height: 73px;
+			border-radius: 35px;
+			font-size: 33px;
+
+			&::after {
+				width: 312px;
+				height: 45px;
+				background: url('~/assets/index/active-btn.png') no-repeat center/cover;
+				left: -2px;
+				top: -15px;
+			}
+		}
+	}
 }
 
 
@@ -269,6 +366,47 @@
 				background: #504030;
 				margin: 0px vw(32px);
 				display: block;
+			}
+		}
+	}
+
+	.active-index {
+		height: vw(133px);
+		margin: vw(80px) 0px;
+
+		.container {
+			column-gap: vw(24px);
+			height: vw(86px);
+			box-sizing: border-box;
+			background: url('~/assets/index/mb_active-bar.png') no-repeat center/vw(680px) vw(86px);
+		}
+
+		p {
+			font-size: vw(25px);
+		}
+
+		p:nth-child(2) {
+			margin-top: vw(10px);
+
+			i {
+				display: inline-block;
+				width: vw(2px);
+				height: vw(19px);
+			}
+		}
+
+		.bar-btn {
+			width: vw(184px);
+			height: vw(44px);
+			border-radius: vw(20px);
+			font-size: vw(20px);
+
+			&::after {
+				width: vw(187px);
+				height: vw(27px);
+				background: url('~/assets/index/mb_active-btn.png') no-repeat center/cover;
+				left: vw(-4px);
+				top: vw(-10px);
 			}
 		}
 	}

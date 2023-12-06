@@ -32,6 +32,51 @@
   color: #D75F23;
 }
 
+.active-index {
+  background: #E0D5C1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.active-index .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.active-index p {
+  font-family: LeagueSpartanBlack;
+  color: #504030;
+}
+.active-index p span {
+  color: #D75F23;
+}
+.active-index p:nth-child(2) i {
+  display: inline-block;
+  background: #504030;
+}
+.active-index .bar-btn {
+  background: #504030;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: LeagueSpartanBlack;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #FFFFFF;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.active-index .bar-btn::after {
+  content: "";
+  display: block;
+  position: absolute;
+}
+.active-index .bar-btn:hover {
+  color: #504030;
+  background-color: #FFFFFF;
+}
+
 @media screen and (min-width: 901px) {
   .new-index-litter {
     height: 690px;
@@ -125,6 +170,40 @@
   .new-index-litter .mb-options {
     display: none;
   }
+  .active-index {
+    height: 189px;
+    margin: 80px 0px;
+  }
+  .active-index .container {
+    column-gap: 80px;
+    height: 100%;
+    height: 150px;
+    background: url("~/assets/index/active-bar.png") no-repeat center/cover;
+  }
+  .active-index p {
+    font-size: 42px;
+  }
+  .active-index p:nth-child(2) {
+    margin-top: 5px;
+  }
+  .active-index p:nth-child(2) i {
+    display: inline-block;
+    width: 3px;
+    height: 33px;
+  }
+  .active-index .bar-btn {
+    width: 307px;
+    height: 73px;
+    border-radius: 35px;
+    font-size: 33px;
+  }
+  .active-index .bar-btn::after {
+    width: 312px;
+    height: 45px;
+    background: url("~/assets/index/active-btn.png") no-repeat center/cover;
+    left: -2px;
+    top: -15px;
+  }
 }
 @media screen and (max-width: 900px) {
   .new-index-litter {
@@ -213,6 +292,40 @@
     margin: 0px 4.2666666667vw;
     display: block;
   }
+  .active-index {
+    height: 17.7333333333vw;
+    margin: 10.6666666667vw 0px;
+  }
+  .active-index .container {
+    column-gap: 3.2vw;
+    height: 11.4666666667vw;
+    box-sizing: border-box;
+    background: url("~/assets/index/mb_active-bar.png") no-repeat center/90.6666666667vw 11.4666666667vw;
+  }
+  .active-index p {
+    font-size: 3.3333333333vw;
+  }
+  .active-index p:nth-child(2) {
+    margin-top: 1.3333333333vw;
+  }
+  .active-index p:nth-child(2) i {
+    display: inline-block;
+    width: 0.2666666667vw;
+    height: 2.5333333333vw;
+  }
+  .active-index .bar-btn {
+    width: 24.5333333333vw;
+    height: 5.8666666667vw;
+    border-radius: 2.6666666667vw;
+    font-size: 2.6666666667vw;
+  }
+  .active-index .bar-btn::after {
+    width: 24.9333333333vw;
+    height: 3.6vw;
+    background: url("~/assets/index/mb_active-btn.png") no-repeat center/cover;
+    left: -0.5333333333vw;
+    top: -1.3333333333vw;
+  }
 }
 
-/*# sourceMappingURL=litter-product.css.map */
+/*# sourceMappingURL=index.css.map */

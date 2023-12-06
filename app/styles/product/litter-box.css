@@ -1,3 +1,79 @@
+.LitterBox {
+  background: #e9e0cf;
+}
 
+@media screen and (min-width: 901px) {
+  .LitterBox input[type=radio]:checked + label,
+  .LitterBox input[type=checkbox]:checked + label {
+    border-color: #f0b42d;
+  }
+  .LitterBox label {
+    border: 2px solid #e9e0cf;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .LitterBox input[type=radio],
+  .LitterBox input[type=checkbox] {
+    width: 0px;
+    height: 0px;
+    display: none;
+  }
+  .LitterBox .variants .active .variants-item {
+    border-color: #f0b42d;
+  }
+  .LitterBox .variants-item {
+    border: 2px solid #e9e0cf;
+    transition: all 0.3s ease;
+  }
+  .LitterBox .product-price {
+    margin-top: 14px;
+    margin-bottom: 22px;
+    font-family: LeagueSpartanBlack;
+    font-weight: 900;
+    font-size: 23px;
+  }
+  .LitterBox .product-price div {
+    color: #d75f23;
+  }
+  .LitterBox .product-price s,
+  .LitterBox .product-price s div {
+    color: #7e6e5f;
+  }
+  .LitterBox .select-color .select-color-item label {
+    border-radius: 12px;
+    background: #FFFFFF;
+  }
+  .LitterBox .gift .gift-item:nth-child(1) label {
+    background: url("~/assets/product/pc-gift-1.png") no-repeat center/cover;
+  }
+  .LitterBox .gift .gift-item:nth-child(2) label {
+    background: url("~/assets/product/pc-gift-2.png") no-repeat center/cover;
+  }
+  .LitterBox .add-on-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+  }
+  .LitterBox .add-to-cart {
+    width: 259px;
+    height: 52px;
+    background: #7E6E5F;
+    border-radius: 24px;
+    color: #FFFFFF;
+    transition: all 0.3s ease;
+  }
+  .LitterBox .add-to-cart button {
+    width: 259px;
+    height: 52px;
+    font-family: LeagueSpartanBlack;
+    font-size: 24px;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .LitterBox .add-to-cart:hover {
+    color: #7E6E5F;
+    background-color: #FFFFFF;
+  }
+}
 
 /*# sourceMappingURL=litter-box.css.map */

@@ -121,12 +121,14 @@ function AddToCartButton({
   disabled,
   lines,
   onClick,
+  loading,
 }: {
   analytics?: unknown;
   children: React.ReactNode;
   disabled?: boolean;
   lines: CartLineInput[];
   onClick?: () => void;
+  loading?: boolean;
 }) {
   return (
     <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
@@ -137,6 +139,7 @@ function AddToCartButton({
             type="hidden"
             value={JSON.stringify(analytics)}
           />
+
           <button
             type="submit"
             onClick={onClick}

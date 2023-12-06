@@ -52,6 +52,9 @@
   .header .header-menu-desktop span,
   .header .header-menu-desktop a {
     text-transform: uppercase;
+    font-family: HelveticaBold;
+    font-size: 15px;
+    text-decoration: none;
   }
   .header .header-menu-mobile-toggle {
     display: none;
