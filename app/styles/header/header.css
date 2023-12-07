@@ -7,6 +7,30 @@
   background-color: #fff;
   transition: all 0.3s ease;
 }
+.header.index {
+  background-color: transparent;
+  position: fixed;
+  width: 100%;
+}
+.header.index.disable span,
+.header.index.disable a,
+.header.index.disable p {
+  color: #fff;
+}
+.header.index.disable svg {
+  color: #fff;
+}
+.header.index.active {
+  background-color: #000000;
+}
+.header.index.active span,
+.header.index.active a,
+.header.index.active p {
+  color: #fff;
+}
+.header.index.active svg {
+  color: #fff;
+}
 .header .header-menu-mobile {
   display: flex;
   flex-direction: column;
@@ -29,20 +53,6 @@
   .header {
     height: 90px;
     justify-content: space-between;
-  }
-  .header.index {
-    background-color: antiquewhite;
-  }
-  .header.active {
-    background-color: #000000;
-  }
-  .header.active span,
-  .header.active a,
-  .header.active p {
-    color: #fff;
-  }
-  .header.active svg {
-    color: #fff;
   }
   .header .header-menu-desktop {
     display: flex;

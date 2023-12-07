@@ -37,7 +37,7 @@ type VideoProps = {
   pcPoster?: string;
   mbDataSrc?: string;
   mbPoster?: string;
-  height?: number;
+  height?: string;
 };
 // 视频懒加载组件
 export function Video({
@@ -98,7 +98,7 @@ export function Video({
 
   return (
     <video
-      style={{height: height && window.innerHeight - height}}
+      style={{height}}
       className="object-cover w-full"
       ref={targetRef}
       muted={true}

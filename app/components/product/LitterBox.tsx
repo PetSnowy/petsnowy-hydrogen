@@ -6,6 +6,14 @@ import creamProductImg from '~/assets/product/white_product.png';
 import guaranteeImg from '~/assets/product/product_guarantee.png';
 import mbGuaranteeImg from '~/assets/product/m_product_guarantee.png';
 import creamShowImg from '~/assets/product/white_show.png';
+import litterSwiper1 from '~/assets/product/litter-swiper-1.png';
+import litterSwiper2 from '~/assets/product/litter-swiper-2.png';
+import litterSwiper3 from '~/assets/product/litter-swiper-3.png';
+import litterSwiper4 from '~/assets/product/litter-swiper-4.png';
+import litterSwiper5 from '~/assets/product/litter-swiper-5.png';
+import litterSwiper6 from '~/assets/product/litter-swiper-6.png';
+import litterSwiper7 from '~/assets/product/litter-swiper-7.png';
+
 import {LazyImage} from '../Common';
 import {
   ProductFragment,
@@ -17,11 +25,23 @@ import {
   AddToCartButton,
   ProductPrice,
 } from '~/components/product/ProductCommon';
+import Swiper from '~/components/product/Swiper';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
   {name: 'Cream', imageUrl: creamProductImg, showImg: creamShowImg},
 ];
+
+const swiperData = [
+  litterSwiper1,
+  litterSwiper2,
+  litterSwiper3,
+  litterSwiper4,
+  litterSwiper5,
+  litterSwiper6,
+  litterSwiper7,
+];
+const mbSwiperData = [creamShowImg, classicShowImg, ...swiperData];
 
 export const controlSlice = createSlice({
   name: 'control',
@@ -52,34 +72,58 @@ export default function LitterBox({
 
   const [selectedColor, setSelectedColor] = useState<number>(0);
 
+  const [swiperContent, setSwiperContent] = useState<string[]>([]);
+
   useEffect(() => {
     store.subscribe(() => setSelectedColor(store.getState().value));
+    window.innerWidth > 901
+      ? setSwiperContent(swiperData)
+      : setSwiperContent(mbSwiperData);
   }, []);
 
   return (
     <div className="LitterBox lg:pt-[44px] lg:pb-[125px]">
-      <div className="container flex lg:gap-x-[30px]">
+      <div className="container flex lg:gap-x-[30px] sm:flex-wrap">
         <div className="show-box">
-          <div className="sticky lg:top-[90px]">
-            <div className="img-wrapper lg:w-[640px] lg:h-[419px] lg:mb-[40px] lg:rounded-[25px] bg-white overflow-hidden">
+          <div className="lg:hidden">
+            <p className="title font-LeagueSpartanBlack lg:text-[39px] text-[#45392E] lg:mb-[5px] uppercase">
+              petsnowy
+            </p>
+            <p className="sub-title font-LeagueSpartanBlack lg:text-[29px] text-[#45392E] lg:mb-[13px] uppercase">
+              SNOW+ Self-cleaning Litter Box
+            </p>
+            <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px] title-desc">
+              Finally, a litter box that collects all scoop ideas.
+            </p>
+          </div>
+          <div className="lg:sticky lg:top-[90px]">
+            <div className="img-wrapper lg:w-[640px] lg:h-[419px] lg:mb-[40px] lg:rounded-[25px] bg-white overflow-hidden sm:hidden">
               <LazyImage
                 pcImg={selectColor[selectedColor].showImg}
                 alt={selectColor[selectedColor].name}
               />
             </div>
-            <div className="swiper-container lg:w-[640px] lg:h-[419px] bg-[#602fc2] overflow-hidden lg:rounded-[25px]"></div>
+            <div className="swiper-container lg:w-[640px] lg:h-[419px] overflow-hidden lg:rounded-[25px]">
+              <Swiper
+                swiperData={swiperContent}
+                slidesPerView={1}
+                spaceBetween={20}
+              />
+            </div>
           </div>
         </div>
         <div className="select-product">
-          <p className="title font-LeagueSpartanBlack lg:text-[39px] text-[#45392E] lg:mb-[5px] uppercase">
-            petsnowy
-          </p>
-          <p className="sub-title font-LeagueSpartanBlack lg:text-[29px] text-[#45392E] lg:mb-[13px] uppercase">
-            SNOW+ Self-cleaning Litter Box
-          </p>
-          <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px]">
-            Finally, a litter box that collects all scoop ideas.
-          </p>
+          <div className="sm:hidden">
+            <p className="title font-LeagueSpartanBlack lg:text-[39px] text-[#45392E] lg:mb-[5px] uppercase">
+              petsnowy
+            </p>
+            <p className="sub-title font-LeagueSpartanBlack lg:text-[29px] text-[#45392E] lg:mb-[13px] uppercase">
+              SNOW+ Self-cleaning Litter Box
+            </p>
+            <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px]">
+              Finally, a litter box that collects all scoop ideas.
+            </p>
+          </div>
           <ProductPrice selectedVariant={selectedVariant} />
           <Await
             resolve={variants}
@@ -129,7 +173,6 @@ function ProductForm({
     if (!examine(variantsItem!)) {
       error!.style.display = 'block';
       const errorParentNode = error?.parentNode as HTMLElement;
-      console.log(errorParentNode);
       errorParentNode.scrollIntoView({behavior: 'smooth', block: 'start'});
       setLoading(false);
       return;
@@ -399,7 +442,7 @@ function SelectColor() {
               />
               <label
                 htmlFor={item.name}
-                className="select-color-label lg:w-[240px] lg:h-[150px] flex items-center justify-center"
+                className="select-color-label lg:w-[240px] lg:h-[150px] flex items-center justify-center bg-white"
               >
                 <div className="flex items-center justify-center lg:gap-x-[10px]">
                   <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
@@ -452,11 +495,7 @@ function GetGift() {
       </p>
       <div className="gift flex w-full flex-wrap lg:gap-y-[24px]">
         {giftList.map(({product}, index) => (
-          <div
-            className="gift-item lg:w-[500px]"
-            key={index}
-            data-category="gift"
-          >
+          <div className="gift-item lg:w-[500px]" key={index}>
             <input
               type="radio"
               id={product.id}
@@ -466,7 +505,7 @@ function GetGift() {
             />
             <label
               htmlFor={product.id}
-              className="rounded-[13px] overflow-hidden flex"
+              className="lg:rounded-[13px] overflow-hidden flex"
             >
               <div className="gift-left lg:w-[155px] lg:h-[115px] bg-white flex items-center justify-center">
                 <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
@@ -507,7 +546,7 @@ function AddOns() {
       </p>
       <div className="addOns flex flex-wrap lg:gap-[15px]">
         {addOnsList.map(({product}, index) => (
-          <div className="add-on-item" key={index} data-category="addons">
+          <div className="add-on-item" key={index}>
             <input
               type="checkbox"
               name="addons"
@@ -517,7 +556,7 @@ function AddOns() {
             />
             <label
               htmlFor={product.id}
-              className="lg:w-[155px] lg:h-[143px] bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap p-[10px] box-border"
+              className="lg:w-[155px] lg:h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
             >
               <div className="img-wrapper lg:w-[70px] lg:h-auto lg:mb-[10px] object-contain flex items-center justify-center">
                 <LazyImage

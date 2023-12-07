@@ -11,6 +11,39 @@
 	background-color: #fff;
 	transition: all 0.3s ease;
 
+	&.index {
+		background-color: transparent;
+		position: fixed;
+		width: 100%;
+
+		&.disable {
+
+			span,
+			a,
+			p {
+				color: #fff;
+			}
+
+			svg {
+				color: #fff;
+			}
+		}
+
+		&.active {
+			background-color: #000000;
+
+			span,
+			a,
+			p {
+				color: #fff;
+			}
+
+			svg {
+				color: #fff;
+			}
+		}
+	}
+
 
 	.header-menu-mobile {
 		display: flex;
@@ -39,26 +72,7 @@
 			height: 90px;
 			justify-content: space-between;
 
-			&.index {
-				background-color: antiquewhite;
-			}
-
-			&.active {
-				background-color: #000000;
-
-				span,
-				a,
-				p {
-					color: #fff;
-				}
-
-				svg {
-					color: #fff;
-				}
-			}
 		}
-
-
 
 		.header-menu-desktop {
 			display: flex;

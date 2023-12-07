@@ -1,4 +1,4 @@
-import {Fragment, ReactNode, Suspense} from 'react';
+import {Fragment, ReactNode, Suspense, useEffect, useState} from 'react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Await,
@@ -181,7 +181,7 @@ export default function Product() {
           pcPoster={LitterProductVideoImg}
           mbDataSrc="https://cdn.shopify.com/videos/c/o/v/8ebcb13e4a354fafb21ac5cee19f6d0d.mp4"
           mbPoster={mbLitterProductVideoImg}
-          height={getActiveHeaderHeight()}
+          height={`calc(100vh - ${getActiveHeaderHeight()}px)`}
         />,
         <LitterBox product={product} variants={variants} />,
       ],

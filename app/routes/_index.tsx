@@ -6,7 +6,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-import Swiper from '~/components/Swiper';
+import Swiper from '~/components/product/Swiper';
 import {Video} from '~/components/Common';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
@@ -48,7 +48,7 @@ export default function Homepage() {
         pcPoster={pcIndexVideoPoster}
         mbDataSrc="https://cdn.shopify.com/videos/c/o/v/1746fd8ffc9248a78d697693f1f94958.mp4"
         mbPoster={mbIndexVideoPoster}
-        height={getActiveHeaderHeight()}
+        height="100vh"
       />
       <ActiveBar />
       <LitterProduct top={top} />
