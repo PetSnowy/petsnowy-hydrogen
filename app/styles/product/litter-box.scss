@@ -7,6 +7,23 @@ $background: #e9e0cf;
 
 .LitterBox {
 	background: $background;
+
+	.question_mark_popup {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		z-index: 10;
+		background: rgba($color: #000000, $alpha: 0.2);
+		width: 100vw;
+		height: 100vh;
+
+		.popup-wrapper {
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			left: 50%;
+		}
+	}
 }
 
 // pc端
@@ -39,6 +56,12 @@ $background: #e9e0cf;
 		.variants-item {
 			border: 2px solid $background;
 			transition: all 0.3s ease;
+		}
+
+		.variants {
+			.question {
+				background: url('~/assets/product/question.png') no-repeat center/cover;
+			}
 		}
 
 		.product-price {
@@ -105,8 +128,164 @@ $background: #e9e0cf;
 				background-color: #FFFFFF
 			}
 		}
+
+		.question_mark_popup {
+			.popup-wrapper {
+				width: 874px;
+				height: 561px;
+				background-color: #ffffff;
+				border-radius: 25px;
+				overflow: hidden;
+				display: flex;
+				padding: 20px;
+
+				.popup-content {
+					flex: 1;
+					padding: 40px 0px 20px;
+				}
+
+				.popup-img {
+					width: 500px;
+					height: 500px;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: contain;
+						margin: 0px;
+						margin-right: 10px;
+					}
+				}
+
+				.popup-title {
+					color: #504030;
+					font-family: HelveticaNowDisplayXBlk;
+					font-size: 35px;
+					margin-bottom: 20px;
+
+					&::first-letter {
+						color: #d75f23;
+					}
+				}
+
+
+				ul {
+					display: grid;
+					grid-template-columns: repeat(1, 1fr);
+					row-gap: 10px;
+					margin-top: 10px;
+					text-align: left;
+					list-style: disc;
+					padding-left: 20px;
+
+					li {
+						font-family: LeagueSpartan;
+						color: #504030;
+						font-size: 18px;
+					}
+
+					b {
+						font-family: LeagueSpartan;
+						color: #504030;
+						font-size: 22px;
+						text-align: left;
+						line-height: 25px;
+						margin: 5px 0px;
+					}
+				}
+
+				.popup-close {
+					width: 40px;
+					height: 40px;
+					border-radius: 50%;
+					top: 10px;
+					position: absolute;
+					right: 10px;
+					background: url('~/assets/product/close-product.png') no-repeat center/cover;
+					display: block;
+				}
+			}
+		}
+
 	}
 }
 
 // 移动端
-@media screen and (max-width: 900px) {}
+@media screen and (max-width: 900px) {
+	.LitterBox {
+		.question_mark_popup {
+			.popup-wrapper {
+				width: vw(680px);
+				height: auto;
+				background-color: #ffffff;
+				border-radius: vw(25px);
+				overflow: auto;
+				padding: vw(40px);
+				box-sizing: border-box;
+				height: vw(1200px);
+
+				.popup-content {
+					flex: 1;
+				}
+
+				.popup-img {
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: contain;
+						margin: 0px;
+					}
+				}
+
+				.popup-title {
+					color: #504030;
+					font-family: HelveticaNowDisplayXBlk;
+					font-size: vw(55px);
+					margin-bottom: vw(40px);
+
+					&::first-letter {
+						color: #d75f23;
+					}
+				}
+
+
+				ul {
+					display: grid;
+					grid-template-columns: repeat(1, 1fr);
+					row-gap: vw(20px);
+					margin-top: vw(20px);
+					text-align: left;
+					list-style: disc;
+					padding-left: vw(20px);
+
+					li {
+						font-family: LeagueSpartan;
+						color: #504030;
+						font-size: vw(36px);
+					}
+
+					b {
+						font-family: LeagueSpartan;
+						color: #504030;
+						font-size: vw(40px);
+						text-align: left;
+						line-height: vw(50px);
+						margin: vw(5px) 0px;
+					}
+				}
+
+				.popup-close {
+					width: vw(60px);
+					height: vw(60px);
+					border-radius: 50%;
+					top: vw(20px);
+					position: absolute;
+					right: vw(20px);
+					background: url('~/assets/product/close-product.png') no-repeat center/cover;
+					display: block;
+				}
+			}
+		}
+	}
+}

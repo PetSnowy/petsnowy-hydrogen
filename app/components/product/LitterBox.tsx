@@ -224,6 +224,79 @@ type Link = {
   value: string;
 };
 
+const variantsDetails = new Map([
+  [
+    'Classic / Premium',
+    {
+      title: 'Package List:',
+      content: [
+        'SNOW⁺ Litter Box (with Odor Control)',
+        'Robertet Fragrance Box (2)',
+        'Waste Drawer Liners (30 PCS)',
+        '1 Year Warranty',
+      ],
+    },
+  ],
+  [
+    'Classic / Basic',
+    {
+      title: 'Package List:',
+      content: [
+        'SNOW⁺ Litter Box (with Odor Control)',
+        'Robertet Fragrance Box (2)',
+        'Waste Drawer Liners (30 PCS)',
+        '1 Year Warranty',
+      ],
+    },
+  ],
+  [
+    'Classic / Deluxe',
+    {
+      title: 'Package List:',
+      content: [
+        'SNOW⁺ Litter Box (with Odor Control)',
+        'Robertet Fragrance Box (2)',
+        'Waste Drawer Liners (30 PCS)',
+        '1 Year Warranty',
+      ],
+    },
+  ],
+]);
+
+function Question({
+  image,
+  target,
+  closeQuestion,
+}: {
+  image: string;
+  target: string;
+  closeQuestion: (v: boolean) => void;
+}) {
+  const questionContent = variantsDetails.get(target);
+  return (
+    <div className="question_mark_popup">
+      <div className="popup-wrapper">
+        <div className="popup-img">
+          <LazyImage alt={target} pcImg={image} />
+        </div>
+        <div className="popup-content">
+          <p className="popup-title">{target}</p>
+          <ul>
+            <b>{questionContent?.title}</b>
+            {questionContent?.content.map((item: string, index: number) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div
+          className="popup-close cursor-pointer"
+          onClick={() => closeQuestion(false)}
+        ></div>
+      </div>
+    </div>
+  );
+}
+
 function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
   const [selectedVariant, setSelectedVariant] = useState<
     ProductVariantFragment[] | null
@@ -236,6 +309,20 @@ function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
       .join('&')}`;
   };
 
+  const [question, setQuestion] = useState<{
+    image: string;
+    target: string;
+  }>({image: '', target: ''});
+
+  const [showQuestion, setShowQuestion] = useState<boolean>(false);
+
+  const handleQuestion = (image: string | undefined, title: string) => {
+    setQuestion({image: image!, target: title});
+    setShowQuestion(true);
+  };
+  const closeQuestion = (value: boolean) => {
+    setShowQuestion(value);
+  };
   useEffect(() => {
     const filteredVariants = variants.filter((item) =>
       item.title.includes(selectColor[selectedColor].name),
@@ -264,7 +351,11 @@ function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
               preventScrollReset
               replace
             >
-              <div className="variants-item lg:w-[150px] lg:h-fit lg:p-[10px] flex items-center flex-wrap justify-center bg-white lg:rounded-[12px]">
+              <div className="variants-item lg:w-[150px] lg:h-fit lg:p-[10px] flex items-center flex-wrap justify-center bg-white lg:rounded-[12px] relative">
+                <div
+                  className="question absolute lg:top-[5px] lg:right-[5px] lg:w-[20px] lg:h-[20px] z-[1]"
+                  onClick={() => handleQuestion(item.image?.url, item.title)}
+                ></div>
                 <div className="img-wrapper lg:w-[103px] lg:h-[103px]">
                   <LazyImage alt={item.title} pcImg={item.image?.url} />
                 </div>
@@ -277,6 +368,7 @@ function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
         })}
       </div>
       <p className="variants-error error hidden">This is a required field.</p>
+      {showQuestion && <Question {...question} closeQuestion={closeQuestion} />}
     </div>
   );
 }
