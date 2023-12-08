@@ -13,25 +13,25 @@ export const countries: Record<string, Locale> = {
     language: 'EN',
     country: 'US',
     label: 'United States (USD $)', // Labels to be shown in the country selector
-    host: 'hydrogen.shop', // The host and pathPrefix are used for linking
+    host: 'petsnowy-hydrogen-38aaca2461a5e1a11045.o2.myshopify.dev', // The host and pathPrefix are used for linking
   },
   'en-ca': {
     language: 'EN',
     country: 'CA',
     label: 'Canada (CAD $)',
-    host: 'ca.hydrogen.shop',
+    host: 'ca.petsnowy-hydrogen-38aaca2461a5e1a11045.o2.myshopify.dev',
   },
   'fr-ca': {
     language: 'EN',
     country: 'CA',
     label: 'Canada (Français) (CAD $)',
-    host: 'ca.hydrogen.shop',
+    host: 'ca.petsnowy-hydrogen-38aaca2461a5e1a11045.o2.myshopify.dev',
     pathPrefix: '/fr',
   },
   'en-au': {
     language: 'EN',
     country: 'AU',
     label: 'Australia (AUD $)',
-    host: 'hydrogen.au',
+    host: 'petsnowy-hydrogen-38aaca2461a5e1a11045.o2.myshopify.dev.au',
   },
 };

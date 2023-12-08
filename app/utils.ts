@@ -76,7 +76,7 @@ export function getLocaleFromRequest(request: Request): Locale {
 	const url = new URL(request.url);
 
 	switch (url.host) {
-		case 'ca.hydrogen.shop':
+		case 'petsnowy-hydrogen-38aaca2461a5e1a11045.o2.myshopify.dev':
 			if (/^\/fr($|\/)/.test(url.pathname)) {
 				return countries['fr-ca'];
 			} else {
