@@ -11,6 +11,7 @@ import petFeeder from '~/assets/index/pet_feeder.png';
 import accessories from '~/assets/index/accessories.png';
 import waterFountain from '~/assets/index/water_fountain.png';
 import catToy from '~/assets/index/cat_toy.png';
+import {CountrySelector} from './CountrySelector';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -109,6 +110,7 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
           />
         </NavLink>
         <HeaderMenu menu={menu} viewport="desktop" />
+        <CountrySelector />
         <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
       </div>
     </header>

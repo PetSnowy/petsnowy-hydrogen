@@ -14,6 +14,7 @@ import LitterProduct from '~/components/index/LitterProduct';
 import indexStyle from '~/styles/index/index.css';
 import {getActiveHeaderHeight} from '~/utils';
 import ActiveBar from '~/components/index/ActiveBar';
+import {CountrySelector} from '~/components/CountrySelector';
 export const meta: MetaFunction<typeof loader> = ({data}: {data: any}) => {
   const {
     shop: {description, name},

@@ -1,6 +1,13 @@
 import { useLocation } from '@remix-run/react';
-import type { SelectedOption } from '@shopify/hydrogen/storefront-api-types';
+import type { CountryCode, LanguageCode, SelectedOption } from '@shopify/hydrogen/storefront-api-types';
 import { ReactNode, useLayoutEffect, useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import { countries } from './data';
+
+export type Locale = {
+	language: LanguageCode;
+	country: CountryCode;
+};
+
 
 export function useVariantUrl(
 	handle: string,
@@ -63,4 +70,21 @@ export const getActiveHeaderHeight = () => {
 		};
 	}, []);
 	return height
+}
+
+export function getLocaleFromRequest(request: Request): Locale {
+	const url = new URL(request.url);
+
+	switch (url.host) {
+		case 'ca.hydrogen.shop':
+			if (/^\/fr($|\/)/.test(url.pathname)) {
+				return countries['fr-ca'];
+			} else {
+				return countries['en-ca'];
+			}
+		case 'hydrogen.au':
+			return countries['en-au'];
+		default:
+			return countries['default'];
+	}
 }

@@ -17,7 +17,10 @@ import {
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
-import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
+import type {
+  CollectionConnection,
+  CustomerAccessToken,
+} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
 import reset from '~/styles/reset.css';
 import app from '~/styles/app.css';
@@ -26,6 +29,7 @@ import {Layout, LayoutProps} from '~/components/Layout';
 import styles from 'tailwind.css';
 import swiperBundle from '~/styles/swiper.css';
 import {cssBundleHref} from '@remix-run/css-bundle';
+import {getLocaleFromRequest} from './utils';
 
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
@@ -79,7 +83,7 @@ export const useRootLoaderData = () => {
   return root?.data as SerializeFrom<typeof loader>;
 };
 
-export async function loader({context}: LoaderFunctionArgs) {
+export async function loader({context, request}: LoaderFunctionArgs) {
   const {storefront, session, cart} = context;
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
@@ -109,6 +113,15 @@ export async function loader({context}: LoaderFunctionArgs) {
     },
   });
 
+  const featureCollection = await storefront.query<{
+    collections: CollectionConnection;
+  }>(FEATURED_QUERY, {
+    variables: {
+      country: 'CA', // Always query back in CA currency
+      language: 'FR', // Always query back in FR language
+    },
+  });
+
   return defer(
     {
       cart: cartPromise,
@@ -116,6 +129,8 @@ export async function loader({context}: LoaderFunctionArgs) {
       header: await headerPromise,
       isLoggedIn,
       publicStoreDomain,
+      featureCollection,
+      selectedLocale: await getLocaleFromRequest(request),
     },
     {headers},
   );
@@ -123,10 +138,13 @@ export async function loader({context}: LoaderFunctionArgs) {
 
 export default function App() {
   const nonce = useNonce();
-  const data = useLoaderData<typeof loader>() as unknown as LayoutProps;
+  const data = useLoaderData<typeof loader>() as any;
+  const locale = data.selectedLocale;
+  console.log(data.selectedLocale);
+  console.log(data.featureCollection);
 
   return (
-    <html lang="en">
+    <html lang={locale.language}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -135,7 +153,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Layout {...data}>
+        <Layout {...data} key={`${locale.language}-${locale.country}`}>
           <Outlet />
         </Layout>
         <ScrollRestoration nonce={nonce} />
@@ -293,3 +311,22 @@ const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 ` as const;
+
+const FEATURED_QUERY = `#graphql
+  query homepage($country: CountryCode, $language: LanguageCode)
+     @inContext(country: $country, language: $language) {
+    collections(first: 3, sortKey: UPDATED_AT) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          altText
+          width
+          height
+          url
+        }
+      }
+    }
+  }
+   ` as const;
