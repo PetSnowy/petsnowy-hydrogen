@@ -23,12 +23,14 @@ import invariant from 'tiny-invariant';
 
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
-
+import {cssBundleHref} from '@remix-run/css-bundle';
 import favicon from '../public/favicon.svg';
-
+import swiperStyle from '~/styles/swiper.css';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
-import styles from './styles/app.css';
+import app from '~/styles/app.css';
+import font from '~/styles/font.css';
+import reset from '~/styles/reset.css';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
 
@@ -53,7 +55,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export const links: LinksFunction = () => {
   return [
-    {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: app},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -63,6 +65,10 @@ export const links: LinksFunction = () => {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'stylesheet', href: swiperStyle},
+    {rel: 'stylesheet', href: font},
+    {rel: 'stylesheet', href: reset},
+    ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
   ];
 };
 

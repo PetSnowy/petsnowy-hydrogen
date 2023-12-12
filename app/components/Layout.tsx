@@ -1,7 +1,6 @@
-import {useParams, Form, Await} from '@remix-run/react';
-import {useWindowScroll} from 'react-use';
+import {useParams, Form, Await, NavLink, useLocation} from '@remix-run/react';
 import {Disclosure} from '@headlessui/react';
-import {Suspense, useEffect, useMemo} from 'react';
+import {Suspense, useEffect, useMemo, useRef, useState} from 'react';
 import {CartForm} from '@shopify/hydrogen';
 
 import {type LayoutQuery} from 'storefrontapi.generated';
@@ -22,6 +21,8 @@ import {
   Cart,
   CartLoading,
   Link,
+  IconArrow,
+  IconHeaderArrow,
 } from '~/components';
 import {
   type EnhancedMenu,
@@ -30,9 +31,17 @@ import {
 } from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
-import {useRootLoaderData} from '~/root';
+import {links, useRootLoaderData} from '~/root';
+import '~/styles/header/header.css';
+import headerLogo from '~/assets/petsnowy/header_logo.png';
+import headerIndexLogo from '~/assets/petsnowy/header_index_logo.png';
+import litterBox from '~/assets/index/litter_box.png';
+import petFeeder from '~/assets/index/pet_feeder.png';
+import accessories from '~/assets/index/accessories.png';
+import waterFountain from '~/assets/index/water_fountain.png';
+import catToy from '~/assets/index/cat_toy.png';
 
-type LayoutProps = {
+export type LayoutProps = {
   children: React.ReactNode;
   layout?: LayoutQuery & {
     headerMenu?: EnhancedMenu | null;
@@ -43,26 +52,72 @@ type LayoutProps = {
 export function Layout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <div className="">
-          <a href="#mainContent" className="sr-only">
-            Skip to content
-          </a>
-        </div>
-        {headerMenu && layout?.shop.name && (
-          <Header title={layout.shop.name} menu={headerMenu} />
-        )}
-        <main role="main" id="mainContent" className="flex-grow">
-          {children}
-        </main>
-      </div>
+    <div className="root flex flex-col min-h-screen">
+      {headerMenu && layout?.shop.name && <Header title={layout.shop.name} />}
+      <main role="main" id="mainContent" className="flex-grow">
+        {children}
+      </main>
       {footerMenu && <Footer menu={footerMenu} />}
-    </>
+    </div>
   );
 }
 
-function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
+type MenuItem = {
+  name: string;
+  unfold?: {
+    name: string;
+    link: string;
+    img: string;
+  }[];
+  link?: string;
+};
+
+const menu: MenuItem[] = [
+  {
+    name: 'SHOP SNOW⁺',
+    unfold: [
+      {
+        name: 'snow self cleaning litter box',
+        link: '/products/snow-self-cleaning-litter-box',
+        img: litterBox,
+      },
+      {
+        name: 'snow pet feeder',
+        link: '/products/snow-pet-feeder',
+        img: petFeeder,
+      },
+      {
+        name: 'snow water fountain',
+        link: '/products/snow-water-fountain',
+        img: waterFountain,
+      },
+      {
+        name: 'snow roly poly cat toy',
+        link: '/products/snow-roly-poly-cat-toy',
+        img: catToy,
+      },
+      {
+        name: 'accessories',
+        link: '/collections/accessories',
+        img: accessories,
+      },
+    ],
+  },
+  {
+    name: 'why petsnowy',
+    link: '/pages/why-petsnowy',
+  },
+  {
+    name: 'Our Story',
+    link: '/pages/about-us',
+  },
+  {
+    name: 'Contact Us',
+    link: '/pages/contact',
+  },
+];
+
+function Header({title}: {title: string}) {
   const isHome = useIsHomePath();
 
   const {
@@ -88,9 +143,9 @@ function Header({title, menu}: {title: string; menu?: EnhancedMenu}) {
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      {menu && (
+      {/* {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )}
+      )} */}
       <DesktopHeader
         isHome={isHome}
         title={title}
@@ -255,45 +310,104 @@ function DesktopHeader({
 }: {
   isHome: boolean;
   openCart: () => void;
-  menu?: EnhancedMenu;
+  menu: MenuItem[];
   title: string;
 }) {
   const params = useParams();
-  const {y} = useWindowScroll();
+  const {pathname} = useLocation();
+
+  const detailsRef = useRef<HTMLDetailsElement>(null);
+  const [scroll, setScroll] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isHome) return;
+    const headerScroll = () => {
+      const scrollTop =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      scrollTop > 0 ? setScroll(true) : setScroll(false);
+    };
+    window.addEventListener('scroll', headerScroll);
+
+    return () => {
+      window.removeEventListener('scroll', headerScroll);
+    };
+  }, [isHome]);
+
+  useEffect(() => {
+    detailsRef.current?.removeAttribute('open');
+  }, [pathname]);
   return (
     <header
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
-      } ${
-        !isHome && y > 50 && ' shadow-lightHeader'
-      } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
+      className={`header ${isHome ? 'index' : ''} ${
+        scroll ? 'active' : 'disable'
+      }`}
     >
-      <div className="flex gap-12">
-        <Link className="font-bold" to="/" prefetch="intent">
-          {title}
-        </Link>
-        <nav className="flex gap-8">
-          {/* Top level menu items */}
-          {(menu?.items || []).map((item) => (
-            <Link
-              key={item.id}
-              to={item.to}
-              target={item.target}
-              prefetch="intent"
-              className={({isActive}) =>
-                isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-              }
-            >
-              {item.title}
-            </Link>
-          ))}
-        </nav>
-      </div>
-      <div className="flex items-center gap-1">
-        <Form
+      <div className="flex items-center justify-between container">
+        <div className="flex gap-[135px]">
+          <Link className="font-bold" to="/" prefetch="intent">
+            <img
+              className="header-logo"
+              src={isHome ? headerIndexLogo : headerLogo}
+              alt="petsnowy"
+              loading="lazy"
+              decoding="async"
+            />
+          </Link>
+          <nav className="items-center flex gap-x-[30px]" role="navigation">
+            {menu.map((item, index) => {
+              if (item.unfold)
+                return (
+                  <details key={index} ref={detailsRef}>
+                    <summary className="cursor-pointer relative select-none">
+                      <span className="text-[15px] font-LeagueSpartanBold text-[#000000]">
+                        {item.name}
+                      </span>
+                      <IconHeaderArrow />
+                    </summary>
+                    <div className="item-wrapper">
+                      {item.unfold.map((v, sub) => (
+                        <NavLink
+                          key={sub}
+                          to={`${
+                            params.locale ? params.locale + v.link : v.link
+                          }`}
+                          end
+                        >
+                          <span className="text-[15px] font-LeagueSpartanBold text-[#000000]">
+                            {v.name}
+                          </span>
+                          <img
+                            src={v.img}
+                            alt={v.name}
+                            loading="lazy"
+                            decoding="async"
+                            className="rounded-[5px]"
+                          />
+                        </NavLink>
+                      ))}
+                    </div>
+                  </details>
+                );
+
+              if (item.link)
+                return (
+                  <NavLink
+                    className="text-[15px] font-LeagueSpartanBold text-[#000000] uppercase"
+                    prefetch="intent"
+                    key={index}
+                    to={item.link}
+                    end
+                  >
+                    {item.name}
+                  </NavLink>
+                );
+              return null;
+            })}
+          </nav>
+        </div>
+        <div className="flex items-center gap-x-[15px]">
+          {/* <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
           className="flex items-center gap-2"
@@ -315,9 +429,10 @@ function DesktopHeader({
           >
             <IconSearch />
           </button>
-        </Form>
-        <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
-        <CartCount isHome={isHome} openCart={openCart} />
+        </Form> */}
+          <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
+          <CartCount isHome={isHome} openCart={openCart} />
+        </div>
       </div>
     </header>
   );
@@ -329,11 +444,11 @@ function AccountLink({className}: {className?: string}) {
 
   return isLoggedIn ? (
     <Link to="/account" className={className}>
-      <IconAccount />
+      <IconAccount className="w-[30px] h-[30px]" />
     </Link>
   ) : (
     <Link to="/account/login" className={className}>
-      <IconLogin />
+      <IconLogin className="w-[25px] h-[25px]" />
     </Link>
   );
 }
@@ -376,16 +491,12 @@ function Badge({
   const BadgeCounter = useMemo(
     () => (
       <>
-        <IconBag />
-        <div
-          className={`${
-            dark
-              ? 'text-primary bg-contrast dark:text-contrast dark:bg-primary'
-              : 'text-contrast bg-primary'
-          } absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
-        >
-          <span>{count || 0}</span>
-        </div>
+        <IconBag className="w-[25px] h-[25px]" />
+        {count !== 0 && (
+          <div className="absolute w-[17px] h-[17px] rounded-[50%] right-0 bottom-0 bg-[#ebe1d9] text-black text-[12px]">
+            {count !== 0 ? count : ''}
+          </div>
+        )}
       </>
     ),
     [count, dark],
@@ -463,7 +574,7 @@ function FooterMenu({menu}: {menu?: EnhancedMenu}) {
       {(menu?.items || []).map((item) => (
         <section key={item.id} className={styles.section}>
           <Disclosure>
-            {({open}) => (
+            {({open}: any) => (
               <>
                 <Disclosure.Button className="text-left md:cursor-default">
                   <Heading className="flex justify-between" size="lead" as="h3">

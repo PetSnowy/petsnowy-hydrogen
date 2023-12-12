@@ -1,3 +1,8 @@
+@function vw($px-vw, $base-vw: 750px) {
+	@return calc(($px-vw * 100vw) / $base-vw);
+}
+
+
 * {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	margin: 0px;
@@ -32,9 +37,28 @@ details summary {
 	list-style-type: none;
 }
 
+
+.disabled {
+	opacity: 0.65;
+	pointer-events: none;
+}
+
 @media screen and (min-width: 901px) {
 
 	html {
 		min-width: 1200px;
+	}
+
+	.container {
+		width: 1200px;
+		margin: 0px auto;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.container {
+		width: 100%;
+		padding: 0px vw(38px);
+		box-sizing: border-box;
 	}
 }

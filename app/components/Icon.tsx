@@ -57,6 +57,24 @@ export function IconClose(props: IconProps) {
     </Icon>
   );
 }
+export function IconHeaderArrow() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      role="presentation"
+      className="icon icon-caret"
+      viewBox="0 0 10 6"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  );
+}
 
 export function IconArrow({direction = 'right'}: IconProps) {
   let rotate;
@@ -135,32 +153,54 @@ export function IconSelect(props: IconProps) {
 
 export function IconBag(props: IconProps) {
   return (
-    <Icon {...props}>
-      <title>Bag</title>
-      <path
-        fillRule="evenodd"
-        d="M8.125 5a1.875 1.875 0 0 1 3.75 0v.375h-3.75V5Zm-1.25.375V5a3.125 3.125 0 1 1 6.25 0v.375h3.5V15A2.625 2.625 0 0 1 14 17.625H6A2.625 2.625 0 0 1 3.375 15V5.375h3.5ZM4.625 15V6.625h10.75V15c0 .76-.616 1.375-1.375 1.375H6c-.76 0-1.375-.616-1.375-1.375Z"
-      />
-    </Icon>
+    <svg
+      {...props}
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 42.000000 40.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g
+        transform="translate(0.000000,40.000000) scale(0.100000,-0.100000)"
+        fill="#000000"
+        stroke="none"
+      >
+        <path
+          d="M0 389 c0 -6 9 -13 20 -16 25 -7 27 -17 35 -138 10 -149 5 -145 180 -145 168 0 157 -8 175 118 10 64 10 85 0 97 -9 11 -46 15 -169 17 l-156 3 -3
+					31 c-2 23 -9 34 -25 38 -34 9 -57 7 -57 -5z m330 -164 c0 -11 -12 -15 -45 -15
+					-33 0 -45 4 -45 15 0 11 12 15 45 15 33 0 45 -4 45 -15z"
+        />
+        <path d="M90 45 c-11 -13 -11 -19 3 -32 21 -21 49 -9 45 19 -4 28 -30 35 -48 13z" />
+        <path d="M324 46 c-10 -26 4 -48 28 -44 33 4 33 52 0 56 -13 2 -25 -3 -28 -12z" />
+      </g>
+    </svg>
   );
 }
 
 export function IconLogin(props: IconProps) {
   return (
-    <Icon {...props}>
-      <title>Login</title>
-      <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+    <svg
+      {...props}
+      version="1.0"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 36.000000 44.000000"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <g
+        transform="translate(0.000000,44.000000) scale(0.100000,-0.100000)"
+        fill="#000000"
+        stroke="none"
+      >
         <path
-          d="M8,10.6928545 C10.362615,10.6928545 12.4860225,11.7170237 13.9504747,13.3456144 C12.4860225,14.9758308 10.362615,16 8,16 C5.63738499,16 3.51397752,14.9758308 2.04952533,13.3472401 C3.51397752,11.7170237 5.63738499,10.6928545 8,10.6928545 Z"
-          fill="currentColor"
-        ></path>
+          d="M118 424 c-53 -28 -72 -98 -43 -154 21 -40 53 -60 98 -60 50 0 93 23
+					112 60 53 102 -64 210 -167 154z"
+        />
         <path
-          d="M8,3.5 C6.433,3.5 5.25,4.894 5.25,6.5 C5.25,8.106 6.433,9.5 8,9.5 C9.567,9.5 10.75,8.106 10.75,6.5 C10.75,4.894 9.567,3.5 8,3.5 Z"
-          fill="currentColor"
-          fillRule="nonzero"
-        ></path>
+          d="M50 128 c-57 -29 -61 -61 -12 -94 93 -63 317 -30 317 46 0 66 -206
+					97 -305 48z"
+        />
       </g>
-    </Icon>
+    </svg>
   );
 }
 

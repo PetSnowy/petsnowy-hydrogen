@@ -16,16 +16,26 @@ import litterSwiper7 from '~/assets/product/litter-swiper-7.png';
 
 import {LazyImage} from '../Common';
 import {
-  ProductFragment,
-  ProductVariantFragment,
-  ProductVariantsQuery,
+  ProductQuery,
+  ProductVariantFragmentFragment,
+  VariantsQuery,
 } from 'storefrontapi.generated';
-import {Await, Link, useMatches, useLoaderData} from '@remix-run/react';
 import {
-  AddToCartButton,
-  ProductPrice,
-} from '~/components/product/ProductCommon';
+  Await,
+  Link,
+  useMatches,
+  useLoaderData,
+  FetcherWithComponents,
+  useParams,
+} from '@remix-run/react';
+
 import Swiper from '~/components/product/Swiper';
+import {
+  CartLineInput,
+  ProductVariant,
+} from '@shopify/hydrogen/storefront-api-types';
+import ProductPrice from './ProductPrice';
+import {CartForm} from '@shopify/hydrogen';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
@@ -65,11 +75,9 @@ export default function LitterBox({
   product,
   variants,
 }: {
-  product: ProductFragment;
-  variants: Promise<ProductVariantsQuery>;
+  product: ProductQuery['product'];
+  variants: Promise<VariantsQuery>;
 }) {
-  const {selectedVariant} = product;
-
   const [selectedColor, setSelectedColor] = useState<number>(0);
 
   const [swiperContent, setSwiperContent] = useState<string[]>([]);
@@ -124,15 +132,14 @@ export default function LitterBox({
               Finally, a litter box that collects all scoop ideas.
             </p>
           </div>
-          <ProductPrice selectedVariant={selectedVariant} />
+          <ProductPrice selectedVariant={product?.selectedVariant} />
           <Await
             resolve={variants}
             errorElement="There was a problem loading product variants"
           >
             {(data) => (
               <ProductForm
-                product={product}
-                selectedVariant={selectedVariant}
+                selectedVariant={product?.selectedVariant}
                 variants={data.product?.variants.nodes || []}
               />
             )}
@@ -143,13 +150,11 @@ export default function LitterBox({
   );
 }
 function ProductForm({
-  product,
   selectedVariant,
   variants,
 }: {
-  product: ProductFragment;
-  selectedVariant: ProductFragment['selectedVariant'];
-  variants: Array<ProductVariantFragment>;
+  selectedVariant: any;
+  variants: Array<ProductVariantFragmentFragment>;
 }) {
   const [lines, setLines] = useState<
     {merchandiseId: string; quantity: number}[]
@@ -159,7 +164,7 @@ function ProductForm({
 
   const [selectedVariantCount, setSelectedVariantCount] = useState(1);
 
-  const handleLines = (selectedVariant: ProductFragment['selectedVariant']) => {
+  const handleLines = (selectedVariant: ProductVariantFragmentFragment) => {
     const selectMountings: {merchandiseId: string; quantity: number}[] = [];
     const giftElement = productRef.current!.querySelectorAll('.gift-item');
     const addOnElement = productRef.current!.querySelectorAll('.add-on-item');
@@ -199,7 +204,6 @@ function ProductForm({
 
     setLoading(false);
     error!.style.display = 'none';
-    window.location.hash = 'cart-aside';
   };
 
   const examine = (el: NodeListOf<Element>) => {
@@ -340,12 +344,17 @@ function Question({
   );
 }
 
-function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
+function Variants({
+  variants,
+}: {
+  variants: Array<ProductVariantFragmentFragment>;
+}) {
   const [selectedVariant, setSelectedVariant] = useState<
-    ProductVariantFragment[] | null
+    ProductVariantFragmentFragment[] | null
   >(null);
   const [selectedColor, setSelectedColor] = useState<number>(0);
 
+  const params = useParams();
   const generateLink = (handle: string, link: Link[]) => {
     return `/products/${handle}?${link
       .map((option) => `${option.name.replace(/\s/g, '+')}=${option.value}`)
@@ -386,7 +395,7 @@ function Variants({variants}: {variants: Array<ProductVariantFragment>}) {
           return (
             <Link
               key={index}
-              to={link}
+              to={`${params.locale ? '/' + params.locale + link : link}`}
               className={`block ${
                 window.location.href.includes(link) ? 'active' : ''
               } ${!item.availableForSale ? 'disabled' : ''}`}
@@ -601,7 +610,7 @@ function Quantity({
         value={value}
         onChange={(e) => handleChange(Number(e.target.value))}
         disabled
-        className="bg-transparent font-LeagueSpartanBold lg:text-[26px] text-[#5d5d5d] w-[40px] text-center"
+        className="bg-transparent font-LeagueSpartanBold lg:text-[26px] text-[#5d5d5d] w-[40px] text-center border-none"
       />
       <div
         className="add font-LeagueSpartan lg:text-[26px] text-[#5d5d5d] lg:w-[45px] cursor-pointer flex items-center justify-center select-none"
@@ -610,5 +619,43 @@ function Quantity({
         +
       </div>
     </div>
+  );
+}
+
+function AddToCartButton({
+  analytics,
+  children,
+  disabled,
+  lines,
+  onClick,
+  loading,
+}: {
+  analytics?: unknown;
+  children: React.ReactNode;
+  disabled?: boolean;
+  lines: CartLineInput[];
+  onClick?: () => void;
+  loading?: boolean;
+}) {
+  return (
+    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+      {(fetcher: FetcherWithComponents<any>) => (
+        <>
+          <input
+            name="analytics"
+            type="hidden"
+            value={JSON.stringify(analytics)}
+          />
+
+          <button
+            type="submit"
+            onClick={onClick}
+            disabled={disabled ?? fetcher.state !== 'idle'}
+          >
+            {children}
+          </button>
+        </>
+      )}
+    </CartForm>
   );
 }

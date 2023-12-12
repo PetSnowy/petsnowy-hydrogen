@@ -30,11 +30,9 @@ export function useAnalytics(hasUserConsent: boolean) {
       ...pageAnalytics,
     };
 
-    console.log(AnalyticsEventName.PAGE_VIEW, payload);
-
-    sendShopifyAnalytics({
-      eventName: AnalyticsEventName.PAGE_VIEW,
-      payload,
-    });
+    // sendShopifyAnalytics({
+    //   eventName: AnalyticsEventName.PAGE_VIEW,
+    //   payload,
+    // });
   }, [location, pageAnalytics]);
 }

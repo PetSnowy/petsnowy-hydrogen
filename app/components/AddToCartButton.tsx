@@ -100,10 +100,10 @@ function AddToCartAnalytics({
           cartId: fetcherData.cart.id,
         };
 
-        sendShopifyAnalytics({
-          eventName: AnalyticsEventName.ADD_TO_CART,
-          payload: addToCartPayload,
-        });
+        // sendShopifyAnalytics({
+        //   eventName: AnalyticsEventName.ADD_TO_CART,
+        //   payload: addToCartPayload,
+        // });
       }
     }
   }, [fetcherData, formData, pageAnalytics]);

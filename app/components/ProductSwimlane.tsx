@@ -1,4 +1,7 @@
-import type {HomepageFeaturedProductsQuery} from 'storefrontapi.generated';
+import type {
+  HomepageFeaturedProductsQuery,
+  ProductCardFragment,
+} from 'storefrontapi.generated';
 import {ProductCard, Section} from '~/components';
 
 const mockProducts = {
@@ -18,8 +21,8 @@ export function ProductSwimlane({
 }: ProductSwimlaneProps) {
   return (
     <Section heading={title} padding="y" {...props}>
-      <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
-        {products.nodes.map((product) => (
+      <div className="container swimlane">
+        {products.nodes.map((product: ProductCardFragment) => (
           <ProductCard
             product={product}
             key={product.id}

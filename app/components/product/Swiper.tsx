@@ -22,21 +22,23 @@ export default ({spaceBetween = 50, slidesPerView = 3, swiperData}: Swiper) => {
   }, []);
 
   return (
-    <Swiper
-      modules={[Navigation, Autoplay, Pagination]}
-      spaceBetween={spaceBetween}
-      slidesPerView={slidesPerView}
-      autoHeight={true}
-      autoplay={{delay: 5000}}
-      navigation
-      loop
-      pagination={pagination}
-    >
-      {swiperData.map((item, index) => (
-        <SwiperSlide key={index}>
-          <img loading="lazy" decoding="async" src={item} alt="petsnowy" />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    swiperData.length && (
+      <Swiper
+        modules={[Navigation, Autoplay, Pagination]}
+        spaceBetween={spaceBetween}
+        slidesPerView={slidesPerView}
+        autoHeight={true}
+        autoplay={{delay: 5000}}
+        navigation
+        loop
+        pagination={pagination}
+      >
+        {swiperData.map((item, index) => (
+          <SwiperSlide key={index}>
+            <img src={item} alt="petsnowy" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    )
   );
 };

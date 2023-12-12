@@ -1,9 +1,11 @@
 {
   "cSpell.words": [
     "ccursor",
+    "clsx",
     "codegen",
     "colormin",
     "cssnano",
+    "headlessui",
     "isbot",
     "metafield",
     "myshopify",
@@ -18,5 +20,6 @@
   "files.exclude": {
     "**/*.css": true,
     "**/*.css.map": true
-  }
+  },
+  "compile-hero.disable-compile-files-on-did-save-code": true
 }

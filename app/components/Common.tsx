@@ -13,11 +13,15 @@ export function PageRenderer({
   pageComponents: Map<string, ReactNode[]>;
   excludedPages?: string[];
 }) {
-  const currentPageComponents = pageComponents.get(pageName);
+  const router = pageName.split('/').at(-1);
+  const getKey = [...pageComponents.keys()].find((key) =>
+    key.includes(router!),
+  );
+  const currentPageComponents = pageComponents.get(getKey!);
   const commonComponents = pageComponents.get('*'); // 获取通用组件
 
   const shouldRenderCommonComponents =
-    !excludedPages || !excludedPages.includes(pageName);
+    !excludedPages || !excludedPages.includes(router!);
 
   return (
     <>

@@ -13,7 +13,7 @@ const config = {
 				"last 3 iOS versions"
 			]
 		}),
-		cssnano()
+		cssnano(),
 	],
 };
 

@@ -167,7 +167,7 @@ function CartLines({
     y > 0 ? 'border-t' : '',
     layout === 'page'
       ? 'flex-grow md:translate-y-4'
-      : 'px-6 pb-6 sm-max:pt-2 overflow-auto transition md:px-12',
+      : 'px-6 pb-6 overflow-auto transition md:px-12',
   ]);
 
   return (

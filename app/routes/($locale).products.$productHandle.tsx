@@ -1,7 +1,7 @@
 import {useRef, Suspense} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Await} from '@remix-run/react';
+import {useLoaderData, Await, useLocation} from '@remix-run/react';
 import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
 import {
   AnalyticsPageType,
@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import type {
   ProductQuery,
   ProductVariantFragmentFragment,
+  VariantsQuery,
 } from 'storefrontapi.generated';
 import {
   Heading,
@@ -31,11 +32,18 @@ import {
   AddToCartButton,
   Button,
 } from '~/components';
-import {getExcerpt} from '~/lib/utils';
+import {getActiveHeaderHeight, getExcerpt} from '~/lib/utils';
 import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+
+import {PageRenderer, Video} from '~/components/Common';
+import LitterBox from '~/components/product/LitterBox';
+import LitterProductVideoImg from '~/assets/product/video-banner-litter-box.png';
+import mbLitterProductVideoImg from '~/assets/product/mb_product-video_img.png';
+import '~/styles/product/litter-box.css';
+import ProductPrice from '~/components/product/ProductPrice';
 
 export const headers = routeHeaders;
 
@@ -97,10 +105,16 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     url: request.url,
   });
 
+  const getLitterProduct = await litterLoader(
+    productHandle,
+    context.storefront,
+  );
+
   return defer({
     variants,
     product,
     shop,
+    productHandle,
     storeDomain: shop.primaryDomain.url,
     recommended,
     analytics: {
@@ -110,7 +124,62 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
       totalValue: parseFloat(selectedVariant.price.amount),
     },
     seo,
+    ...getLitterProduct,
   });
+}
+
+// 获取猫砂盆配件
+async function litterLoader(handle: string, storefront: Storefront) {
+  if (handle !== 'snow-self-cleaning-litter-box') return;
+  // 获取gift产品id
+  const giftId = await storefront.query(GET_METAFIELD_LIST, {
+    cache: storefront.CacheLong(),
+    variables: {
+      productHandle: handle,
+      metafieldKey: 'gift',
+      metafieldNamespace: 'custom',
+    },
+  });
+
+  const metafieldGiftList: any = JSON.parse(giftId.product.metafield.value);
+
+  // 使用gift产品id获取产品详情
+  const giftList = await Promise.all(
+    metafieldGiftList.map(async (item: string) => {
+      const result = await storefront.query(GET_PRODUCT_DETAILS, {
+        cache: storefront.CacheLong(),
+        variables: {
+          id: item,
+        },
+      });
+      return result;
+    }),
+  );
+
+  // 获取addons产品
+  const addOnsId = await storefront.query(GET_METAFIELD_LIST, {
+    cache: storefront.CacheLong(),
+    variables: {
+      productHandle: handle,
+      metafieldKey: 'addons_product',
+      metafieldNamespace: 'custom',
+    },
+  });
+
+  const metafieldAddOnsList: any = JSON.parse(addOnsId.product.metafield.value);
+
+  const addOnsList = await Promise.all(
+    metafieldAddOnsList.map(async (item: string) => {
+      const result = await storefront.query(GET_PRODUCT_DETAILS, {
+        cache: storefront.CacheLong(),
+        variables: {
+          id: item,
+        },
+      });
+      return result;
+    }),
+  );
+  return {giftList, addOnsList};
 }
 
 function redirectToFirstVariant({
@@ -120,80 +189,105 @@ function redirectToFirstVariant({
   product: ProductQuery['product'];
   request: Request;
 }) {
-  const searchParams = new URLSearchParams(new URL(request.url).search);
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
   const firstVariant = product!.variants.nodes[0];
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-
-  return redirect(
-    `/products/${product!.handle}?${searchParams.toString()}`,
-    302,
-  );
+  return redirect(`?${searchParams.toString()}`, 302);
 }
 
 export default function Product() {
   const {product, shop, recommended, variants} = useLoaderData<typeof loader>();
   const {media, title, vendor, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
+  const {pathname} = useLocation();
+
+  const componentsMap = new Map([
+    [
+      '/products/snow-self-cleaning-litter-box',
+      [
+        <Video
+          pcDataSrc="https://cdn.shopify.com/videos/c/o/v/9922252ba3cd4c79aa3c23c6aeb5e46b.mp4"
+          pcPoster={LitterProductVideoImg}
+          mbDataSrc="https://cdn.shopify.com/videos/c/o/v/8ebcb13e4a354fafb21ac5cee19f6d0d.mp4"
+          mbPoster={mbLitterProductVideoImg}
+          height={`calc(100vh - ${getActiveHeaderHeight()}px)`}
+        />,
+        <LitterBox product={product} variants={variants} />,
+      ],
+    ],
+    [
+      '*',
+      [
+        <div className="product-main">
+          <div className="container grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
+            <ProductGallery
+              media={media.nodes}
+              className="w-full lg:col-span-2"
+            />
+            <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
+              <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
+                <div className="grid gap-2">
+                  <Heading as="h1" className="whitespace-normal">
+                    {title}
+                  </Heading>
+                  {vendor && (
+                    <Text className={'opacity-50 font-medium'}>{vendor}</Text>
+                  )}
+                </div>
+                <ProductPrice selectedVariant={product.selectedVariant} />
+                <Suspense fallback={<ProductForm variants={[]} />}>
+                  <Await
+                    errorElement="There was a problem loading related products"
+                    resolve={variants}
+                  >
+                    {(resp) => (
+                      <ProductForm
+                        variants={resp.product?.variants.nodes || []}
+                      />
+                    )}
+                  </Await>
+                </Suspense>
+                <div className="grid gap-4 py-4">
+                  {descriptionHtml && (
+                    <ProductDetail
+                      title="Product Details"
+                      content={descriptionHtml}
+                    />
+                  )}
+                  {shippingPolicy?.body && (
+                    <ProductDetail
+                      title="Shipping"
+                      content={getExcerpt(shippingPolicy.body)}
+                      learnMore={`/policies/${shippingPolicy.handle}`}
+                    />
+                  )}
+                  {refundPolicy?.body && (
+                    <ProductDetail
+                      title="Returns"
+                      content={getExcerpt(refundPolicy.body)}
+                      learnMore={`/policies/${refundPolicy.handle}`}
+                    />
+                  )}
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>,
+      ],
+    ],
+  ]);
 
   return (
     <>
-      <Section className="px-0 md:px-8 lg:px-12">
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full lg:col-span-2"
-          />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
-                  {title}
-                </Heading>
-                {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
-                )}
-              </div>
-              <Suspense fallback={<ProductForm variants={[]} />}>
-                <Await
-                  errorElement="There was a problem loading related products"
-                  resolve={variants}
-                >
-                  {(resp) => (
-                    <ProductForm
-                      variants={resp.product?.variants.nodes || []}
-                    />
-                  )}
-                </Await>
-              </Suspense>
-              <div className="grid gap-4 py-4">
-                {descriptionHtml && (
-                  <ProductDetail
-                    title="Product Details"
-                    content={descriptionHtml}
-                  />
-                )}
-                {shippingPolicy?.body && (
-                  <ProductDetail
-                    title="Shipping"
-                    content={getExcerpt(shippingPolicy.body)}
-                    learnMore={`/policies/${shippingPolicy.handle}`}
-                  />
-                )}
-                {refundPolicy?.body && (
-                  <ProductDetail
-                    title="Returns"
-                    content={getExcerpt(refundPolicy.body)}
-                    learnMore={`/policies/${refundPolicy.handle}`}
-                  />
-                )}
-              </div>
-            </section>
-          </div>
-        </div>
-      </Section>
-      <Suspense fallback={<Skeleton className="h-32" />}>
+      <PageRenderer
+        pageName={pathname}
+        pageComponents={componentsMap}
+        excludedPages={['snow-self-cleaning-litter-box']}
+      />
+      {/* <Suspense fallback={<Skeleton className="h-32" />}>
         <Await
           errorElement="There was a problem loading related products"
           resolve={recommended}
@@ -202,7 +296,7 @@ export default function Product() {
             <ProductSwimlane title="Related Products" products={products} />
           )}
         </Await>
-      </Suspense>
+      </Suspense> */}
     </>
   );
 }
@@ -589,3 +683,44 @@ async function getRecommendedProducts(
 
   return {nodes: mergedProducts};
 }
+
+const GET_METAFIELD_LIST = `
+  query GetGiftList($productHandle: String!, $metafieldKey: String!, $metafieldNamespace: String!) {
+    product(handle: $productHandle) {
+      metafield(key: $metafieldKey, namespace: $metafieldNamespace) {
+        id
+        key
+        value
+      }
+    }
+  }
+` as const;
+
+const GET_PRODUCT_DETAILS = `
+query GetProductDetails	($id: ID!){
+	product(id: $id) {
+		handle
+		id
+    featuredImage {
+      url
+    }
+		priceRange {
+			maxVariantPrice {
+				amount
+				currencyCode
+			}
+			minVariantPrice {
+				amount
+				currencyCode
+			}
+		}
+		variants(first: 10){
+			edges {
+        node {
+          id
+        }
+      }
+		}
+	}
+}
+`;
