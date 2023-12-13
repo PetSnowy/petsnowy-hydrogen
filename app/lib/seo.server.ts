@@ -1,4 +1,4 @@
-import {type SeoConfig} from '@shopify/hydrogen';
+import { type SeoConfig } from '@shopify/hydrogen';
 import type {
   Article,
   Blog,
@@ -20,7 +20,7 @@ import type {
   WebPage,
 } from 'schema-dts';
 
-import type {ShopFragment} from 'storefrontapi.generated';
+import type { ShopFragment } from 'storefrontapi.generated';
 
 function root({
   shop,
@@ -31,8 +31,8 @@ function root({
 }): SeoConfig<Organization> {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
-    description: truncate(shop?.description ?? ''),
+    titleTemplate: 'PetSnowy SNOW⁺ | Self-Cleaning, Odor Free, Auto-Packing - PETSNOWY US',
+    description: 'Building a comfortable lifestyle for pets and pet owners Explore our innovations.',
     handle: '@shopify',
     url,
     robots: {
@@ -64,8 +64,8 @@ function root({
 function home(): SeoConfig<WebPage> {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
-    description: 'The best place to buy snowboarding products',
+    titleTemplate: 'PetSnowy SNOW⁺ | Self-Cleaning, Odor Free, Auto-Packing - PETSNOWY US',
+    description: 'Building a comfortable lifestyle for pets and pet owners Explore our innovations.',
     robots: {
       noIndex: false,
       noFollow: false,
@@ -179,7 +179,7 @@ function product({
     title: product?.seo?.title ?? product?.title,
     description,
     media: selectedVariant?.image,
-    jsonLd: productJsonLd({product, selectedVariant, url}),
+    jsonLd: productJsonLd({ product, selectedVariant, url }),
   };
 }
 
@@ -187,7 +187,7 @@ type CollectionRequiredFields = Omit<
   Collection,
   'products' | 'descriptionHtml' | 'metafields' | 'image' | 'updatedAt'
 > & {
-  products: {nodes: Pick<Product, 'handle'>[]};
+  products: { nodes: Pick<Product, 'handle'>[] };
   image?: null | Pick<Image, 'url' | 'height' | 'width' | 'altText'>;
   descriptionHtml?: null | Collection['descriptionHtml'];
   updatedAt?: null | Collection['updatedAt'];
@@ -266,7 +266,7 @@ function collection({
       width: collection?.image?.width,
       altText: collection?.image?.altText,
     },
-    jsonLd: collectionJsonLd({collection, url}),
+    jsonLd: collectionJsonLd({ collection, url }),
   };
 }
 
@@ -316,7 +316,7 @@ function listCollections({
     titleTemplate: '%s | Collections',
     description: 'All hydrogen collections',
     url,
-    jsonLd: collectionsJsonLd({collections, url}),
+    jsonLd: collectionsJsonLd({ collections, url }),
   };
 }
 

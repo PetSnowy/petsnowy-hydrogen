@@ -37,6 +37,9 @@
 .header.index.active svg g {
   fill: #fff;
 }
+.header.index a.cart {
+  color: #231f20;
+}
 .header .header-menu-mobile {
   display: flex;
   flex-direction: column;

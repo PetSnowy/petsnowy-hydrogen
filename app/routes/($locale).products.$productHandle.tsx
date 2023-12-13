@@ -222,22 +222,22 @@ export default function Product() {
       '*',
       [
         <div className="product-main">
-          <div className="container grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-            <ProductGallery
-              media={media.nodes}
-              className="w-full lg:col-span-2"
-            />
-            <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-              <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
+          <div className="container lg:grid items-start lg:grid-cols-5 lg:gap-x-[40px] lg:pt-[40px] lg:pb-[40px] sm:flex sm:flex-wrap sm:gap-y-[20px]">
+            <ProductGallery media={media.nodes} />
+            <div className="lg:sticky lg:top-[90px] lg:col-start-4 lg:col-end-6">
+              <section className="flex flex-col w-full">
                 <div className="grid gap-2">
-                  <Heading as="h1" className="whitespace-normal">
-                    {title}
-                  </Heading>
                   {vendor && (
                     <Text className={'opacity-50 font-medium'}>{vendor}</Text>
                   )}
+                  <Heading as="h1" className="whitespace-normal">
+                    {title}
+                  </Heading>
                 </div>
-                <ProductPrice selectedVariant={product.selectedVariant} />
+                <ProductPrice
+                  selectedVariant={product.selectedVariant}
+                  className="lg:my-[20px]"
+                />
                 <Suspense fallback={<ProductForm variants={[]} />}>
                   <Await
                     errorElement="There was a problem loading related products"
@@ -442,17 +442,17 @@ export function ProductForm({
                 ]}
                 variant="primary"
                 data-test="add-to-cart"
-                analytics={{
-                  products: [productAnalytics],
-                  totalValue: parseFloat(productAnalytics.price),
-                }}
+                // analytics={{
+                //   products: [productAnalytics],
+                //   totalValue: parseFloat(productAnalytics.price),
+                // }}
               >
                 <Text
                   as="span"
                   className="flex items-center justify-center gap-2"
                 >
-                  <span>Add to Cart</span> <span>·</span>{' '}
-                  <Money
+                  <span>Add to Cart</span>
+                  {/* <Money
                     withoutTrailingZeros
                     data={selectedVariant?.price!}
                     as="span"
@@ -464,7 +464,7 @@ export function ProductForm({
                       as="span"
                       className="opacity-50 strike"
                     />
-                  )}
+                  )} */}
                 </Text>
               </AddToCartButton>
             )}

@@ -1,8 +1,14 @@
 import {Money} from '@shopify/hydrogen';
 
-export default function ProductPrice({selectedVariant}: any) {
+export default function ProductPrice({
+  selectedVariant,
+  className,
+}: {
+  selectedVariant: any;
+  className?: string;
+}) {
   return (
-    <div className="product-price">
+    <div className={`product-price ${className}`}>
       {selectedVariant?.compareAtPrice ? (
         <>
           <div className="product-price-on-sale flex lg:gap-x-[10px]">

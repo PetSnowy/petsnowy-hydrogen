@@ -143,9 +143,9 @@ function Header({title}: {title: string}) {
   return (
     <>
       <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
-      {/* {menu && (
+      {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
-      )} */}
+      )}
       <DesktopHeader
         isHome={isHome}
         title={title}
@@ -185,7 +185,7 @@ export function MenuDrawer({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  menu: EnhancedMenu;
+  menu: any;
 }) {
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="Menu">
@@ -257,7 +257,8 @@ function MobileHeader({
         >
           <IconMenu />
         </button>
-        <Form
+
+        {/* <Form
           method="get"
           action={params.locale ? `/${params.locale}/search` : '/search'}
           className="items-center gap-2 sm:flex"
@@ -279,7 +280,7 @@ function MobileHeader({
             placeholder="Search"
             name="q"
           />
-        </Form>
+        </Form> */}
       </div>
 
       <Link
@@ -396,7 +397,9 @@ function DesktopHeader({
                     className="text-[15px] font-LeagueSpartanBold text-[#000000] uppercase"
                     prefetch="intent"
                     key={index}
-                    to={item.link}
+                    to={`${
+                      params.locale ? params.locale + item.link : item.link
+                    }`}
                     end
                   >
                     {item.name}
@@ -430,6 +433,14 @@ function DesktopHeader({
             <IconSearch />
           </button>
         </Form> */}
+          <a
+            href={`${params.locale ? '/' + params.locale + '/cart' : '/cart'}`}
+            className={`sm:hidden cart flex items-center justify-center w-[112px] h-[34px] rounded-[16px] uppercase font-LeagueSpartanBold transition hover:opacity-[0.5] ${
+              isHome ? ' bg-white text-[#231f20]' : 'bg-[#7e6e5f] text-white'
+            }`}
+          >
+            order now
+          </a>
           <AccountLink className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5" />
           <CartCount isHome={isHome} openCart={openCart} />
         </div>
@@ -448,7 +459,7 @@ function AccountLink({className}: {className?: string}) {
     </Link>
   ) : (
     <Link to="/account/login" className={className}>
-      <IconLogin className="w-[25px] h-[25px]" />
+      <IconLogin className="w-[22px] h-[22px]" />
     </Link>
   );
 }
@@ -491,7 +502,7 @@ function Badge({
   const BadgeCounter = useMemo(
     () => (
       <>
-        <IconBag className="w-[25px] h-[25px]" />
+        <IconBag className="w-[22px] h-[22px]" />
         {count !== 0 && (
           <div className="absolute w-[17px] h-[17px] rounded-[50%] right-0 bottom-0 bg-[#ebe1d9] text-black text-[12px]">
             {count !== 0 ? count : ''}

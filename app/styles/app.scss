@@ -17,21 +17,6 @@
   --height-nav: 3rem;
   --screen-height: 100vh;
   --screen-height-dynamic: 100vh;
-
-  @media (min-width: 32em) {
-    --height-nav: 4rem;
-  }
-  @media (min-width: 48em) {
-    --height-nav: 6rem;
-    --font-size-heading: 2.25rem; /* text-4xl */
-    --font-size-display: 3.75rem; /* text-6xl */
-  }
-  @supports (height: 100svh) {
-    --screen-height: 100svh;
-  }
-  @supports (height: 100dvh) {
-    --screen-height-dynamic: 100dvh;
-  }
 }
 
 @media (prefers-color-scheme: dark) {

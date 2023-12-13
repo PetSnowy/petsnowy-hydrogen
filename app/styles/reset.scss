@@ -52,6 +52,7 @@ details summary {
 	.container {
 		width: 1200px;
 		margin: 0px auto;
+		max-width: 1200px;
 	}
 }
 
@@ -60,5 +61,6 @@ details summary {
 		width: 100%;
 		padding: 0px vw(38px);
 		box-sizing: border-box;
+		max-width: 100%;
 	}
 }
