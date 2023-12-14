@@ -309,8 +309,6 @@ function MobileHeader({
         <img
           src={`${isHome ? headerIndexLogo : headerLogo}`}
           alt="Petsnowy"
-          loading="lazy"
-          decoding="async"
           className="header-logo"
         />
       </Link>
@@ -369,8 +367,6 @@ function DesktopHeader({
               className="header-logo"
               src={isHome ? headerIndexLogo : headerLogo}
               alt="petsnowy"
-              loading="lazy"
-              decoding="async"
             />
           </Link>
           <nav className="items-center flex lg:gap-x-[30px]" role="navigation">

@@ -27,12 +27,19 @@ function Icon({
 
 export function IconMenu(props: IconProps) {
   return (
-    <Icon {...props} stroke={props.stroke || 'currentColor'}>
-      <title>Menu</title>
-      <line x1="3" y1="6.375" x2="17" y2="6.375" strokeWidth="1.25" />
-      <line x1="3" y1="10.375" x2="17" y2="10.375" strokeWidth="1.25" />
-      <line x1="3" y1="14.375" x2="17" y2="14.375" strokeWidth="1.25" />
-    </Icon>
+    <svg
+      {...props}
+      viewBox="0 0 1024 1024"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      p-id="3629"
+    >
+      <path
+        d="M992 224 32 224C14.336 224 0 209.664 0 192s14.336-32 32-32l960 0c17.696 0 32 14.336 32 32S1009.696 224 992 224zM992 544 32 544c-17.664 0-32-14.304-32-32s14.336-32 32-32l960 0c17.696 0 32 14.304 32 32S1009.696 544 992 544zM992 864 32 864c-17.664 0-32-14.304-32-32s14.336-32 32-32l960 0c17.696 0 32 14.304 32 32S1009.696 864 992 864z"
+        fill="#000000"
+        p-id="3630"
+      ></path>
+    </svg>
   );
 }
 

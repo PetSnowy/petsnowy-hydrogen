@@ -600,7 +600,7 @@ function Quantity({
   return (
     <div className="quantity flex items-center justify-between bg-white lg:w-[138px] lg:h-[52px] rounded-[24px]">
       <div
-        className="reduce font-LeagueSpartan lg:text-[26px] text-[#5d5d5d] lg:w-[45px] cursor-pointer flex items-center justify-center select-none"
+        className="reduce font-LeagueSpartan lg:text-[26px] text-[#5d5d5d] lg:w-[100px] cursor-pointer flex items-center justify-center select-none"
         onClick={() => handleChange(value - 1)}
       >
         -
@@ -610,10 +610,10 @@ function Quantity({
         value={value}
         onChange={(e) => handleChange(Number(e.target.value))}
         disabled
-        className="bg-transparent font-LeagueSpartanBold lg:text-[26px] text-[#5d5d5d] w-[40px] text-center border-none"
+        className="bg-transparent font-LeagueSpartanBold lg:text-[26px] text-[#5d5d5d] w-[100%] text-center border-none p-0"
       />
       <div
-        className="add font-LeagueSpartan lg:text-[26px] text-[#5d5d5d] lg:w-[45px] cursor-pointer flex items-center justify-center select-none"
+        className="add font-LeagueSpartan lg:text-[26px] text-[#5d5d5d] lg:w-[100px] cursor-pointer flex items-center justify-center select-none"
         onClick={() => handleChange(value + 1)}
       >
         +
