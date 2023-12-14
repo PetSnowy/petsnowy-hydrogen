@@ -42,7 +42,7 @@ export function Cart({
   return (
     <>
       <CartEmpty hidden={linesCount} onClose={onClose} layout={layout} />
-      <CartDetails cart={cart} layout={layout} />
+      <CartDetails cart={cart} layout={layout} onClose={onClose} />
     </>
   );
 }
@@ -50,9 +50,11 @@ export function Cart({
 export function CartDetails({
   layout,
   cart,
+  onClose,
 }: {
   layout: Layouts;
   cart: CartType | null;
+  onClose?: () => void;
 }) {
   // @todo: get optimistic cart cost
   const cartHasItems = !!cart && cart.totalQuantity > 0;
@@ -63,7 +65,7 @@ export function CartDetails({
 
   return (
     <div className={container[layout]}>
-      <CartLines lines={cart?.lines} layout={layout} />
+      <CartLines lines={cart?.lines} layout={layout} onClose={onClose} />
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
@@ -155,9 +157,11 @@ function UpdateDiscountForm({
 function CartLines({
   layout = 'drawer',
   lines: cartLines,
+  onClose,
 }: {
   layout: Layouts;
   lines: CartType['lines'] | undefined;
+  onClose?: () => void;
 }) {
   const currentLines = cartLines ? flattenConnection(cartLines) : [];
   const scrollRef = useRef(null);
@@ -178,7 +182,11 @@ function CartLines({
     >
       <ul className="grid gap-6 md:gap-10">
         {currentLines.map((line) => (
-          <CartLineItem key={line.id} line={line as CartLine} />
+          <CartLineItem
+            key={line.id}
+            line={line as CartLine}
+            onClose={onClose}
+          />
         ))}
       </ul>
     </section>
@@ -241,7 +249,7 @@ type OptimisticData = {
   quantity?: number;
 };
 
-function CartLineItem({line}: {line: CartLine}) {
+function CartLineItem({line, onClose}: {line: CartLine; onClose?: () => void}) {
   const optimisticData = useOptimisticData<OptimisticData>(line?.id);
 
   if (!line?.id) return null;
@@ -276,7 +284,10 @@ function CartLineItem({line}: {line: CartLine}) {
         <div className="grid gap-2">
           <Heading as="h3" size="copy">
             {merchandise?.product?.handle ? (
-              <Link to={`/products/${merchandise.product.handle}`}>
+              <Link
+                onClick={onClose}
+                to={`/products/${merchandise.product.handle}`}
+              >
                 {merchandise?.product?.title || ''}
               </Link>
             ) : (
