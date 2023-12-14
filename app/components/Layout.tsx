@@ -28,6 +28,7 @@ import {
   type EnhancedMenu,
   type ChildEnhancedMenuItem,
   useIsHomePath,
+  handleResize,
 } from '~/lib/utils';
 import {useIsHydrated} from '~/hooks/useIsHydrated';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
@@ -134,7 +135,6 @@ function Header({title}: {title: string}) {
 
   const addToCartFetchers = useCartFetchers(CartForm.ACTIONS.LinesAdd);
 
-  // toggle cart drawer when adding to cart
   useEffect(() => {
     if (isCartOpen || !addToCartFetchers.length) return;
     openCart();
@@ -146,18 +146,23 @@ function Header({title}: {title: string}) {
       {menu && (
         <MenuDrawer isOpen={isMenuOpen} onClose={closeMenu} menu={menu} />
       )}
-      <DesktopHeader
-        isHome={isHome}
-        title={title}
-        menu={menu}
-        openCart={openCart}
-      />
-      <MobileHeader
-        isHome={isHome}
-        title={title}
-        openCart={openCart}
-        openMenu={openMenu}
-      />
+      {!handleResize() && (
+        <DesktopHeader
+          isHome={isHome}
+          title={title}
+          menu={menu}
+          openCart={openCart}
+        />
+      )}
+
+      {handleResize() && (
+        <MobileHeader
+          isHome={isHome}
+          title={title}
+          openCart={openCart}
+          openMenu={openMenu}
+        />
+      )}
     </>
   );
 }
@@ -185,7 +190,7 @@ export function MenuDrawer({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  menu: any;
+  menu: MenuItem[];
 }) {
   return (
     <Drawer open={isOpen} onClose={onClose} openFrom="left" heading="Menu">
@@ -200,28 +205,61 @@ function MenuMobileNav({
   menu,
   onClose,
 }: {
-  menu: EnhancedMenu;
+  menu: MenuItem[];
   onClose: () => void;
 }) {
+  const params = useParams();
+  const {
+    isOpen: isMenuOpen,
+    openDrawer: openMenu,
+    closeDrawer: closeMenu,
+  } = useDrawer();
+
   return (
     <nav className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
-      {/* Top level menu items */}
-      {(menu?.items || []).map((item) => (
-        <span key={item.id} className="block">
-          <Link
-            to={item.to}
-            target={item.target}
-            onClick={onClose}
-            className={({isActive}) =>
-              isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
-            }
-          >
-            <Text as="span" size="copy">
-              {item.title}
-            </Text>
-          </Link>
-        </span>
-      ))}
+      {menu.map((item, index) => {
+        if (item.unfold)
+          return (
+            <div onClick={openMenu} key={index}>
+              {item.name}
+              <Drawer
+                open={isMenuOpen}
+                onClose={closeMenu}
+                openFrom={'left'}
+                heading={item.name}
+              >
+                <div className="grid gap-4 p-6 sm:gap-6 sm:px-12 sm:py-8">
+                  {item.unfold.map((v, i) => (
+                    <NavLink
+                      prefetch="intent"
+                      key={i}
+                      to={`${params.locale ? params.locale + v.link : v.link}`}
+                      end
+                      onClick={onClose}
+                    >
+                      {v.name}
+                    </NavLink>
+                  ))}
+                </div>
+              </Drawer>
+            </div>
+          );
+
+        if (item.link) {
+          return (
+            <NavLink
+              prefetch="intent"
+              key={index}
+              to={`${params.locale ? params.locale + item.link : item.link}`}
+              end
+              onClick={onClose}
+            >
+              {item.name}
+            </NavLink>
+          );
+        }
+        return null;
+      })}
     </nav>
   );
 }
@@ -237,68 +275,48 @@ function MobileHeader({
   openCart: () => void;
   openMenu: () => void;
 }) {
-  // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
-
-  const params = useParams();
-
+  const [headerTop, setHeaderTop] = useState<boolean>(false);
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('up');
+  const [innerHeight, setInnerHeight] = useState<boolean>(false);
+  useEffect(() => {
+    let lastScrollPosition = 0;
+    const scroll = () => {
+      const top: number = Math.abs(window.scrollY);
+      top > 0 ? setHeaderTop(true) : setHeaderTop(false);
+      Math.abs(top) > lastScrollPosition
+        ? setScrollDirection('down')
+        : setScrollDirection('up');
+      lastScrollPosition = top;
+      top > window.innerHeight ? setInnerHeight(true) : setInnerHeight(false);
+    };
+    window.addEventListener('scroll', scroll);
+    return () => window.removeEventListener('scroll', scroll);
+  }, []);
   return (
     <header
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
-      } flex lg:hidden items-center h-nav sticky backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8`}
+      className={`mb-header justify-between z-[100] flex items-center container top-0 ${
+        isHome ? 'bg-transparent index fixed' : 'bg-white sticky'
+      } ${headerTop ? 'active' : 'disable'} ${scrollDirection} ${
+        innerHeight ? 'none' : 'show'
+      }`}
     >
-      <div className="flex items-center justify-start w-full gap-4">
-        <button
-          onClick={openMenu}
-          className="relative flex items-center justify-center w-8 h-8"
-        >
-          <IconMenu />
-        </button>
+      <button onClick={openMenu} className="relative flex">
+        <IconMenu />
+      </button>
 
-        {/* <Form
-          method="get"
-          action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="items-center gap-2 sm:flex"
-        >
-          <button
-            type="submit"
-            className="relative flex items-center justify-center w-8 h-8"
-          >
-            <IconSearch />
-          </button>
-          <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          />
-        </Form> */}
-      </div>
-
-      <Link
-        className="flex items-center self-stretch leading-[3rem] md:leading-[4rem] justify-center flex-grow w-full h-full"
-        to="/"
-      >
-        <Heading
-          className="font-bold text-center leading-none"
-          as={isHome ? 'h1' : 'h2'}
-        >
-          {title}
-        </Heading>
+      <Link to="/">
+        <img
+          src={`${isHome ? headerIndexLogo : headerLogo}`}
+          alt="Petsnowy"
+          loading="lazy"
+          decoding="async"
+          className="header-logo"
+        />
       </Link>
 
-      <div className="flex items-center justify-end w-full gap-4">
-        <AccountLink className="relative flex items-center justify-center w-8 h-8" />
-        <CartCount isHome={isHome} openCart={openCart} />
-      </div>
+      {/* <AccountLink className="relative flex items-center justify-center w-8 h-8" /> */}
+      <CartCount isHome={isHome} openCart={openCart} />
     </header>
   );
 }
@@ -345,7 +363,7 @@ function DesktopHeader({
       }`}
     >
       <div className="flex items-center justify-between container">
-        <div className="flex gap-[135px]">
+        <div className="flex lg:gap-[135px]">
           <Link className="font-bold" to="/" prefetch="intent">
             <img
               className="header-logo"
@@ -355,13 +373,13 @@ function DesktopHeader({
               decoding="async"
             />
           </Link>
-          <nav className="items-center flex gap-x-[30px]" role="navigation">
+          <nav className="items-center flex lg:gap-x-[30px]" role="navigation">
             {menu.map((item, index) => {
               if (item.unfold)
                 return (
                   <details key={index} ref={detailsRef}>
                     <summary className="cursor-pointer relative select-none">
-                      <span className="text-[15px] font-LeagueSpartanBold text-[#000000]">
+                      <span className="lg:text-[15px] font-LeagueSpartanBold text-[#000000]">
                         {item.name}
                       </span>
                       <IconHeaderArrow />
@@ -375,7 +393,7 @@ function DesktopHeader({
                           }`}
                           end
                         >
-                          <span className="text-[15px] font-LeagueSpartanBold text-[#000000]">
+                          <span className="lg:text-[15px] font-LeagueSpartanBold text-[#000000]">
                             {v.name}
                           </span>
                           <img
@@ -394,7 +412,7 @@ function DesktopHeader({
               if (item.link)
                 return (
                   <NavLink
-                    className="text-[15px] font-LeagueSpartanBold text-[#000000] uppercase"
+                    className="lg:text-[15px] font-LeagueSpartanBold text-[#000000] uppercase"
                     prefetch="intent"
                     key={index}
                     to={`${
@@ -409,33 +427,10 @@ function DesktopHeader({
             })}
           </nav>
         </div>
-        <div className="flex items-center gap-x-[15px]">
-          {/* <Form
-          method="get"
-          action={params.locale ? `/${params.locale}/search` : '/search'}
-          className="flex items-center gap-2"
-        >
-          <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
-            type="search"
-            variant="minisearch"
-            placeholder="Search"
-            name="q"
-          />
-          <button
-            type="submit"
-            className="relative flex items-center justify-center w-8 h-8 focus:ring-primary/5"
-          >
-            <IconSearch />
-          </button>
-        </Form> */}
+        <div className="flex items-center lg:gap-x-[15px]">
           <a
             href={`${params.locale ? '/' + params.locale + '/cart' : '/cart'}`}
-            className={`sm:hidden cart flex items-center justify-center w-[112px] h-[34px] rounded-[16px] uppercase font-LeagueSpartanBold transition hover:opacity-[0.5] ${
+            className={`sm:hidden cart flex items-center justify-center lg:w-[112px] lg:h-[34px] lg:rounded-[16px] uppercase font-LeagueSpartanBold transition hover:opacity-[0.5] ${
               isHome ? ' bg-white text-[#231f20]' : 'bg-[#7e6e5f] text-white'
             }`}
           >
@@ -459,7 +454,7 @@ function AccountLink({className}: {className?: string}) {
     </Link>
   ) : (
     <Link to="/account/login" className={className}>
-      <IconLogin className="w-[22px] h-[22px]" />
+      <IconLogin className="lg:w-[22px] lg:h-[22px]" />
     </Link>
   );
 }
@@ -502,9 +497,9 @@ function Badge({
   const BadgeCounter = useMemo(
     () => (
       <>
-        <IconBag className="w-[22px] h-[22px]" />
+        <IconBag className="lg:w-[22px] lg:h-[22px]" />
         {count !== 0 && (
-          <div className="absolute w-[17px] h-[17px] rounded-[50%] right-0 bottom-0 bg-[#ebe1d9] text-black text-[12px]">
+          <div className="absolute lg:w-[17px] lg:h-[17px] rounded-[50%] right-0 bottom-0 bg-[#ebe1d9] text-black lg:text-[12px]">
             {count !== 0 ? count : ''}
           </div>
         )}

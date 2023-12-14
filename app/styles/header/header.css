@@ -148,13 +148,40 @@
     text-transform: uppercase;
   }
 }
+
 @media screen and (max-width: 900px) {
-  .header {
-    display: none;
+  .mb-header {
+    height: 12.6666666667vw;
+    transition: transform 0.5s cubic-bezier(0.42, 0, 0.002, 1), opacity 0.3s cubic-bezier(0.42, 0, 0.002, 1);
   }
-  .header .header-logo {
+  .mb-header .header-logo {
     width: 40vw;
+    height: 6.9333333333vw;
     object-fit: contain;
+  }
+  .mb-header button {
+    width: 5.3333333333vw;
+    height: 5.3333333333vw;
+  }
+  .mb-header button div {
+    width: 4vw;
+    height: 4vw;
+    font-size: 3.2vw;
+  }
+  .mb-header.index svg {
+    color: #fff;
+  }
+  .mb-header.index svg g {
+    fill: #fff;
+  }
+  .mb-header.index.active {
+    background-color: #000000;
+  }
+  .mb-header.down.none {
+    transform: translateY(-100%);
+  }
+  .mb-header.up {
+    transform: translate(0);
   }
 }
 
