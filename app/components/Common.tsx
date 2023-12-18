@@ -118,9 +118,10 @@ type LazyImageProps = {
   pcImg?: string;
   mobileImg?: string;
   alt: string;
+  className?: string;
 };
 
-export function LazyImage({pcImg, mobileImg, alt}: LazyImageProps) {
+export function LazyImage({pcImg, mobileImg, alt, className}: LazyImageProps) {
   const targetRef = useRef<HTMLImageElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -165,5 +166,13 @@ export function LazyImage({pcImg, mobileImg, alt}: LazyImageProps) {
     }
   }, [isMobile, isVisible, pcImg, mobileImg]);
 
-  return <img alt={alt} decoding="async" loading="lazy" ref={targetRef} />;
+  return (
+    <img
+      alt={alt}
+      decoding="async"
+      loading="lazy"
+      ref={targetRef}
+      className={className}
+    />
+  );
 }

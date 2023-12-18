@@ -1,6 +1,11 @@
 import {useRef, Suspense} from 'react';
 import {Disclosure, Listbox} from '@headlessui/react';
-import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {
+  defer,
+  redirect,
+  type LoaderFunctionArgs,
+  LinksFunction,
+} from '@shopify/remix-oxygen';
 import {useLoaderData, Await, useLocation} from '@remix-run/react';
 import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
 import {
@@ -42,10 +47,14 @@ import {PageRenderer, Video} from '~/components/Common';
 import LitterBox from '~/components/product/LitterBox';
 import LitterProductVideoImg from '~/assets/product/video-banner-litter-box.png';
 import mbLitterProductVideoImg from '~/assets/product/mb_product-video_img.png';
-import '~/styles/product/litter-box.css';
+import productStyle from '~/styles/product/index.css';
 import ProductPrice from '~/components/product/ProductPrice';
 
 export const headers = routeHeaders;
+
+export const links: LinksFunction = () => {
+  return [{rel: 'stylesheet', href: productStyle}];
+};
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {productHandle} = params;
@@ -168,12 +177,25 @@ async function litterLoader(handle: string, storefront: Storefront) {
 
   const metafieldAddOnsList: any = JSON.parse(addOnsId.product.metafield.value);
 
-  const addOnsList = await Promise.all(
+  const addOnsListHandle = await Promise.all(
     metafieldAddOnsList.map(async (item: string) => {
       const result = await storefront.query(GET_PRODUCT_DETAILS, {
         cache: storefront.CacheLong(),
         variables: {
           id: item,
+        },
+      });
+      return result;
+    }),
+  );
+  // 获取addons 的变体
+  const addOnsList = await Promise.all(
+    addOnsListHandle.map(async (item) => {
+      const result = storefront.query(VARIANTS_QUERY, {
+        variables: {
+          handle: item.product.handle,
+          country: storefront.i18n.country,
+          language: storefront.i18n.language,
         },
       });
       return result;

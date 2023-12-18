@@ -35,7 +35,8 @@ import {
   ProductVariant,
 } from '@shopify/hydrogen/storefront-api-types';
 import ProductPrice from './ProductPrice';
-import {CartForm} from '@shopify/hydrogen';
+import {CartForm, Money} from '@shopify/hydrogen';
+import {loader} from '~/routes/($locale).products.$productHandle';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
@@ -469,41 +470,16 @@ function SelectColor() {
     </>
   );
 }
-type Price = {
-  amount: string;
-  currencyCode: string;
-};
-type Edges = {
-  node: {
-    id: string;
-  };
-};
-type Gift = {
-  product: {
-    handle: string;
-    id: string;
-    priceRange: {
-      maxVariantPrice: Price;
-      minVariantPrice: Price;
-    };
-    featuredImage: {
-      url: string;
-    };
-    variants: {
-      edges: Edges[];
-    };
-  };
-};
 
 function GetGift() {
-  const {giftList}: {giftList: Gift[]} = useLoaderData() as any;
+  const {giftList} = useLoaderData<typeof loader>();
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e] lg:mt-[26px]">
         Choose Gift
       </p>
       <div className="gift flex w-full flex-wrap lg:gap-y-[24px]">
-        {giftList.map(({product}, index) => (
+        {giftList!.map(({product}, index) => (
           <div className="gift-item lg:w-[500px]" key={index}>
             <input
               type="radio"
@@ -547,44 +523,48 @@ const addOnsName = [
 ];
 
 function AddOns() {
-  const {addOnsList}: {addOnsList: Gift[]} = useLoaderData() as any;
+  const {addOnsList} = useLoaderData<typeof loader>();
+
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e] lg:mt-[27px]">
         Add-Ons
       </p>
       <div className="addOns flex flex-wrap lg:gap-[15px]">
-        {addOnsList.map(({product}, index) => (
-          <div className="add-on-item" key={index}>
-            <input
-              type="checkbox"
-              name="addons"
-              id={product.id}
-              value={product.variants.edges[0].node.id}
-              className=""
-            />
-            <label
-              htmlFor={product.id}
-              className="lg:w-[155px] lg:h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
-            >
-              <div className="img-wrapper lg:w-[70px] lg:h-auto lg:mb-[10px] object-contain flex items-center justify-center">
-                <LazyImage
-                  alt={product.handle}
-                  pcImg={product.featuredImage.url}
-                />
-              </div>
-              <p className="title lg:text-[13px] font-LeagueSpartan text-center text-[#616161]">
-                {addOnsName[index]}
-              </p>
-              <p className="price">
-                {/* <s>{product.priceRange.maxVariantPrice.amount}</s> */}
-                <span className=" font-LeagueSpartanBold lg:text-[16px] text-[#616161]">
-                  ${product.priceRange.minVariantPrice.amount}
-                </span>
-              </p>
-            </label>
-          </div>
-        ))}
+        {addOnsList!.map(({product}, index) => {
+          const item = product?.variants.nodes[0];
+          return (
+            <div className="add-on-item" key={index}>
+              <input
+                type="checkbox"
+                name="addons"
+                id={item?.id}
+                value={item?.id}
+                className=""
+              />
+              <label
+                htmlFor={item?.id}
+                className="lg:w-[155px] lg:h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
+              >
+                <div className="img-wrapper lg:w-[70px] lg:h-auto lg:mb-[10px] object-contain flex items-center justify-center">
+                  <LazyImage
+                    alt={item?.image?.altText!}
+                    pcImg={item?.image?.url}
+                  />
+                </div>
+                <p className="title lg:text-[13px] font-LeagueSpartan text-center text-[#616161]">
+                  {addOnsName[index]}
+                </p>
+                <div className="price">
+                  {/* <s>{product.priceRange.maxVariantPrice.amount}</s> */}
+                  <span className="font-LeagueSpartanBold lg:text-[16px] text-[#616161]">
+                    <Money data={item?.price!} />
+                  </span>
+                </div>
+              </label>
+            </div>
+          );
+        })}
       </div>
     </>
   );

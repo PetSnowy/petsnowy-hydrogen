@@ -50,15 +50,19 @@ export type LayoutProps = {
   };
 };
 
+const excludePageFooter = ['/custom'];
+
 export function Layout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
+  const {pathname} = useLocation();
+  const showFooter = excludePageFooter.includes(pathname);
   return (
     <div className="root flex flex-col min-h-screen">
       {headerMenu && layout?.shop.name && <Header title={layout.shop.name} />}
       <main role="main" id="mainContent" className="flex-grow">
         {children}
       </main>
-      {footerMenu && <Footer menu={footerMenu} />}
+      {footerMenu && !showFooter && <Footer menu={footerMenu} />}
     </div>
   );
 }
@@ -296,7 +300,9 @@ function MobileHeader({
     <header
       role="banner"
       className={`mb-header justify-between z-[100] flex items-center container top-0 ${
-        isHome ? 'bg-transparent index fixed' : 'bg-white sticky'
+        isHome
+          ? 'bg-transparent index fixed'
+          : 'bg-white sticky border-b-[1px] border-[#e5e5e5]'
       } ${headerTop ? 'active' : 'disable'} ${scrollDirection} ${
         innerHeight ? 'none' : 'show'
       }`}
@@ -356,9 +362,9 @@ function DesktopHeader({
   return (
     <header
       role="banner"
-      className={`header ${isHome ? 'index' : ''} ${
-        scroll ? 'active' : 'disable'
-      }`}
+      className={`header ${
+        isHome ? 'index' : 'border-b-[1px] border-[#e5e5e5]'
+      } ${scroll ? 'active' : 'disable'}`}
     >
       <div className="flex items-center justify-between container">
         <div className="flex lg:gap-[135px]">
@@ -425,7 +431,9 @@ function DesktopHeader({
         </div>
         <div className="flex items-center lg:gap-x-[15px]">
           <a
-            href={`${params.locale ? '/' + params.locale + '/cart' : '/cart'}`}
+            href={`${
+              params.locale ? '/' + params.locale + '/custom' : '/custom'
+            }`}
             className={`sm:hidden cart flex items-center justify-center lg:w-[112px] lg:h-[34px] lg:rounded-[16px] uppercase font-LeagueSpartanBold transition hover:opacity-[0.5] ${
               isHome ? ' bg-white text-[#231f20]' : 'bg-[#7e6e5f] text-white'
             }`}
