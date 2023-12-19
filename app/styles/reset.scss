@@ -1,66 +1,73 @@
 @function vw($px-vw, $base-vw: 750px) {
-	@return calc(($px-vw * 100vw) / $base-vw);
+  @return calc(($px-vw * 100vw) / $base-vw);
 }
 
 
 * {
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-	margin: 0px;
-	padding: 0px;
-	line-height: normal;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  margin: 0px;
+  padding: 0px;
+  line-height: normal;
 }
 
 ul,
 ol {
-	list-style: none;
+  list-style: none;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 legend {
-	color: #000;
+  color: #000;
 }
 
 et,
 img {
-	border: 0;
+  border: 0;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 details summary {
-	list-style-type: none;
+  list-style-type: none;
 }
 
 
 .disabled {
-	opacity: 0.65;
-	pointer-events: none;
+  opacity: 0.65;
+  pointer-events: none;
 }
+
+//去除tailwind基础样式
+[type=radio]:checked,
+[type=checkbox]:checked {
+  background-image: none;
+}
+
 
 @media screen and (min-width: 901px) {
 
-	html {
-		min-width: 1200px;
-	}
+  html {
+    min-width: 1200px;
+  }
 
-	.container {
-		width: 1200px;
-		margin: 0px auto;
-		max-width: 1200px;
-	}
+  .container {
+    width: 1200px;
+    margin: 0px auto;
+    max-width: 1200px;
+  }
 }
 
 @media screen and (max-width: 900px) {
-	.container {
-		width: 100%;
-		padding: 0px vw(38px);
-		box-sizing: border-box;
-		max-width: 100%;
-	}
+  .container {
+    width: 100%;
+    padding: 0px vw(38px);
+    box-sizing: border-box;
+    max-width: 100%;
+  }
 }

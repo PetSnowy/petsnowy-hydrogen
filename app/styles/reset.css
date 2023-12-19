@@ -37,6 +37,11 @@ details summary {
   pointer-events: none;
 }
 
+[type=radio]:checked,
+[type=checkbox]:checked {
+  background-image: none;
+}
+
 @media screen and (min-width: 901px) {
   html {
     min-width: 1200px;

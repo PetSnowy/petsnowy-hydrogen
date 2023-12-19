@@ -4,26 +4,29 @@ import {ProductVariantFragmentFragment} from 'storefrontapi.generated';
 import {loader} from '~/routes/($locale).custom';
 import {LazyImage} from '../Common';
 import {Money} from '@shopify/hydrogen';
-import store, {addOption, setProductImg} from './store';
+import store, {setSelectedProduct, setProductImg} from './store';
 
 function ProductForm({
   variants,
 }: {
   variants: Array<ProductVariantFragmentFragment>;
 }) {
-  const [clickIndex, setClickIndex] = useState(0);
+  const [clickIndex, setClickIndex] = useState(-1);
   const handleClick = (item: ProductVariantFragmentFragment, index: number) => {
     if (index === clickIndex) return;
     setClickIndex(index);
     store.dispatch(setProductImg(item.image?.url));
-    store.dispatch(addOption(item));
+    store.dispatch(setSelectedProduct(item));
   };
-  useEffect(() => {
-    store.subscribe(() => store.getState().selectedOptions.options);
-  });
+
   return variants.map((item, index) => (
     <Fragment key={index}>
-      <input type="radio" name="product" id={item.id} />
+      <input
+        type="radio"
+        name="product"
+        id={item.id}
+        onChange={() => setClickIndex(index)}
+      />
       <label
         htmlFor={item.id}
         className="flex"

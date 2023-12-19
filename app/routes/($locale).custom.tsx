@@ -90,12 +90,13 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 }
 
 export default function customRouter() {
-  const [imgUrl, setImgUrl] = useState<string>(defaultImg);
+  const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
   useEffect(() => {
     store.subscribe(() =>
       setImgUrl(store.getState().selectedOptions.productImg),
     );
-  }, [imgUrl]);
+  }, []);
+
   return (
     <div
       className="bg-[#ece2da] w-[100%] lg:grid lg:grid-cols-3"
@@ -105,7 +106,7 @@ export default function customRouter() {
         <div className="lg:rounded-[20px] overflow-hidden bg-white">
           <LazyImage
             alt="petsnowy"
-            pcImg={imgUrl}
+            pcImg={imgUrl ?? defaultImg}
             className="object-contain lg:h-[600px]"
           />
           <div className=""></div>

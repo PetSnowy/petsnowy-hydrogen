@@ -1,15 +1,18 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductVariantFragmentFragment } from 'storefrontapi.generated';
+import { AddOnsType } from '~/lib/type';
 
 interface SelectedOptionsState {
-  options: ProductVariantFragmentFragment[];
-  productImg: string;
+  addOnsOptions: AddOnsType[];
+  productImg: undefined;
+  selectedProduct: ProductVariantFragmentFragment | null;
   step: number
 }
 
 const initialState: SelectedOptionsState = {
-  options: [],
-  productImg: '',
+  addOnsOptions: [],
+  selectedProduct: null,
+  productImg: undefined,
   step: 0
 };
 
@@ -18,28 +21,52 @@ const selectedOptionsSlice = createSlice({
   initialState,
   reducers: {
     addOption: (state, action) => {
-      const { options } = state;
-      if (state.step === 0) {
-        options.push(action.payload)
-        return
+      const { addOnsOptions } = state;
+      addOnsOptions.push(action.payload)
+    },
+    removeOption: (state, action) => {
+      const { addOnsOptions } = state;
+      const index = addOnsOptions.findIndex(addOns => addOns?.id === action.payload.id);
+      addOnsOptions.splice(index, 1);
+    },
+    resetOption: (state) => {
+      state.addOnsOptions = [];
+    },
+
+    setOptionQuantity: (state, action) => {
+      const { id, quantity } = action.payload
+      const { addOnsOptions } = state
+      let left = 0, right = addOnsOptions.length - 1;
+      while (left < right) {
+        if (addOnsOptions[left]!.id === id) {
+          addOnsOptions[left]!.quantity = quantity
+          break;
+        }
+        if (addOnsOptions[right]!.id === id) {
+          addOnsOptions[right]!.quantity = quantity
+          break;
+        }
+        left++
+        right--
       }
-      const findIndex = options.findIndex((option) => option.id === action.payload.id);
-      if (findIndex === -1) {
-        options.push(action.payload);
-      } else {
-        options[findIndex] = action.payload;
+      if (left === right && addOnsOptions[left]!.id === id) {
+        addOnsOptions[left]!.quantity = quantity
       }
     },
+
     setProductImg: (state, action) => {
       state.productImg = action.payload;
     },
     setStep: (state, action) => {
       state.step = action.payload;
-    }
-  },
+    },
+    setSelectedProduct: (state, action) => {
+      state.selectedProduct = action.payload;
+    },
+  }
 });
 
-export const { addOption, setProductImg, setStep } = selectedOptionsSlice.actions;
+export const { addOption, removeOption, resetOption, setOptionQuantity, setProductImg, setStep, setSelectedProduct } = selectedOptionsSlice.actions;
 
 const store = configureStore({
   reducer: {
