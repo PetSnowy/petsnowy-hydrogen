@@ -1,18 +1,20 @@
-import {useState, Fragment, useEffect, useMemo} from 'react';
+import {useState, Fragment, useEffect} from 'react';
 import AddOns from './AddOns';
 import Product from './Product';
 import Summary from './Summary';
 import store, {setStep} from './store';
 import {getActiveHeaderHeight} from '~/lib/utils';
-import {
-  CartProvider,
-  useCart,
-  CartCheckoutButton,
-} from '@shopify/hydrogen-react';
+import {AddToCartButton} from '~/components';
+import {CartLineInput} from '@shopify/hydrogen/storefront-api-types';
 
 type Step = {
   name: string;
   components: JSX.Element[];
+};
+
+type ProductMap = {
+  merchandiseId: string;
+  quantity: number;
 };
 
 const step: Step[] = [
@@ -24,6 +26,7 @@ const step: Step[] = [
 export default function Aside() {
   const [selectStep, setSelectStep] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
+  const [lines, setLines] = useState<CartLineInput[]>();
 
   const handleClick = (index: number) => {
     setSelectStep(index);
@@ -43,8 +46,23 @@ export default function Aside() {
     });
   }, []);
 
-  const handleCheckout = () => {
-    console.log(store.getState().selectedOptions.addOnsOptions);
+  const handleAddCart = () => {
+    const list = store.getState().selectedOptions.addOnsOptions;
+    const selectedProduct = store.getState().selectedOptions.selectedProduct;
+    if (!list.length) return;
+
+    const result: ProductMap[] = [];
+    result.push({merchandiseId: selectedProduct!.id, quantity: 1});
+
+    list.forEach((item) => {
+      const productMap: ProductMap = {
+        merchandiseId: item!.id,
+        quantity: item!.quantity!,
+      };
+      result.push(productMap);
+    });
+
+    setLines([...result]);
   };
 
   const handlePrevious = () => {
@@ -88,14 +106,20 @@ export default function Aside() {
       <div className="footer bottom-0 left-0 w-full lg:h-[200px] bg-[#f4f4f4]">
         <p>total {`${total}`}</p>
         <div
-          className="lg:w-[100px] lg:h-[30px] bg-red-50 text-[red] cursor-pointer"
+          className="bg-red-50 cursor-pointer"
           onClick={() =>
             selectStep === step.length - 1
-              ? handleCheckout()
+              ? handleAddCart()
               : setSelectStep(selectStep + 1)
           }
         >
-          {selectStep === step.length - 1 ? 'checkout' : 'Next step'}
+          {selectStep === step.length - 1 ? (
+            <AddToCartButton lines={lines!} disabled={false}>
+              Add to cart
+            </AddToCartButton>
+          ) : (
+            'Next step'
+          )}
         </div>
         <div
           className={`${selectStep === 0 ? 'hidden' : ''}`}
@@ -105,20 +129,5 @@ export default function Aside() {
         </div>
       </div>
     </aside>
-  );
-}
-
-function CartComponent() {
-  const {linesAdd, status} = useCart();
-
-  const merchandise = {
-    merchandiseId: '44550969590082',
-  };
-
-  return (
-    <div>
-      Cart Status: {status}
-      <button onClick={() => linesAdd([merchandise])}>Add Line</button>
-    </div>
   );
 }

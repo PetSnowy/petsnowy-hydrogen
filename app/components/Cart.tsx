@@ -63,8 +63,6 @@ export function CartDetails({
     page: 'w-full pb-12 grid md:grid-cols-2 md:items-start gap-8 md:gap-8 lg:gap-12',
   };
 
-  console.log(cart, 'cart');
-
   return (
     <div className={container[layout]}>
       <CartLines lines={cart?.lines} layout={layout} onClose={onClose} />
