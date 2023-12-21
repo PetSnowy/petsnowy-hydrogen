@@ -8,23 +8,27 @@ import {LazyImage} from '~/components/Common';
 import {getActiveHeaderHeight} from '~/lib/utils';
 import defaultImg from '~/assets/product/classic_show.png';
 import cartStyle from '~/styles/custom/index.css';
-import {MEDIA_FRAGMENT} from '~/data/fragments';
-import {getSelectedProductOptions} from '@shopify/hydrogen';
+import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {
+  getPaginationVariables,
+  getSelectedProductOptions,
+} from '@shopify/hydrogen';
 import Aside from '~/components/custom/Aside';
 import {useEffect, useState} from 'react';
 import store from '~/components/custom/store';
 import {IconFreight, IconTrial, IconWarranty} from '~/components/Icon';
+import {SortParam} from '~/components/SortFilter';
+import { ProductCollectionSortKeys } from '@shopify/hydrogen/storefront-api-types';
 
 export const links: LinksFunction = () => {
   return [{rel: 'stylesheet', href: cartStyle}];
 };
 
-export async function loader({request, context}: LoaderFunctionArgs) {
+export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {storefront} = context;
-
+  const searchParams = new URL(request.url).searchParams;
   const productHandle =
-    new URL(request.url).searchParams.get('product') ??
-    'snow-self-cleaning-litter-box';
+    searchParams.get('product') ?? 'snow-self-cleaning-litter-box';
 
   // 获取选中的变体
   const selectedOptions = getSelectedProductOptions(request);
@@ -56,6 +60,9 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       metafieldNamespace: 'custom',
     },
   });
+  // 获取产品系列
+
+
 
   //获取addons产品的handle
   const metafieldAddOnsList: any = JSON.parse(addOnsId.product.metafield.value);
@@ -310,3 +317,75 @@ fragment ProductVariant on ProductVariant {
   title
 }
 `;
+
+const COLLECTION_QUERY = `#graphql
+  query CollectionDetails(
+    $handle: String!
+    $country: CountryCode
+    $language: LanguageCode
+    $filters: [ProductFilter!]
+    $sortKey: ProductCollectionSortKeys!
+    $reverse: Boolean
+    $first: Int
+    $last: Int
+    $startCursor: String
+    $endCursor: String
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      id
+      handle
+      title
+      description
+      seo {
+        description
+        title
+      }
+      image {
+        id
+        url
+        width
+        height
+        altText
+      }
+      products(
+        first: $first,
+        last: $last,
+        before: $startCursor,
+        after: $endCursor,
+        filters: $filters,
+        sortKey: $sortKey,
+        reverse: $reverse
+      ) {
+        filters {
+          id
+          label
+          type
+          values {
+            id
+            label
+            count
+            input
+          }
+        }
+        nodes {
+          ...ProductCard
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          endCursor
+          startCursor
+        }
+      }
+    }
+    collections(first: 100) {
+      edges {
+        node {
+          title
+          handle
+        }
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;

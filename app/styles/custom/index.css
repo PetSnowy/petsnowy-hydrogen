@@ -35,15 +35,16 @@
     width: 15px;
     height: 15px;
   }
-  .summary-title {
-    margin-bottom: 10px;
+  .summary-title,
+  .summary-product {
+    margin-bottom: 20px;
   }
   .product,
   .addons,
   .addOns-item {
     display: flex;
     flex-wrap: wrap;
-    row-gap: 10px;
+    row-gap: 15px;
   }
   .product .product-item,
   .product .addons-item,
@@ -57,7 +58,7 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 15px;
   }
   .product-content,
   .content,
@@ -88,9 +89,6 @@
   .product-info p {
     margin-bottom: 10px;
   }
-  .summary-product {
-    margin-bottom: 10px;
-  }
   .quantity {
     margin-top: auto;
     width: fit-content;
@@ -109,6 +107,32 @@
     height: 40px;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
+  }
+  .step,
+  .addOns-title,
+  .summary-title,
+  .product-title,
+  .change {
+    font-size: 20px;
+  }
+  .change-item {
+    position: relative;
+  }
+  .change-item::after {
+    bottom: -2px;
+    content: "";
+    background: #1d1d1d;
+    display: block;
+    height: 3px;
+    position: absolute;
+    right: 0;
+    transition: all 0.3s ease-in-out;
+    width: 0;
+  }
+  .change-item:hover::after {
+    left: 0;
+    right: auto;
+    width: 100%;
   }
   .footer .total {
     display: flex;

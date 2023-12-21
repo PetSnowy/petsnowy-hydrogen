@@ -9,7 +9,9 @@ import {IconCheckout} from '../Icon';
 
 function ProductForm({
   variants,
+  productTitle,
 }: {
+  productTitle: string;
   variants: Array<ProductVariantFragmentFragment>;
 }) {
   const [clickIndex, setClickIndex] = useState(-1);
@@ -20,6 +22,7 @@ function ProductForm({
     store.dispatch(setSelectedProduct(item));
   };
   const [step, setStep] = useState<number>(0);
+  const [changeProduct, setChangeProduct] = useState<boolean>(false);
   const [selectProduct, setSelectProduct] =
     useState<ProductVariantFragmentFragment | null>(null);
 
@@ -35,8 +38,22 @@ function ProductForm({
     }
   }, [step]);
 
+  const handleChangeProduct = () => {
+    setChangeProduct(true);
+  };
+
   return (
     <div className="product">
+      <div className="change flex items-center w-full justify-between">
+        <p className="product-title">{productTitle}</p>
+        <div
+          className="change-item cursor-pointer"
+          onClick={handleChangeProduct}
+        >
+          Change
+        </div>
+      </div>
+      {changeProduct && <ChangeProduct />}
       {variants.map((item, index) => (
         <div className="product-item" key={index}>
           <input
@@ -80,14 +97,23 @@ function ProductForm({
   );
 }
 
+function ChangeProduct() {
+  return <div className="change-product">ChangeProduct</div>;
+}
+
 export default function Product() {
-  const {variants} = useLoaderData<typeof loader>();
+  const {variants, product} = useLoaderData<typeof loader>();
   return (
     <Await
       resolve={variants}
       errorElement="There was a problem loading product variants"
     >
-      {(data) => <ProductForm variants={data.product?.variants.nodes || []} />}
+      {(data) => (
+        <ProductForm
+          variants={data.product?.variants.nodes || []}
+          productTitle={product?.title ? product.title : ''}
+        />
+      )}
     </Await>
   );
 }
