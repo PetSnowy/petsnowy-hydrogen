@@ -52,6 +52,7 @@
   }
   .LitterBox .product-price div {
     color: #d75f23;
+    font-family: LeagueSpartanBlack;
   }
   .LitterBox .product-price s,
   .LitterBox .product-price s div {

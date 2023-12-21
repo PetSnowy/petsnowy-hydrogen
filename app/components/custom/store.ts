@@ -13,7 +13,7 @@ const initialState: SelectedOptionsState = {
   addOnsOptions: [],
   selectedProduct: null,
   productImg: undefined,
-  step: 0
+  step: 0,
 };
 
 const selectedOptionsSlice = createSlice({
@@ -33,24 +33,11 @@ const selectedOptionsSlice = createSlice({
       state.addOnsOptions = [];
     },
 
-    setOptionQuantity: (state, action) => {
+    changeSelectAddOnsQuantity: (state, action) => {
       const { id, quantity } = action.payload
-      const { addOnsOptions } = state
-      let left = 0, right = addOnsOptions.length - 1;
-      while (left < right) {
-        if (addOnsOptions[left]!.id === id) {
-          addOnsOptions[left]!.quantity = quantity
-          break;
-        }
-        if (addOnsOptions[right]!.id === id) {
-          addOnsOptions[right]!.quantity = quantity
-          break;
-        }
-        left++
-        right--
-      }
-      if (left === right && addOnsOptions[left]!.id === id) {
-        addOnsOptions[left]!.quantity = quantity
+      const target = state.addOnsOptions.find((item) => item!.id === id)
+      if (target) {
+        target.quantity = quantity
       }
     },
 
@@ -66,7 +53,15 @@ const selectedOptionsSlice = createSlice({
   }
 });
 
-export const { addOption, removeOption, resetOption, setOptionQuantity, setProductImg, setStep, setSelectedProduct } = selectedOptionsSlice.actions;
+export const {
+  addOption,
+  removeOption,
+  resetOption,
+  setProductImg,
+  setStep,
+  setSelectedProduct,
+  changeSelectAddOnsQuantity
+} = selectedOptionsSlice.actions;
 
 const store = configureStore({
   reducer: {

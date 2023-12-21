@@ -13,6 +13,7 @@ import {getSelectedProductOptions} from '@shopify/hydrogen';
 import Aside from '~/components/custom/Aside';
 import {useEffect, useState} from 'react';
 import store from '~/components/custom/store';
+import {IconFreight, IconTrial, IconWarranty} from '~/components/Icon';
 
 export const links: LinksFunction = () => {
   return [{rel: 'stylesheet', href: cartStyle}];
@@ -44,6 +45,8 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       language: storefront.i18n.language,
     },
   });
+  // 获取当前产品的变体描述详情
+
   // 获取addons产品
   const addOnsId = await storefront.query(GET_METAFIELD_LIST, {
     cache: storefront.CacheLong(),
@@ -89,8 +92,15 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   });
 }
 
+const strategy = [
+  {name: 'US Free Delivery Over $49', img: <IconFreight />},
+  {name: '30-Day Home Trial', img: <IconTrial />},
+  {name: '12-Month Warranty', img: <IconWarranty />},
+];
+
 export default function customRouter() {
   const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
+
   useEffect(() => {
     store.subscribe(() =>
       setImgUrl(store.getState().selectedOptions.productImg),
@@ -102,14 +112,27 @@ export default function customRouter() {
       className="bg-[#ece2da] w-[100%] lg:grid lg:grid-cols-3"
       style={{height: `calc(100vh - ${getActiveHeaderHeight()}px)`}}
     >
-      <div className="cart lg:col-start-1 lg:col-end-3 flex items-center justify-center lg:p-[20px]">
-        <div className="lg:rounded-[20px] overflow-hidden bg-white">
-          <LazyImage
-            alt="petsnowy"
-            pcImg={imgUrl ?? defaultImg}
-            className="object-contain lg:h-[600px]"
-          />
-          <div className=""></div>
+      <div className="cart lg:col-start-1 lg:col-end-3 flex items-center justify-center">
+        <div className="overflow-hidden grid flex-col flex-wrap grid-rows-8 grid-cols-1 w-full h-full">
+          <div className="bg-white w-full h-full lg:rounded-[20px] overflow-hidden row-start-1 row-end-5 flex items-center justify-center lg:max-w-[870px] lg:max-h-[570px] m-auto">
+            <LazyImage
+              alt="petsnowy"
+              pcImg={imgUrl ?? defaultImg}
+              className="object-contain block lg:rounded-[20px]"
+            />
+          </div>
+
+          <div className="flex m-auto row-start-7 row-start-8 lg:max-w-[870px] lg:gap-x-[80px]">
+            {strategy.map((item, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center lg:gap-y-[10px]"
+              >
+                {item.img}
+                <p>{item.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <Aside />
@@ -265,3 +288,25 @@ const VARIANTS_QUERY = `#graphql
   }
   ${PRODUCT_VARIANT_FRAGMENT}
 ` as const;
+
+const VARIANT_DESCRIPTION_QUERY = `#graphql
+fragment ProductVariant on ProductVariant {
+  metafield(key: 'variant_description', namespace: 'custom') {
+    id
+    key
+    value
+  }
+  id
+  image {
+    ...Image
+  }
+  price {
+    ...Money
+  }
+  product {
+    handle
+  }
+  sku
+  title
+}
+`;

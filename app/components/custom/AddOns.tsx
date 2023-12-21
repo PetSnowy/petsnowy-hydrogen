@@ -4,87 +4,105 @@ import {loader} from '~/routes/($locale).custom';
 import {LazyImage} from '../Common';
 import {Money} from '@shopify/hydrogen';
 import {AddOnsType} from '~/lib/type';
-import store, {removeOption, addOption, setOptionQuantity} from './store';
+import store, {
+  changeSelectAddOnsQuantity,
+  removeOption,
+  addOption,
+} from './store';
+import {IconCheckout} from '../Icon';
+import Quantity from './Quantity';
 
 export default function AddOns() {
   const {addOnsList} = useLoaderData<typeof loader>();
 
-  const [quantity] = useState<number>(1);
+  const [clearAddOnsList, setClearAddOnsList] = useState<AddOnsType[]>([]);
+  // 处理数据
+  useEffect(() => {
+    setClearAddOnsList(
+      addOnsList.map((data) => {
+        const target =
+          data.product && data.product.variants && data.product.variants.nodes
+            ? data.product.variants.nodes[0]
+            : null;
+        return target ? {...target, quantity: 1} : null!;
+      }),
+    );
+  }, []);
 
-  const handleQuantityChange = (id: string, v: number) => {
-    store.dispatch(setOptionQuantity({id, quantity: v}));
+  // 设置选中的数量
+  const handleQuantityChange = (
+    id: string,
+    quantity: number,
+    index: number,
+  ) => {
+    setClearAddOnsList((items) => {
+      const updatedItems = [...items];
+      const item = updatedItems[index];
+      if (item) {
+        const updatedItem = {...item, quantity};
+        updatedItems[index] = updatedItem;
+      }
+      return updatedItems;
+    });
+    // 改变选中的数量
+    store.dispatch(changeSelectAddOnsQuantity({id, quantity}));
   };
+
+  //选中商品
   const handleChange = (item: AddOnsType, e: ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
     checked
-      ? store.dispatch(addOption({...item, quantity}))
+      ? store.dispatch(addOption(item))
       : store.dispatch(removeOption(item));
   };
 
   return (
-    <div>
-      {addOnsList!.map(({product}, index) => {
-        const item = product?.variants.nodes[0];
-        return (
-          <div key={index}>
-            <input
-              type="checkbox"
-              name="add-ons"
-              id={item?.id}
-              onChange={(e) => handleChange(item, e)}
-            />
-            <label htmlFor={item?.id}>
-              <div className="img">
-                <LazyImage
-                  alt="petsnowy"
-                  pcImg={item?.image?.url}
-                  className="lg:w-[70px] lg:h-[70px] object-contain"
-                />
-              </div>
-              <div className="content">
-                <p>{item?.product.title}</p>
-                <Quantity
-                  handleQuantityChange={(_, v) =>
-                    handleQuantityChange(item!.id, v)
-                  }
-                />
-              </div>
-              <div className="add-price">
-                {item?.compareAtPrice && (
-                  <s>
-                    <Money data={item.compareAtPrice} />
-                  </s>
-                )}
-                <Money data={item?.price!} />
-              </div>
-            </label>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function Quantity({
-  handleQuantityChange,
-  quantity,
-}: {
-  handleQuantityChange: (_id: string, v: number) => void;
-  quantity?: number;
-}) {
-  let [setQuantity, setQuantityState] = useState(quantity ?? 1);
-  useEffect(() => {
-    handleQuantityChange('', setQuantity);
-  }, [setQuantity]);
-  return (
-    <div className="quantity">
-      <button
-        onClick={() => setQuantityState(setQuantity === 1 ? 1 : --setQuantity)}
-      >
-        -
-      </button>
-      <span>{setQuantity}</span>
-      <button onClick={() => setQuantityState(++setQuantity)}>+</button>
+    <div className="addons">
+      {clearAddOnsList.length &&
+        clearAddOnsList.map((item, index) => {
+          return (
+            <div className="addons-item" key={index}>
+              <input
+                type="checkbox"
+                name="add-ons"
+                id={item?.id}
+                onChange={(e) => handleChange(item!, e)}
+              />
+              <label
+                htmlFor={item?.id}
+                className="flex border-[1px] border-[#e9e9e9] border-solid lg:rounded-[10px]"
+              >
+                <div className="img flex items-center justify-center">
+                  <LazyImage
+                    alt="petsnowy"
+                    pcImg={item?.image?.url}
+                    className="lg:w-[70px] lg:h-[70px] object-contain"
+                  />
+                </div>
+                <div className="content">
+                  <p className="lg:mb-[5px]">{item?.product.title}</p>
+                  <Quantity
+                    initialQuantity={item?.quantity!}
+                    handleQuantityChange={(quantity) =>
+                      handleQuantityChange(item?.id!, quantity, index)
+                    }
+                  />
+                </div>
+                <div className="add-price">
+                  {item?.compareAtPrice && (
+                    <s>
+                      <Money data={item.compareAtPrice} />
+                    </s>
+                  )}
+                  <Money data={item?.price!} />
+                </div>
+                <div className="check">
+                  <IconCheckout />
+                </div>
+              </label>
+            </div>
+          );
+        })}
     </div>
   );
 }
