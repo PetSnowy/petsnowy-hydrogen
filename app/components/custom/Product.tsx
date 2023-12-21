@@ -19,14 +19,21 @@ function ProductForm({
     store.dispatch(setProductImg(item.image?.url));
     store.dispatch(setSelectedProduct(item));
   };
-  // const [id, setId] = useState('');
+  const [step, setStep] = useState<number>(0);
+  const [selectProduct, setSelectProduct] =
+    useState<ProductVariantFragmentFragment | null>(null);
 
-  // useEffect(() => {
-  //   store.subscribe(() => {
-  //     const id = store.getState().selectedOptions.selectedProduct?.id;
-  //     setId(id ? id : '');
-  //   });
-  // });
+  useEffect(() => {
+    store.subscribe(() => {
+      setStep(store.getState().selectedOptions.step);
+      setSelectProduct(store.getState().selectedOptions.selectedProduct);
+    });
+    if (step === 2 && !selectProduct) {
+      // 当用户没有选中主产品时 到最后一步自动添加 主产品的第一个变体
+      store.dispatch(setProductImg(variants[0].image?.url));
+      store.dispatch(setSelectedProduct(variants[0]));
+    }
+  }, [step]);
 
   return (
     <div className="product">
@@ -37,7 +44,7 @@ function ProductForm({
             name="product"
             id={item.id}
             onChange={() => setClickIndex(index)}
-            // checked={id === item.id}
+            checked={item.id === selectProduct?.id ? true : false}
           />
           <label
             htmlFor={item.id}

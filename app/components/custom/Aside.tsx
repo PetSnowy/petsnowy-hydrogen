@@ -10,7 +10,6 @@ import {
   CurrencyCode,
 } from '@shopify/hydrogen/storefront-api-types';
 import {Money} from '@shopify/hydrogen';
-import {useShop} from '@shopify/hydrogen-react';
 
 type Step = {
   name: string;
@@ -22,6 +21,11 @@ type ProductMap = {
   quantity: number;
 };
 
+type MoneyType = {
+  amount: string;
+  currencyCode: CurrencyCode;
+};
+
 const step: Step[] = [
   {name: '1. Product', components: [<Product />]},
   {name: '2. Add-ons', components: [<AddOns />]},
@@ -31,30 +35,49 @@ const step: Step[] = [
 export default function Aside() {
   const [selectStep, setSelectStep] = useState<number>(0);
   const [lines, setLines] = useState<CartLineInput[]>();
-  const [money, setMoney] = useState<{
-    amount: string;
-    currencyCode: CurrencyCode;
-  }>({
+
+  const [money, setMoney] = useState<MoneyType>({
+    amount: '0',
+    currencyCode: 'USD',
+  });
+
+  const [compareMoney, setCompareMoney] = useState<MoneyType>({
     amount: '0',
     currencyCode: 'USD',
   });
 
   const handleClick = (index: number) => {
     setSelectStep(index);
+    store.dispatch(setStep(index));
   };
 
   useEffect(() => {
     store.subscribe(() => {
-      const addOnsList = store.getState().selectedOptions.addOnsOptions;
+      const list = store.getState().selectedOptions.addOnsOptions;
       const selectedProduct = store.getState().selectedOptions.selectedProduct;
       let sum = 0;
-      for (let i = 0; i < addOnsList!.length; i++) {
-        const item = addOnsList[i]!;
-        sum += Number(item.price.amount) * Number(addOnsList[i]!.quantity);
+      let compareMoney = 0;
+      for (let i = 0; i < list!.length; i++) {
+        const item = list[i]!;
+        const quantity = Number(list[i]!.quantity);
+        sum += Number(item.price.amount) * quantity;
+        if (item.compareAtPrice) {
+          compareMoney += Number(item.compareAtPrice.amount) * quantity;
+        } else {
+          compareMoney += Number(item.price.amount) * quantity;
+        }
       }
-      if (selectedProduct) sum += Number(selectedProduct.price.amount);
+      if (selectedProduct) {
+        sum += Number(selectedProduct.price.amount);
+        if (selectedProduct.compareAtPrice) {
+          compareMoney += Number(selectedProduct.compareAtPrice.amount);
+        } else {
+          compareMoney += Number(selectedProduct.price.amount);
+        }
+      }
       const currencyCode = selectedProduct?.price.currencyCode ?? 'USD';
       setMoney({amount: String(sum), currencyCode});
+      setCompareMoney({amount: String(compareMoney), currencyCode});
     });
   }, []);
 
@@ -62,8 +85,12 @@ export default function Aside() {
     const list = store.getState().selectedOptions.addOnsOptions;
     const selectedProduct = store.getState().selectedOptions.selectedProduct;
 
+    if (!selectedProduct && !list.length) {
+      return;
+    }
     const result: ProductMap[] = [];
-    result.push({merchandiseId: selectedProduct!.id, quantity: 1});
+    selectedProduct &&
+      result.push({merchandiseId: selectedProduct!.id, quantity: 1});
 
     list.length &&
       list.forEach((item) => {
@@ -95,7 +122,9 @@ export default function Aside() {
       <div className="step flex lg:gap-x-[20px] lg:py-[30px] lg:px-[40px] items-center lg:border-b-[1px] border-b-[#e5e5e5]">
         {step.map((item, index) => (
           <div
-            className="step-item cursor-pointer"
+            className={`step-item transition-all cursor-pointer ${
+              index > selectStep ? 'opacity-[0.3]' : ''
+            }`}
             key={index}
             onClick={() => handleClick(index)}
           >
@@ -103,7 +132,7 @@ export default function Aside() {
           </div>
         ))}
       </div>
-      <div className="custom-content content flex-grow lg:px-[40px] lg:py-[20px] lg:overflow-auto">
+      <div className="custom-content scrollbar flex-grow lg:px-[40px] lg:py-[20px] lg:overflow-auto">
         {step.map((item, index) => (
           <div
             key={index}
@@ -114,36 +143,42 @@ export default function Aside() {
             ))}
           </div>
         ))}
-        {/* {step[selectStep].components.map((item, index) => (
-          <Fragment key={index}>{item}</Fragment>
-        ))} */}
       </div>
-      <div className="footer bottom-0 left-0 w-full lg:h-[200px] bg-[#f4f4f4]">
-        <div className="">
+      <div className="footer bottom-0 left-0 w-full bg-[#f4f4f4]">
+        <div className="total">
           <p>total</p>
-          <Money data={money} />
+          <div className="price">
+            {compareMoney.amount !== money.amount && (
+              <s>
+                <Money data={compareMoney} />
+              </s>
+            )}
+            <Money data={money} />
+          </div>
         </div>
-        <div
-          className="bg-red-50 cursor-pointer"
-          onClick={() =>
-            selectStep === step.length - 1
-              ? handleAddCart()
-              : setSelectStep(selectStep + 1)
-          }
-        >
-          {selectStep === step.length - 1 ? (
-            <AddToCartButton lines={lines!} disabled={false}>
-              Add to cart
-            </AddToCartButton>
-          ) : (
-            'Next step'
-          )}
-        </div>
-        <div
-          className={`${selectStep === 0 ? 'hidden' : ''}`}
-          onClick={handlePrevious}
-        >
-          Previous step
+        <div className="btn">
+          <div
+            className="cursor-pointer next-step relative"
+            onClick={() =>
+              selectStep === step.length - 1
+                ? handleAddCart()
+                : handleClick(selectStep + 1)
+            }
+          >
+            {selectStep === step.length - 1 ? (
+              <AddToCartButton lines={lines!}>Add to cart</AddToCartButton>
+            ) : (
+              'Next step'
+            )}
+          </div>
+          <div
+            className={`${
+              selectStep === 0 ? 'hidden' : ''
+            } cursor-pointer last-step`}
+            onClick={handlePrevious}
+          >
+            Previous step
+          </div>
         </div>
       </div>
     </aside>

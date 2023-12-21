@@ -14,8 +14,9 @@ import Quantity from './Quantity';
 
 export default function AddOns() {
   const {addOnsList} = useLoaderData<typeof loader>();
-
+  const [step, setStep] = useState<number>(0);
   const [clearAddOnsList, setClearAddOnsList] = useState<AddOnsType[]>([]);
+  const [selectList, setSelectList] = useState<AddOnsType[]>();
   // 处理数据
   useEffect(() => {
     setClearAddOnsList(
@@ -48,6 +49,14 @@ export default function AddOns() {
     store.dispatch(changeSelectAddOnsQuantity({id, quantity}));
   };
 
+  // 当选中的值发生变化
+  useEffect(() => {
+    store.subscribe(() => {
+      setStep(store.getState().selectedOptions.step);
+      setSelectList(store.getState().selectedOptions.addOnsOptions);
+    });
+  }, [step]);
+
   //选中商品
   const handleChange = (item: AddOnsType, e: ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
@@ -60,6 +69,7 @@ export default function AddOns() {
     <div className="addons">
       {clearAddOnsList.length &&
         clearAddOnsList.map((item, index) => {
+          const selectValue = selectList?.find((v) => v?.id === item?.id);
           return (
             <div className="addons-item" key={index}>
               <input
@@ -67,6 +77,7 @@ export default function AddOns() {
                 name="add-ons"
                 id={item?.id}
                 onChange={(e) => handleChange(item!, e)}
+                checked={selectValue ? true : false}
               />
               <label
                 htmlFor={item?.id}
@@ -82,7 +93,9 @@ export default function AddOns() {
                 <div className="content">
                   <p className="lg:mb-[5px]">{item?.product.title}</p>
                   <Quantity
-                    initialQuantity={item?.quantity!}
+                    initialQuantity={
+                      selectValue ? selectValue?.quantity! : item?.quantity!
+                    }
                     handleQuantityChange={(quantity) =>
                       handleQuantityChange(item?.id!, quantity, index)
                     }

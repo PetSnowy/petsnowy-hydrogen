@@ -1,15 +1,4 @@
 @media screen and (min-width: 901px) {
-  .custom-content::-webkit-scrollbar {
-    width: 4px;
-    border-radius: 10px;
-  }
-  .custom-content::-webkit-scrollbar-thumb {
-    background: #231f20;
-    border-radius: 10px;
-  }
-  .custom-content::-webkit-scrollbar-track {
-    background: #fff;
-  }
   .custom-content input {
     display: none;
   }
@@ -46,8 +35,12 @@
     width: 15px;
     height: 15px;
   }
+  .summary-title {
+    margin-bottom: 10px;
+  }
   .product,
-  .addons {
+  .addons,
+  .addOns-item {
     display: flex;
     flex-wrap: wrap;
     row-gap: 10px;
@@ -55,8 +48,16 @@
   .product .product-item,
   .product .addons-item,
   .addons .product-item,
-  .addons .addons-item {
+  .addons .addons-item,
+  .addOns-item .product-item,
+  .addOns-item .addons-item {
     width: 100%;
+  }
+  .addOns {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    row-gap: 10px;
   }
   .product-content,
   .content,
@@ -79,6 +80,17 @@
     flex-wrap: wrap;
     flex-direction: column;
   }
+  .addOns-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .product-info p {
+    margin-bottom: 10px;
+  }
+  .summary-product {
+    margin-bottom: 10px;
+  }
   .quantity {
     margin-top: auto;
     width: fit-content;
@@ -88,6 +100,67 @@
   .quantity button {
     width: 40px;
     height: 40px;
+  }
+  .quantity .quantity-text {
+    padding: 0px 5px;
+  }
+  .remove {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+  }
+  .footer .total {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .footer .total p,
+  .footer .total div {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+  .footer .btn {
+    display: flex;
+    padding: 20px 40px 20px;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    overflow: hidden;
+  }
+  .footer .btn button {
+    all: unset;
+    width: 135px;
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer .price {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+  .footer .price s {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .footer [class*=step] {
+    width: 135px;
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1d1d1d;
+    color: #fff;
+    transition: all 0.3s ease;
+    border-radius: 30px;
+    border: 1px solid transparent;
+  }
+  .footer [class*=step]:hover {
+    border-color: #1d1d1d;
+    background-color: #fff;
+    color: #1d1d1d;
   }
 }
 @keyframes draw {

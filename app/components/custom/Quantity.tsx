@@ -9,6 +9,10 @@ export default function Quantity({
 }) {
   let [setQuantity, setQuantityState] = useState(initialQuantity);
 
+  useEffect(() => {
+    setQuantityState(initialQuantity);
+  }, [initialQuantity]);
+
   const handleIncrease = () => {
     setQuantityState(setQuantity + 1);
     handleQuantityChange(setQuantity + 1);
