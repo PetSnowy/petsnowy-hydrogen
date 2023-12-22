@@ -258,7 +258,7 @@ export default function Product() {
                 </div>
                 <ProductPrice
                   selectedVariant={product.selectedVariant}
-                  className="lg:my-[20px]"
+                  className="lg:my-[20px] sm:my-[10px]"
                 />
                 <Suspense fallback={<ProductForm variants={[]} />}>
                   <Await

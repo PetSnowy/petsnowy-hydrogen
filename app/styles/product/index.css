@@ -58,6 +58,13 @@
   .LitterBox .product-price s div {
     color: #7e6e5f;
   }
+  .LitterBox .price div {
+    font-family: LeagueSpartan;
+  }
+  .LitterBox .price s,
+  .LitterBox .price s div {
+    color: #7e6e5f;
+  }
   .LitterBox .select-color .select-color-item label {
     border-radius: 12px;
     background: #FFFFFF;
@@ -303,6 +310,17 @@
     margin-left: 2.1333333333vw;
   }
   .LitterBox .product-price s div {
+    color: #7E6E5F;
+  }
+  .LitterBox .price div {
+    font-size: 3.8666666667vw;
+    font-family: LeagueSpartan;
+  }
+  .LitterBox .price s {
+    color: #7E6E5F;
+    margin-left: 2.1333333333vw;
+  }
+  .LitterBox .price s div {
     color: #7E6E5F;
   }
   .LitterBox .select-color {

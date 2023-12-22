@@ -1,26 +1,28 @@
+.hidden {
+  display: none !important;
+}
+
+.custom-content input {
+  display: none;
+}
+.custom-content input:checked + label {
+  border-color: #353535;
+}
+.custom-content input:checked + label .check {
+  display: flex;
+}
+.custom-content input:checked + label svg path {
+  stroke: #353535;
+  stroke-width: 30;
+  fill: none;
+  animation: draw 2s ease forwards;
+}
+
 @media screen and (min-width: 901px) {
-  .hidden {
-    display: none !important;
-  }
-  .custom-content input {
-    display: none;
-  }
   .custom-content label {
     transition: all 0.3s ease;
     position: relative;
     padding: 10px;
-  }
-  .custom-content input:checked + label {
-    border-color: #353535;
-  }
-  .custom-content input:checked + label .check {
-    display: flex;
-  }
-  .custom-content input:checked + label svg path {
-    stroke: #353535;
-    stroke-width: 30;
-    fill: none;
-    animation: draw 2s ease forwards;
   }
   .custom-content .check {
     width: 30px;
@@ -205,6 +207,208 @@
     border: 1px solid transparent;
   }
   .footer [class*=step]:hover {
+    border-color: #1d1d1d;
+    background-color: #fff;
+    color: #1d1d1d;
+  }
+}
+@media screen and (max-width: 900px) {
+  .cart-wrapper {
+    box-sizing: border-box;
+  }
+  .cart {
+    padding: 8vw 5.0666666667vw;
+  }
+  .cart .cart-img {
+    border-radius: 4vw;
+    overflow: hidden;
+  }
+  .cart .cart-img img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .cart .cart-left {
+    row-gap: 2.6666666667vw;
+  }
+  .cart .strategy {
+    column-gap: 1.3333333333vw;
+  }
+  .cart .strategy svg {
+    margin-bottom: 2vw;
+  }
+  .cart .strategy p {
+    font-size: 3.3333333333vw;
+    text-align: center;
+  }
+  aside .step {
+    column-gap: 2.6666666667vw;
+    padding: 4vw 5.0666666667vw 0px 5.0666666667vw;
+  }
+  aside img {
+    width: 18.6666666667vw;
+    height: 18.6666666667vw;
+    object-fit: contain;
+  }
+  aside label {
+    padding: 2.6666666667vw;
+    border-radius: 1.0666666667vw;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  aside .product,
+  aside .addons {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 4vw;
+  }
+  aside .product .product-item,
+  aside .product .addons-item,
+  aside .addons .product-item,
+  aside .addons .addons-item {
+    width: 100%;
+  }
+  aside .content p {
+    margin-bottom: 2vw;
+  }
+  aside .addOns-item {
+    display: flex;
+    border: 0.2666666667vw solid #e5e7eb;
+    padding: 2.6666666667vw;
+    border-radius: 1.0666666667vw;
+    transition: all 0.3s ease;
+  }
+  aside .addOns {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    row-gap: 4vw;
+  }
+  aside .product-content,
+  aside .content,
+  aside .product-info {
+    margin: 0 2.6666666667vw;
+  }
+  aside .product-pice,
+  aside .add-price,
+  aside .product-price,
+  aside .price {
+    margin-left: auto;
+    font-size: 3.3333333333vw;
+  }
+  aside .product-pice s,
+  aside .add-price s,
+  aside .product-price s,
+  aside .price s {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  aside .summary-title,
+  aside .summary-product,
+  aside .product-info p {
+    margin-bottom: 4vw;
+  }
+  aside .check {
+    width: 5.3333333333vw;
+    height: 5.3333333333vw;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    left: 1.3333333333vw;
+    top: 1.3333333333vw;
+    background-color: #fff;
+    border-radius: 50%;
+    display: none;
+  }
+  aside .check svg {
+    width: 4vw;
+    height: 4vw;
+  }
+  aside .change-product {
+    display: flex;
+    row-gap: 4vw;
+    flex-wrap: wrap;
+  }
+  aside .change-product a {
+    width: 100%;
+    display: block;
+    border: 0.2666666667vw solid #e5e7eb;
+    border-radius: 4px;
+    padding: 2.6666666667vw;
+  }
+  aside .change-product .change-info {
+    margin: 0px 2.6666666667vw;
+  }
+  aside .change-product .change-product-item {
+    display: flex;
+  }
+  aside .change-item {
+    text-decoration: underline;
+  }
+  aside .custom-content {
+    padding: 4vw 5.0666666667vw;
+  }
+  aside .quantity {
+    margin-top: auto;
+    width: fit-content;
+    border: 0.2666666667vw solid #e5e7eb;
+    border-radius: 1.0666666667vw;
+  }
+  aside .quantity button {
+    width: 9.3333333333vw;
+    height: 9.3333333333vw;
+  }
+  aside .quantity .quantity-text {
+    padding: 0px 1.3333333333vw;
+  }
+  aside .footer .total {
+    display: flex;
+    justify-content: space-between;
+    padding: 4vw 5.0666666667vw;
+    border-bottom: 0.2666666667vw solid #e5e7eb;
+  }
+  aside .footer .total p,
+  aside .footer .total div {
+    font-size: 4vw;
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+  aside .footer .btn {
+    display: flex;
+    padding: 4vw 5.3333333333vw;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    overflow: hidden;
+  }
+  aside .footer .btn button {
+    all: unset;
+    width: 32vw;
+    height: 13.3333333333vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  aside .footer .price {
+    display: flex;
+    align-items: center;
+    column-gap: 2.6666666667vw;
+  }
+  aside .footer .price s {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  aside .footer [class*=step] {
+    width: 32vw;
+    height: 13.3333333333vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1d1d1d;
+    color: #fff;
+    transition: all 0.3s ease;
+    border-radius: 6.6666666667vw;
+    border: 1px solid transparent;
+  }
+  aside .footer [class*=step]:hover {
     border-color: #1d1d1d;
     background-color: #fff;
     color: #1d1d1d;

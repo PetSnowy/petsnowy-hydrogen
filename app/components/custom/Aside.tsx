@@ -3,7 +3,7 @@ import AddOns from './AddOns';
 import Product from './Product';
 import Summary from './Summary';
 import store, {setStep} from './store';
-import {getActiveHeaderHeight} from '~/lib/utils';
+import {handleResize} from '~/lib/utils';
 import {AddToCartButton} from '~/components';
 import {
   CartLineInput,
@@ -51,34 +51,39 @@ export default function Aside() {
     store.dispatch(setStep(index));
   };
 
+  const asideHeight = handleResize() ? '100%' : 'calc(100vh - 90px)';
+
+  const handleSubscribe = () => {
+    const list = store.getState().selectedOptions.addOnsOptions;
+    const selectedProduct = store.getState().selectedOptions.selectedProduct;
+    let sum = 0;
+    let compareMoney = 0;
+    for (let i = 0; i < list!.length; i++) {
+      const item = list[i]!;
+      const quantity = Number(list[i]!.quantity);
+      sum += Number(item.price.amount) * quantity;
+      if (item.compareAtPrice) {
+        compareMoney += Number(item.compareAtPrice.amount) * quantity;
+      } else {
+        compareMoney += Number(item.price.amount) * quantity;
+      }
+    }
+    if (selectedProduct) {
+      sum += Number(selectedProduct.price.amount);
+      if (selectedProduct.compareAtPrice) {
+        compareMoney += Number(selectedProduct.compareAtPrice.amount);
+      } else {
+        compareMoney += Number(selectedProduct.price.amount);
+      }
+    }
+    const currencyCode = selectedProduct?.price.currencyCode ?? 'USD';
+    setMoney({amount: String(sum), currencyCode});
+    setCompareMoney({amount: String(compareMoney), currencyCode});
+  };
+
   useEffect(() => {
-    store.subscribe(() => {
-      const list = store.getState().selectedOptions.addOnsOptions;
-      const selectedProduct = store.getState().selectedOptions.selectedProduct;
-      let sum = 0;
-      let compareMoney = 0;
-      for (let i = 0; i < list!.length; i++) {
-        const item = list[i]!;
-        const quantity = Number(list[i]!.quantity);
-        sum += Number(item.price.amount) * quantity;
-        if (item.compareAtPrice) {
-          compareMoney += Number(item.compareAtPrice.amount) * quantity;
-        } else {
-          compareMoney += Number(item.price.amount) * quantity;
-        }
-      }
-      if (selectedProduct) {
-        sum += Number(selectedProduct.price.amount);
-        if (selectedProduct.compareAtPrice) {
-          compareMoney += Number(selectedProduct.compareAtPrice.amount);
-        } else {
-          compareMoney += Number(selectedProduct.price.amount);
-        }
-      }
-      const currencyCode = selectedProduct?.price.currencyCode ?? 'USD';
-      setMoney({amount: String(sum), currencyCode});
-      setCompareMoney({amount: String(compareMoney), currencyCode});
-    });
+    const unsubscribe = store.subscribe(handleSubscribe);
+    return () => unsubscribe();
   }, []);
 
   const handleAddCart = () => {
@@ -117,7 +122,7 @@ export default function Aside() {
   return (
     <aside
       className="shopping lg:col-start-3 lg:col-end-4 bg-white w-ful h-full flex flex-col"
-      style={{height: `calc(100vh - ${getActiveHeaderHeight()}px)`}}
+      style={{height: asideHeight}}
     >
       <div className="step flex lg:gap-x-[20px] lg:py-[30px] lg:px-[40px] items-center lg:border-b-[1px] border-b-[#e5e5e5]">
         {step.map((item, index) => (

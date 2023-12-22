@@ -23,6 +23,7 @@ import {
   Link,
   IconArrow,
   IconHeaderArrow,
+  IconMenuArrows,
 } from '~/components';
 import {
   type EnhancedMenu,
@@ -55,7 +56,10 @@ const excludePageFooter = ['/custom'];
 export function Layout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   const {pathname} = useLocation();
-  const showFooter = excludePageFooter.includes(pathname);
+  const name = pathname.split('/').at(-1);
+  const showFooter = excludePageFooter.some((item) =>
+    item.includes(name ?? ''),
+  );
   return (
     <div className="root flex flex-col min-h-screen">
       {headerMenu && layout?.shop.name && <Header title={layout.shop.name} />}
@@ -225,7 +229,9 @@ function MenuMobileNav({
         if (item.unfold)
           return (
             <div onClick={openMenu} key={index}>
-              {item.name}
+              <div className="uppercase flex gap-x-[10px] items-center">
+                {item.name} <IconMenuArrows className="w-[20px] h-[20px]" />
+              </div>
               <Drawer
                 open={isMenuOpen}
                 onClose={closeMenu}
@@ -241,7 +247,7 @@ function MenuMobileNav({
                       end
                       onClick={onClose}
                     >
-                      {v.name}
+                      <p className="uppercase">{v.name}</p>
                     </NavLink>
                   ))}
                 </div>
@@ -258,7 +264,7 @@ function MenuMobileNav({
               end
               onClick={onClose}
             >
-              {item.name}
+              <p className="uppercase">{item.name}</p>
             </NavLink>
           );
         }
@@ -349,6 +355,7 @@ function DesktopHeader({
         document.body.scrollTop || document.documentElement.scrollTop;
       scrollTop > 0 ? setScroll(true) : setScroll(false);
     };
+    headerScroll();
     window.addEventListener('scroll', headerScroll);
 
     return () => {

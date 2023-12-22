@@ -1,5 +1,5 @@
 import {Await, Link, useLoaderData} from '@remix-run/react';
-import React, {Fragment, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ProductVariantFragmentFragment} from 'storefrontapi.generated';
 import {loader} from '~/routes/($locale).custom';
 import {LazyImage} from '../Common';
@@ -50,7 +50,7 @@ function ProductForm({
     useState<ProductVariantFragmentFragment | null>(null);
 
   useEffect(() => {
-    store.subscribe(() => {
+    const unsubscribe = store.subscribe(() => {
       setStep(store.getState().selectedOptions.step);
       setSelectProduct(store.getState().selectedOptions.selectedProduct);
     });
@@ -59,6 +59,7 @@ function ProductForm({
       store.dispatch(setProductImg(variants[0].image?.url));
       store.dispatch(setSelectedProduct(variants[0]));
     }
+    return () => unsubscribe();
   }, [step]);
 
   const handleChangeProduct = () => {

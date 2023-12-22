@@ -11,7 +11,7 @@ export default function ProductPrice({
     <div className={`product-price ${className}`}>
       {selectedVariant?.compareAtPrice ? (
         <>
-          <div className="product-price-on-sale flex lg:gap-x-[10px]">
+          <div className="product-price-on-sale flex gap-x-[10px]">
             {selectedVariant ? <Money data={selectedVariant.price} /> : null}
             <s>
               <Money data={selectedVariant.compareAtPrice} />

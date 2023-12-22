@@ -4,14 +4,10 @@ import {
   defer,
 } from '@shopify/remix-oxygen';
 import {LazyImage} from '~/components/Common';
-import {getActiveHeaderHeight} from '~/lib/utils';
 import defaultImg from '~/assets/product/classic_show.png';
 import cartStyle from '~/styles/custom/index.css';
 import {MEDIA_FRAGMENT} from '~/data/fragments';
-import {
-  getPaginationVariables,
-  getSelectedProductOptions,
-} from '@shopify/hydrogen';
+import {getSelectedProductOptions} from '@shopify/hydrogen';
 import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import Aside from '~/components/custom/Aside';
 import {useEffect, useState} from 'react';
@@ -115,19 +111,17 @@ export default function customRouter() {
   const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    store.subscribe(() =>
+    const unsubscribe = store.subscribe(() =>
       setImgUrl(store.getState().selectedOptions.productImg),
     );
+    return () => unsubscribe();
   }, []);
 
   return (
-    <div
-      className="bg-[#ece2da] w-[100%] lg:grid lg:grid-cols-3"
-      style={{height: `calc(100vh - ${getActiveHeaderHeight()}px)`}}
-    >
+    <div className="bg-[#ece2da] w-[100%] lg:grid lg:grid-cols-3 cart-wrapper">
       <div className="cart lg:col-start-1 lg:col-end-3 flex items-center justify-center">
-        <div className="overflow-hidden grid flex-col flex-wrap grid-rows-8 grid-cols-1 w-full h-full">
-          <div className="bg-white w-full h-full lg:rounded-[20px] overflow-hidden row-start-1 row-end-5 flex items-center justify-center lg:max-w-[870px] lg:max-h-[570px] m-auto">
+        <div className="cart-left overflow-hidden grid flex-col flex-wrap grid-rows-8 grid-cols-1 w-full h-full">
+          <div className="cart-img bg-white w-full h-full lg:rounded-[20px] overflow-hidden row-start-1 row-end-5 flex items-center justify-center lg:max-w-[870px] lg:max-h-[570px] m-auto">
             <LazyImage
               alt="petsnowy"
               pcImg={imgUrl ?? defaultImg}
@@ -135,7 +129,7 @@ export default function customRouter() {
             />
           </div>
 
-          <div className="flex m-auto row-start-7 row-start-8 lg:max-w-[870px] lg:gap-x-[80px]">
+          <div className="strategy flex m-auto row-start-7 row-start-8 lg:max-w-[870px] lg:gap-x-[80px]">
             {strategy.map((item, index) => (
               <div
                 key={index}

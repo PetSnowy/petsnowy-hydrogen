@@ -81,6 +81,18 @@ $background: #e9e0cf;
       }
     }
 
+    .price {
+      div {
+        font-family: LeagueSpartan;
+        ;
+      }
+
+      s,
+      s div {
+        color: #7e6e5f;
+      }
+    }
+
     .select-color {
       .select-color-item label {
         border-radius: 12px;
@@ -378,6 +390,22 @@ $background: #e9e0cf;
         color: #D75F23;
         font-size: vw(29px);
         font-family: LeagueSpartanBlack;
+      }
+
+      s {
+        color: #7E6E5F;
+        margin-left: vw(16px);
+
+        div {
+          color: #7E6E5F;
+        }
+      }
+    }
+
+    .price {
+      div {
+        font-size: vw(29px);
+        font-family: LeagueSpartan;
       }
 
       s {

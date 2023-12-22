@@ -274,7 +274,7 @@ function CartLineItem({line, onClose}: {line: CartLine; onClose?: () => void}) {
             width={110}
             height={110}
             data={merchandise.image}
-            className="object-cover object-center w-24 h-24 border rounded md:w-28 md:h-28"
+            className=" object-contain object-center w-24 h-24 border rounded md:w-28 md:h-28"
             alt={merchandise.title}
           />
         )}

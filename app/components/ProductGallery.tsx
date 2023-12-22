@@ -3,6 +3,7 @@ import {Swiper, SwiperRef, SwiperSlide} from 'swiper/react';
 import type {MediaFragment} from 'storefrontapi.generated';
 import {useEffect, useRef, useState} from 'react';
 import {type Swiper as SwiperType} from 'swiper';
+import {handleResize} from '~/lib/utils';
 
 /**
  * A client component that defines a media gallery for hosting images, 3D models, and videos of products
@@ -22,7 +23,7 @@ export function ProductGallery({
       {media.length && (
         <>
           <Swiper
-            modules={[Navigation, Autoplay, Pagination, Thumbs]}
+            modules={[Navigation, Autoplay, Thumbs]}
             spaceBetween={20}
             slidesPerView={1}
             autoHeight={true}
@@ -41,17 +42,18 @@ export function ProductGallery({
 
           {media.length > 1 && (
             <Swiper
-              modules={[Thumbs]}
+              modules={[Navigation, Thumbs]}
               watchSlidesProgress
-              spaceBetween={10}
-              slidesPerView={4}
-              freeMode={true}
+              spaceBetween={20}
+              slidesPerView={media.length > 3 ? 4 : 2}
+              autoHeight={true}
+              navigation
               onSwiper={(swiper) => setThumbsSwiper(swiper)}
             >
               {media.map((item, index) => (
                 <SwiperSlide key={index}>
                   <img
-                    className="w-[100px] h-auto object-contain m-auto"
+                    className="w-full h-full object-cover object-center m-auto"
                     src={item.previewImage?.url}
                     alt={item.alt ? item.alt : ''}
                   />

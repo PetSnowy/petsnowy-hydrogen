@@ -84,10 +84,13 @@ export default function LitterBox({
   const [swiperContent, setSwiperContent] = useState<string[]>([]);
 
   useEffect(() => {
-    store.subscribe(() => setSelectedColor(store.getState().value));
+    const unsubscribe = store.subscribe(() =>
+      setSelectedColor(store.getState().value),
+    );
     window.innerWidth > 901
       ? setSwiperContent(swiperData)
       : setSwiperContent(mbSwiperData);
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -383,7 +386,12 @@ function Variants({
     setSelectedVariant(filteredVariants);
   }, [selectedColor]);
 
-  store.subscribe(() => setSelectedColor(store.getState().value));
+  useEffect(() => {
+    const unsubscribe = store.subscribe(() =>
+      setSelectedColor(store.getState().value),
+    );
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="variants-wrapper">

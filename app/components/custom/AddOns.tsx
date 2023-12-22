@@ -51,10 +51,11 @@ export default function AddOns() {
 
   // 当选中的值发生变化
   useEffect(() => {
-    store.subscribe(() => {
+    const unsubscribe = store.subscribe(() => {
       setStep(store.getState().selectedOptions.step);
       setSelectList(store.getState().selectedOptions.addOnsOptions);
     });
+    return () => unsubscribe();
   }, [step]);
 
   //选中商品
