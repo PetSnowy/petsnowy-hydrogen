@@ -1,4 +1,7 @@
 @media screen and (min-width: 901px) {
+  .hidden {
+    display: none !important;
+  }
   .custom-content input {
     display: none;
   }
@@ -67,13 +70,15 @@
   }
   .product-pice,
   .add-price,
-  .product-price {
+  .product-price,
+  .price {
     margin-left: auto;
     font-size: 12px;
   }
   .product-pice s,
   .add-price s,
-  .product-price s {
+  .product-price s,
+  .price s {
     color: rgba(0, 0, 0, 0.5);
   }
   .content {
@@ -133,6 +138,24 @@
     left: 0;
     right: auto;
     width: 100%;
+  }
+  .change-product {
+    display: flex;
+    row-gap: 15px;
+    flex-wrap: wrap;
+  }
+  .change-product a {
+    width: 100%;
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .change-product .change-info {
+    margin: 0px 10px;
+  }
+  .change-product .change-product-item {
+    display: flex;
   }
   .footer .total {
     display: flex;

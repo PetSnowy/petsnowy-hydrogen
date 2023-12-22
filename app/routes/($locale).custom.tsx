@@ -1,6 +1,5 @@
 import {
   type LoaderFunctionArgs,
-  json,
   LinksFunction,
   defer,
 } from '@shopify/remix-oxygen';
@@ -8,17 +7,17 @@ import {LazyImage} from '~/components/Common';
 import {getActiveHeaderHeight} from '~/lib/utils';
 import defaultImg from '~/assets/product/classic_show.png';
 import cartStyle from '~/styles/custom/index.css';
-import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {MEDIA_FRAGMENT} from '~/data/fragments';
 import {
   getPaginationVariables,
   getSelectedProductOptions,
 } from '@shopify/hydrogen';
+import {FILTER_URL_PREFIX} from '~/components/SortFilter';
 import Aside from '~/components/custom/Aside';
 import {useEffect, useState} from 'react';
 import store from '~/components/custom/store';
 import {IconFreight, IconTrial, IconWarranty} from '~/components/Icon';
-import {SortParam} from '~/components/SortFilter';
-import { ProductCollectionSortKeys } from '@shopify/hydrogen/storefront-api-types';
+import {ProductFilter} from '@shopify/hydrogen/storefront-api-types';
 
 export const links: LinksFunction = () => {
   return [{rel: 'stylesheet', href: cartStyle}];
@@ -62,7 +61,13 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
   // 获取产品系列
 
-
+  const {collection} = await storefront.query(COLLECTION_QUERY, {
+    variables: {
+      handle: 'snow',
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
+  });
 
   //获取addons产品的handle
   const metafieldAddOnsList: any = JSON.parse(addOnsId.product.metafield.value);
@@ -96,6 +101,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     product,
     shop,
     variants,
+    collection,
   });
 }
 
@@ -125,7 +131,7 @@ export default function customRouter() {
             <LazyImage
               alt="petsnowy"
               pcImg={imgUrl ?? defaultImg}
-              className="object-contain block lg:rounded-[20px]"
+              className="object-contain w-full h-full block lg:rounded-[20px]"
             />
           </div>
 
@@ -323,69 +329,37 @@ const COLLECTION_QUERY = `#graphql
     $handle: String!
     $country: CountryCode
     $language: LanguageCode
-    $filters: [ProductFilter!]
-    $sortKey: ProductCollectionSortKeys!
-    $reverse: Boolean
-    $first: Int
-    $last: Int
-    $startCursor: String
-    $endCursor: String
   ) @inContext(country: $country, language: $language) {
-    collection(handle: $handle) {
-      id
-      handle
-      title
-      description
-      seo {
-        description
-        title
-      }
-      image {
-        id
-        url
-        width
-        height
-        altText
-      }
-      products(
-        first: $first,
-        last: $last,
-        before: $startCursor,
-        after: $endCursor,
-        filters: $filters,
-        sortKey: $sortKey,
-        reverse: $reverse
-      ) {
-        filters {
-          id
-          label
-          type
-          values {
+    collection(handle: $handle){
+      products(first: 10) {
+        edges {
+          node {
+            availableForSale
+            handle
             id
-            label
-            count
-            input
+            title
+            variants(first: 1) {
+              edges {
+                node {
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                  sku
+                  title
+                  image {
+                    url
+                  }
+                }
+              }
+            }
           }
-        }
-        nodes {
-          ...ProductCard
-        }
-        pageInfo {
-          hasPreviousPage
-          hasNextPage
-          endCursor
-          startCursor
-        }
-      }
-    }
-    collections(first: 100) {
-      edges {
-        node {
-          title
-          handle
         }
       }
     }
   }
-  ${PRODUCT_CARD_FRAGMENT}
 ` as const;
