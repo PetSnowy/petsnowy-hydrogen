@@ -37,7 +37,7 @@ export const countries: Localizations = {
     country: 'CA',
     currency: 'CAD',
   },
-  '/en-cn': {
+  '/zh-cn': {
     label: 'China (CNY ¥)',
     language: 'ZH',
     country: 'CN',
