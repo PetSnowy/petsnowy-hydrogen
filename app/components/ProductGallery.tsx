@@ -43,11 +43,9 @@ export function ProductGallery({
           {media.length > 1 && (
             <Swiper
               modules={[Navigation, Thumbs]}
-              watchSlidesProgress
               spaceBetween={20}
               slidesPerView={media.length > 3 ? 4 : 2}
               autoHeight={true}
-              navigation
               onSwiper={(swiper) => setThumbsSwiper(swiper)}
             >
               {media.map((item, index) => (

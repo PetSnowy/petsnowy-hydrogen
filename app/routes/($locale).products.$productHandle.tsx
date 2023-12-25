@@ -6,7 +6,7 @@ import {
   type LoaderFunctionArgs,
   LinksFunction,
 } from '@shopify/remix-oxygen';
-import {useLoaderData, Await, useLocation} from '@remix-run/react';
+import {useLoaderData, Await, useLocation, useParams} from '@remix-run/react';
 import type {ShopifyAnalyticsProduct} from '@shopify/hydrogen';
 import {
   AnalyticsPageType,
@@ -217,6 +217,7 @@ function redirectToFirstVariant({
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
+  console.log(searchParams);
   return redirect(`?${searchParams.toString()}`, 302);
 }
 

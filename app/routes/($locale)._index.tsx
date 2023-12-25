@@ -1,5 +1,6 @@
 import {Video} from '~/components/Common';
 import LitterProduct from '~/components/index/LitterProduct';
+import Text from '~/components/index/Text';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
 import '~/styles/index/index.css';
@@ -15,6 +16,7 @@ export default function Homepage() {
         height="100vh"
       />
       <LitterProduct top={300} />
+      <Text />
     </>
   );
 }

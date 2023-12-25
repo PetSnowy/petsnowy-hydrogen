@@ -95,7 +95,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       shopifySalesChannel: ShopifySalesChannel.hydrogen,
       shopId: layout.shop.id,
     },
-    seo,
+    seo
   });
 }
 
