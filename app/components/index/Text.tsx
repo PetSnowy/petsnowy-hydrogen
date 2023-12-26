@@ -1,5 +1,6 @@
-import React from 'react';
+import {useI18n} from 'remix-i18n';
 
 export default function Text() {
-  return <div></div>;
+  const {t} = useI18n();
+  return <p> {t('headTitle')}</p>;
 }

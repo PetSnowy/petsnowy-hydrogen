@@ -17,6 +17,7 @@ import {
   useMatches,
   useRouteError,
   type ShouldRevalidateFunction,
+  useLocation,
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo, useNonce} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
@@ -33,6 +34,9 @@ import font from '~/styles/font.css';
 import reset from '~/styles/reset.css';
 import {DEFAULT_LOCALE, parseMenu} from './lib/utils';
 import {useAnalytics} from './hooks/useAnalytics';
+import {useI18n} from 'remix-i18n';
+import {useEffect} from 'react';
+import {getLocale} from './i18n';
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -95,7 +99,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       shopifySalesChannel: ShopifySalesChannel.hydrogen,
       shopId: layout.shop.id,
     },
-    seo
+    seo,
   });
 }
 
@@ -104,6 +108,16 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
   const locale = data.selectedLocale ?? DEFAULT_LOCALE;
   const hasUserConsent = true;
+
+  const i18n = useI18n();
+  const location = useLocation();
+
+  useEffect(() => {
+    const locale = getLocale(location.pathname);
+    if (locale !== i18n.locale()) {
+      i18n.locale(locale);
+    }
+  }, [location]);
 
   useAnalytics(hasUserConsent);
 

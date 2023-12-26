@@ -3,6 +3,8 @@ import {RemixServer} from '@remix-run/react';
 import isbot from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import {i18n, getLocale} from './i18n';
+import {I18nProvider} from 'remix-i18n';
 
 export default async function handleRequest(
   request: Request,
@@ -12,15 +14,19 @@ export default async function handleRequest(
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy();
 
+  const locale = getLocale(new URL(request.url).pathname);
+  i18n.locale(locale);
+
   const body = await renderToReadableStream(
-    <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} />
-    </NonceProvider>,
+    <I18nProvider i18n={i18n}>
+      <NonceProvider>
+        <RemixServer context={remixContext} url={request.url} />
+      </NonceProvider>
+    </I18nProvider>,
     {
       nonce,
       signal: request.signal,
       onError(error) {
-        // eslint-disable-next-line no-console
         console.error(error);
         responseStatusCode = 500;
       },
