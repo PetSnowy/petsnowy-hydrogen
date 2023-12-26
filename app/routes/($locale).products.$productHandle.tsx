@@ -201,7 +201,7 @@ async function litterLoader(handle: string, storefront: Storefront) {
       return result;
     }),
   );
-  return {giftList, addOnsList};
+  return {giftList, metafieldGiftList, addOnsList};
 }
 
 function redirectToFirstVariant({
@@ -217,7 +217,6 @@ function redirectToFirstVariant({
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-  console.log(searchParams);
   return redirect(`?${searchParams.toString()}`, 302);
 }
 

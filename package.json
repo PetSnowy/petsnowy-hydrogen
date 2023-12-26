@@ -27,6 +27,7 @@
 		"cross-env": "^7.0.3",
 		"graphql": "^16.6.0",
 		"graphql-tag": "^2.12.6",
+		"is-ip": "^5.0.1",
 		"isbot": "^3.6.6",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

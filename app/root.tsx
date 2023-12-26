@@ -4,6 +4,8 @@ import {
   type LoaderFunctionArgs,
   type AppLoadContext,
   type SerializeFrom,
+  ActionFunction,
+  redirect,
 } from '@shopify/remix-oxygen';
 import {
   isRouteErrorResponse,
@@ -37,6 +39,8 @@ import {useAnalytics} from './hooks/useAnalytics';
 import {useI18n} from 'remix-i18n';
 import {useEffect} from 'react';
 import {getLocale} from './i18n';
+import {CountryCode} from '@shopify/hydrogen/storefront-api-types';
+import {countries} from './data/countries';
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -76,11 +80,21 @@ export const links: LinksFunction = () => {
   ];
 };
 
+type IP = {
+  country_code: CountryCode;
+  country_name: string;
+  IPv4: string;
+  latitude: number;
+  longitude: number;
+  state: string;
+  city: string;
+  postal: any;
+};
 export const useRootLoaderData = () => {
   const [root] = useMatches();
   return root?.data as SerializeFrom<typeof loader>;
 };
-
+let hasRedirected = false;
 export async function loader({request, context}: LoaderFunctionArgs) {
   const {session, storefront, cart} = context;
   const [customerAccessToken, layout] = await Promise.all([
@@ -88,7 +102,26 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     getLayoutData(context),
   ]);
 
+  const url =
+    'https://geolocation-db.com/json/b072f2c0-9d28-11ee-9883-9fb240147f5c';
+
+  const ip = await fetch(url)
+    .then((response) => response.json())
+    .then((data: unknown) => {
+      const ipData = data as IP;
+      return ipData;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
   const seo = seoPayload.root({shop: layout.shop, url: request.url});
+  const {origin} = new URL(request.url);
+
+  if (!hasRedirected && ip) {
+    hasRedirected = true;
+    throw setIp(ip, origin);
+  }
 
   return defer({
     isLoggedIn: Boolean(customerAccessToken),
@@ -102,6 +135,14 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     seo,
   });
 }
+
+const setIp = (ip: IP, url: string) => {
+  const entries = Object.entries(countries);
+  const [locationKey, _] = entries.find(
+    ([_, value]) => value.country === ip.country_code,
+  ) || ['', null];
+  return locationKey ? redirect(url + locationKey + '/', 302) : null;
+};
 
 export default function App() {
   const nonce = useNonce();

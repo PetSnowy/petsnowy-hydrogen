@@ -509,11 +509,6 @@ function GetGift() {
                 </div>
               </div>
               <div className="gift-right flex-1"></div>
-
-              {/* <p className="price">
-                <s>{product.priceRange.maxVariantPrice.amount}</s>
-                <span>{product.priceRange.minVariantPrice.amount}</span>
-              </p> */}
             </label>
           </div>
         ))}
