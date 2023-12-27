@@ -4,11 +4,12 @@ import Text from '~/components/index/Text';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
 import '~/styles/index/index.css';
-import {LoaderFunctionArgs, redirect} from '@shopify/remix-oxygen';
+import {LoaderFunctionArgs, json, redirect} from '@shopify/remix-oxygen';
 import {countries} from '../data/countries';
 import {CountryCode} from '@shopify/hydrogen/storefront-api-types';
 import {userPrefs} from '~/lib/cookie.server';
 import {useEffect} from 'react';
+import {useLoaderData} from '@remix-run/react';
 
 type IP = {
   country_code: CountryCode;
@@ -42,7 +43,11 @@ export async function loader({request}: LoaderFunctionArgs) {
   //   return null;
   // }
 
-  return redirectUrl ? redirect(redirectUrl, 302) : null;
+  if (redirectUrl) {
+    // return redirect(redirectUrl, 302);
+  }
+
+  return json({redirectUrl});
 }
 
 // 检测用户 IP 进行重定向
@@ -82,6 +87,8 @@ async function detectionUserIP(request: Request) {
 }
 
 export default function Homepage() {
+  const {redirectUrl} = useLoaderData<typeof loader>();
+  console.log(redirectUrl);
   return (
     <>
       <Video

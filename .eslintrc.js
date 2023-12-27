@@ -14,5 +14,13 @@ module.exports = {
     'no-useless-escape': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     'no-case-declarations': 'off',
+    '@typescript-eslint/consistent-type-imports': 'off',
+    'no-console': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
   },
 };
