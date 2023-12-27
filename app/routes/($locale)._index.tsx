@@ -57,12 +57,12 @@ async function detectionUserIP(request: Request) {
   const {origin, pathname} = new URL(request.url);
   const entries = Object.entries(countries);
 
-  const [locationKey] = findCode(
-    entries,
-    pathname.split('/')[1].toLocaleUpperCase().split('-').at(1)!,
-  );
+  // const [locationKey] = findCode(
+  //   entries,
+  //   pathname.split('/')[1].toLocaleUpperCase().split('-').at(1)!,
+  // );
 
-  if (locationKey) return;
+  // if (locationKey) return;
 
   try {
     const response = await fetch(url);
@@ -70,20 +70,22 @@ async function detectionUserIP(request: Request) {
     const ipData = data as IP;
     const [locationKey] = findCode(entries, ipData.country_code);
 
-    if (!locationKey) return;
+    // if (!locationKey) return;
 
     const redirectUrl = `${origin}${locationKey}`;
 
     console.log(data);
 
-    return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
-  } catch (error) {
-    return;
-  }
+    return redirectUrl;
 
-  function findCode(entries: any[], code: string) {
-    return entries.find(([_, value]) => value.country === code) || ['', null];
+    // return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
+  } catch (error) {
+    // return;
   }
+}
+
+function findCode(entries: any[], code: string) {
+  return entries.find(([_, value]) => value.country === code) || ['', null];
 }
 
 export default function Homepage() {
