@@ -47,6 +47,10 @@ async function detectionUserIP(request: Request, IP: string) {
     const response = await fetch(url);
     const data = await response.json();
     const ipData = data as IP;
+
+    if (ipData.country_code === 'US') {
+      return;
+    }
     const [locationKey] = findCode(entries, ipData.country_code);
 
     if (!locationKey) return;
