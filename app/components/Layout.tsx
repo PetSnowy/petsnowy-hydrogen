@@ -50,23 +50,23 @@ export type LayoutProps = {
     footerMenu?: EnhancedMenu | null;
   };
 };
-
-const excludePageFooter = ['/custom'];
+// 设置不显示 footer 的页面路由
+const excludePageFooter = ['custom'];
 
 export function Layout({children, layout}: LayoutProps) {
   const {headerMenu, footerMenu} = layout || {};
   const {pathname} = useLocation();
-  const name = pathname.split('/').at(-1);
-  const showFooter = excludePageFooter.some((item) =>
-    item.includes(name ?? ''),
-  );
+
+  const showFooter =
+    excludePageFooter.findIndex((item) => pathname.includes(item)) === -1;
+
   return (
     <div className="root flex flex-col min-h-screen">
       {headerMenu && layout?.shop.name && <Header title={layout.shop.name} />}
       <main role="main" id="mainContent" className="flex-grow">
         {children}
       </main>
-      {footerMenu && !showFooter && <Footer menu={footerMenu} />}
+      {footerMenu && showFooter && <Footer menu={footerMenu} />}
     </div>
   );
 }

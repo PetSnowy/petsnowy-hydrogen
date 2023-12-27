@@ -47,6 +47,12 @@ export function CountrySelector() {
     closeRef.current?.removeAttribute('open');
   }, []);
 
+  const handleCountry = (countryPath: string) => {
+    // const expirationDate = new Date();
+    // expirationDate.setDate(expirationDate.getDate() + 7);
+    // document.cookie = `selectedCountryPath=${countryPath}; expires=${expirationDate.toUTCString()}; path=/`;
+  };
+
   return (
     <section
       ref={observerRef}
@@ -81,10 +87,12 @@ export function CountrySelector() {
                 return (
                   <Country
                     key={countryPath}
+                    countryPath={countryPath}
                     closeDropdown={closeDropdown}
                     countryUrlPath={countryUrlPath}
                     isSelected={isSelected}
                     countryLocale={countryLocale}
+                    handleCountry={() => handleCountry(countryPath)}
                   />
                 );
               })}
@@ -96,16 +104,24 @@ export function CountrySelector() {
 }
 
 function Country({
+  countryPath,
   closeDropdown,
   countryLocale,
   countryUrlPath,
   isSelected,
+  handleCountry,
 }: {
+  countryPath: string;
   closeDropdown: () => void;
   countryLocale: Locale;
   countryUrlPath: string;
   isSelected: boolean;
+  handleCountry: (v: string) => void;
 }) {
+  const handleClick = (countryLocale: string) => {
+    closeDropdown();
+    handleCountry(countryLocale);
+  };
   return (
     <ChangeLocaleForm
       key={countryLocale.country}
@@ -122,7 +138,7 @@ function Country({
         ])}
         type="submit"
         variant="primary"
-        onClick={closeDropdown}
+        onClick={() => handleClick(countryPath)}
       >
         {countryLocale.label}
         {isSelected ? (

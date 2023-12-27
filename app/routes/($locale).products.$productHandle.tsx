@@ -94,8 +94,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
 
-  // TODO: firstVariant is never used because we will always have a selectedVariant due to redirect
-  // Investigate if we can avoid the redirect for product pages with no search params for first variant
+
   const firstVariant = product.variants.nodes[0];
   const selectedVariant = product.selectedVariant ?? firstVariant;
 
