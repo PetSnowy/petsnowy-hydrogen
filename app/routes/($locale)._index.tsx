@@ -21,15 +21,18 @@ type IP = {
 };
 
 export async function loader({request}: LoaderFunctionArgs) {
-  const KEY = 'b69c3f76ef9cdf7c0106d97ee66fe3c7';
+  // const KEY = 'b69c3f76ef9cdf7c0106d97ee66fe3c7';
   const ipAddress = getClientIPAddress(request);
-  const redirectUrl = await detectionUserIP(request, KEY, ipAddress!);
-  return redirectUrl ? redirect(redirectUrl, 302) : null;
+  if (ipAddress) {
+    const redirectUrl = await detectionUserIP(request, ipAddress);
+    return redirectUrl ? redirect(redirectUrl, 302) : null;
+  }
+  return null;
 }
 
 // 检测用户 IP 进行重定向
-async function detectionUserIP(request: Request, key: string, IP: string) {
-  const url = `http://api.ipapi.com/api/${IP}?access_key=${key}`;
+async function detectionUserIP(request: Request, IP: string) {
+  const url = `https://api.ip.sb/geoip/${IP}`;
   const {origin, pathname} = new URL(request.url);
   const entries = Object.entries(countries);
 
@@ -47,11 +50,11 @@ async function detectionUserIP(request: Request, key: string, IP: string) {
     const [locationKey] = findCode(entries, ipData.country_code);
 
     if (!locationKey) return;
-    const redirectUrl = `${origin}${
-      locationKey === 'default' ? '' : locationKey
-    }`;
+
+    const redirectUrl = `${origin}${locationKey}`;
     return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
   } catch (error) {
+    console.log(error);
     return;
   }
 }
