@@ -26,6 +26,9 @@ type IP = {
 export async function loader({request}: LoaderFunctionArgs) {
   const redirectUrl = await detectionUserIP(request);
   const ipAddress = getClientIPAddress(request);
+
+  const KEY = 'b69c3f76ef9cdf7c0106d97ee66fe3c7';
+
   // const {origin} = new URL(request.url);
   // const cookieHeader = request.headers.get('Cookie');
   // let selectedCountryPath = '';
@@ -55,7 +58,7 @@ export async function loader({request}: LoaderFunctionArgs) {
 // 检测用户 IP 进行重定向
 async function detectionUserIP(request: Request) {
   const url =
-    'https://geolocation-db.com/json/b072f2c0-9d28-11ee-9883-9fb240147f5c';
+    'http://api.ipapi.com/api/161.185.160.93?access_key=b69c3f76ef9cdf7c0106d97ee66fe3c7';
   const {origin, pathname} = new URL(request.url);
   const entries = Object.entries(countries);
 
@@ -91,8 +94,8 @@ function findCode(entries: any[], code: string) {
 }
 
 export default function Homepage() {
-  const {ipAddress} = useLoaderData<typeof loader>();
-  console.log(ipAddress);
+  const {redirectUrl} = useLoaderData<typeof loader>();
+  console.log(redirectUrl);
   return (
     <>
       <Video
