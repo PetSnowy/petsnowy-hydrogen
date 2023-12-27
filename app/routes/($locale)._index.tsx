@@ -64,13 +64,13 @@ async function detectionUserIP(request: Request) {
     const ipData = data as IP;
     const [locationKey] = findCode(entries, ipData.country_code);
 
-    if (!locationKey) return null;
+    if (!locationKey) return;
 
     const redirectUrl = `${origin}${locationKey}`;
 
     return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
   } catch (error) {
-    return null;
+    return;
   }
 
   function findCode(entries: any[], code: string) {
