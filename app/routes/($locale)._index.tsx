@@ -10,6 +10,7 @@ import {CountryCode} from '@shopify/hydrogen/storefront-api-types';
 import {userPrefs} from '~/lib/cookie.server';
 import {useEffect} from 'react';
 import {useLoaderData} from '@remix-run/react';
+import {getClientIPAddress} from 'remix-utils/get-client-ip-address';
 
 type IP = {
   country_code: CountryCode;
@@ -24,6 +25,7 @@ type IP = {
 
 export async function loader({request}: LoaderFunctionArgs) {
   const redirectUrl = await detectionUserIP(request);
+  const ipAddress = getClientIPAddress(request);
   // const {origin} = new URL(request.url);
   // const cookieHeader = request.headers.get('Cookie');
   // let selectedCountryPath = '';
@@ -47,7 +49,7 @@ export async function loader({request}: LoaderFunctionArgs) {
     // return redirect(redirectUrl, 302);
   }
 
-  return json({redirectUrl});
+  return json({redirectUrl, ipAddress});
 }
 
 // 检测用户 IP 进行重定向
@@ -89,8 +91,8 @@ function findCode(entries: any[], code: string) {
 }
 
 export default function Homepage() {
-  const {redirectUrl} = useLoaderData<typeof loader>();
-  console.log(redirectUrl);
+  const {ipAddress} = useLoaderData<typeof loader>();
+  console.log(ipAddress);
   return (
     <>
       <Video
