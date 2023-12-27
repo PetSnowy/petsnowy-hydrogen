@@ -82,30 +82,6 @@ async function detectionUserIP(request: Request) {
 }
 
 export default function Homepage() {
-  useEffect(() => {
-    fetchUrl().then((data) => {
-      console.log(data);
-    });
-  });
-  const fetchUrl = async () => {
-    const url =
-      'https://geolocation-db.com/json/b072f2c0-9d28-11ee-9883-9fb240147f5c';
-    const response = await fetch(url);
-    const data = await response.json();
-    const ipData = data as IP;
-    const entries = Object.entries(countries);
-    const [locationKey] = findCode(entries, ipData.country_code);
-
-    if (!locationKey) return;
-
-    const redirectUrl = `${origin}${locationKey}`;
-    return redirectUrl;
-
-    function findCode(entries: any[], code: string) {
-      return entries.find(([_, value]) => value.country === code) || ['', null];
-    }
-  };
-
   return (
     <>
       <Video
