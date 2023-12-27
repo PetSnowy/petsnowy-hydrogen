@@ -24,50 +24,24 @@ type IP = {
 };
 
 export async function loader({request}: LoaderFunctionArgs) {
-  const redirectUrl = await detectionUserIP(request);
-  const ipAddress = getClientIPAddress(request);
-
   const KEY = 'b69c3f76ef9cdf7c0106d97ee66fe3c7';
-
-  // const {origin} = new URL(request.url);
-  // const cookieHeader = request.headers.get('Cookie');
-  // let selectedCountryPath = '';
-  // if (cookieHeader) {
-  //   const cookies = cookieHeader.split(';');
-  //   const selectedValueCookie = cookies.find((cookie) =>
-  //     cookie.trim().startsWith('selectedCountryPath='),
-  //   );
-  //   if (selectedValueCookie) {
-  //     selectedCountryPath = selectedValueCookie.split('=')[1].trim();
-  //   }
-  // }
-  // if (selectedCountryPath) {
-  //   return redirect(origin + selectedCountryPath, 302);
-  // }
-  // if (request.url.includes(selectedCountryPath)) {
-  //   return null;
-  // }
-
-  if (redirectUrl) {
-    // return redirect(redirectUrl, 302);
-  }
-
-  return json({redirectUrl, ipAddress});
+  const ipAddress = getClientIPAddress(request);
+  const redirectUrl = await detectionUserIP(request, KEY, ipAddress!);
+  return redirectUrl ? redirect(redirectUrl, 302) : null;
 }
 
 // 检测用户 IP 进行重定向
-async function detectionUserIP(request: Request) {
-  const url =
-    'http://api.ipapi.com/api/161.185.160.93?access_key=b69c3f76ef9cdf7c0106d97ee66fe3c7';
+async function detectionUserIP(request: Request, key: string, IP: string) {
+  const url = `http://api.ipapi.com/api/${IP}?access_key=${key}`;
   const {origin, pathname} = new URL(request.url);
   const entries = Object.entries(countries);
 
-  // const [locationKey] = findCode(
-  //   entries,
-  //   pathname.split('/')[1].toLocaleUpperCase().split('-').at(1)!,
-  // );
+  const [locationKey] = findCode(
+    entries,
+    pathname.split('/')[1].toLocaleUpperCase().split('-').at(1)!,
+  );
 
-  // if (locationKey) return;
+  if (locationKey) return;
 
   try {
     const response = await fetch(url);
@@ -75,17 +49,11 @@ async function detectionUserIP(request: Request) {
     const ipData = data as IP;
     const [locationKey] = findCode(entries, ipData.country_code);
 
-    // if (!locationKey) return;
-
+    if (!locationKey) return;
     const redirectUrl = `${origin}${locationKey}`;
-
-    console.log(data);
-
-    return redirectUrl;
-
-    // return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
+    return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
   } catch (error) {
-    // return;
+    return;
   }
 }
 
@@ -94,8 +62,6 @@ function findCode(entries: any[], code: string) {
 }
 
 export default function Homepage() {
-  const {redirectUrl} = useLoaderData<typeof loader>();
-  console.log(redirectUrl);
   return (
     <>
       <Video
