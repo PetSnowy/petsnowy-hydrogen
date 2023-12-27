@@ -7,9 +7,6 @@ import '~/styles/index/index.css';
 import {LoaderFunctionArgs, json, redirect} from '@shopify/remix-oxygen';
 import {countries} from '../data/countries';
 import {CountryCode} from '@shopify/hydrogen/storefront-api-types';
-import {userPrefs} from '~/lib/cookie.server';
-import {useEffect} from 'react';
-import {useLoaderData} from '@remix-run/react';
 import {getClientIPAddress} from 'remix-utils/get-client-ip-address';
 
 type IP = {
@@ -50,7 +47,9 @@ async function detectionUserIP(request: Request, key: string, IP: string) {
     const [locationKey] = findCode(entries, ipData.country_code);
 
     if (!locationKey) return;
-    const redirectUrl = `${origin}${locationKey}`;
+    const redirectUrl = `${origin}${
+      locationKey === 'default' ? '' : locationKey
+    }`;
     return redirectUrl.trim() === request.url ? null : redirectUrl + '/';
   } catch (error) {
     return;
