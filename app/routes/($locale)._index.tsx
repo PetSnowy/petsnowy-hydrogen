@@ -4,7 +4,7 @@ import Text from '~/components/index/Text';
 import pcIndexVideoPoster from '~/assets/index/index-video-poster.png';
 import mbIndexVideoPoster from '~/assets/index/mb-index-video-poster.png';
 import '~/styles/index/index.css';
-import {LoaderFunctionArgs, json, redirect} from '@shopify/remix-oxygen';
+import {LoaderFunctionArgs, redirect} from '@shopify/remix-oxygen';
 import {countries} from '../data/countries';
 import {CountryCode} from '@shopify/hydrogen/storefront-api-types';
 import {getClientIPAddress} from 'remix-utils/get-client-ip-address';
@@ -48,9 +48,7 @@ async function detectionUserIP(request: Request, IP: string) {
     const data = await response.json();
     const ipData = data as IP;
 
-    if (ipData.country_code === 'US') {
-      return;
-    }
+    if (ipData.country_code === 'US') return;
     const [locationKey] = findCode(entries, ipData.country_code);
 
     if (!locationKey) return;
