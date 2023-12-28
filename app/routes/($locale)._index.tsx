@@ -21,7 +21,6 @@ type IP = {
 };
 
 export async function loader({request}: LoaderFunctionArgs) {
-  // const KEY = 'b69c3f76ef9cdf7c0106d97ee66fe3c7';
   const ipAddress = getClientIPAddress(request);
   if (ipAddress) {
     const redirectUrl = await detectionUserIP(request, ipAddress);

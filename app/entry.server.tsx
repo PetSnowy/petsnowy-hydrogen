@@ -5,7 +5,7 @@ import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
 import {i18n, getLocale} from './i18n';
 import {I18nProvider} from 'remix-i18n';
-
+import {cors} from 'remix-utils/cors';
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
@@ -40,8 +40,21 @@ export default async function handleRequest(
   // responseHeaders.set('Content-Type', 'text/html');
   // responseHeaders.set('Content-Security-Policy', header);
 
-  return new Response(body, {
-    headers: responseHeaders,
-    status: responseStatusCode,
+  // return new Response(body, {
+  //   headers: responseHeaders,
+  //   status: responseStatusCode,
+  // });
+
+  return new Promise((res, rej) => {
+    cors(
+      request,
+      new Response(body, {
+        headers: responseHeaders,
+        status: responseStatusCode,
+      }),
+      {origin: true},
+    )
+      .then((response) => res(response))
+      .catch(() => rej());
   });
 }

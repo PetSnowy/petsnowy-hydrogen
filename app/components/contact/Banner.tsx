@@ -1,7 +1,44 @@
 import {Form} from '@remix-run/react';
-import React from 'react';
+import {MouseEvent} from 'react';
+
+// 邮件转发
+// const send_request = new Request('https://api.mailchannels.net/tx/v1/send', {
+//   method: 'POST',
+//   headers: {
+//     'content-type': 'application/json',
+//   },
+//   body: JSON.stringify({
+//     personalizations: [
+//       {
+//         to: [{email: 'dongdaozheng0103@gmail.com', name: 'Test Recipient'}],
+//       },
+//     ],
+//     from: {
+//       email: '2456820347@qq.com',
+//       name: 'Workers - MailChannels integration',
+//     },
+//     subject: 'Look! No servers',
+//     content: [
+//       {
+//         type: 'text/plain',
+//         value: 'And no email service accounts and all for free too!',
+//       },
+//     ],
+//   }),
+// });
 
 export default function Banner() {
+  const handleClick = async (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  ) => {
+    event.preventDefault();
+    const url = 'https://api.ip.sb/geoip';
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    // const response = await fetch(send_request);
+    // console.log(response);
+  };
   return (
     <div className="banner container">
       <Form action="/contact">
@@ -31,7 +68,9 @@ export default function Banner() {
           name="contact[Comment]"
           placeholder="Comment"
         ></textarea>
-        <button type="submit">send</button>
+        <button type="submit" onClick={(e) => handleClick(e)}>
+          send
+        </button>
       </Form>
     </div>
   );
