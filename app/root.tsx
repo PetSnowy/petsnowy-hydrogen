@@ -29,7 +29,7 @@ import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
 import {cssBundleHref} from '@remix-run/css-bundle';
 import favicon from '../public/favicon.svg';
-import swiperStyle from '~/styles/swiper.css';
+import swiperStyle from 'swiper/swiper-bundle.css';
 import {GenericError} from './components/GenericError';
 import {NotFound} from './components/NotFound';
 import app from '~/styles/app.css';

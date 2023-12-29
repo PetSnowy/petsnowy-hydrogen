@@ -63,6 +63,9 @@
     height: 90px;
     justify-content: space-between;
   }
+  .header.index {
+    min-width: 1200px;
+  }
   .header .header-menu-desktop {
     display: flex;
     grid-gap: 20px;

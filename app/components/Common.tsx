@@ -42,6 +42,8 @@ type VideoProps = {
   mbDataSrc?: string;
   mbPoster?: string;
   height?: string;
+  controls?: boolean;
+  className?: string;
 };
 // 视频懒加载组件
 export function Video({
@@ -50,6 +52,8 @@ export function Video({
   mbDataSrc,
   mbPoster,
   height,
+  controls = false,
+  className,
 }: VideoProps) {
   const targetRef = useRef<HTMLVideoElement | null>(null);
   const [src, setSrc] = useState<string | undefined>('');
@@ -103,13 +107,14 @@ export function Video({
   return (
     <video
       style={{height}}
-      className="object-cover w-full"
+      className={`object-cover w-full ${className}`}
       ref={targetRef}
       muted={true}
       autoPlay={true}
       playsInline={true}
       src={src}
       poster={poster}
+      controls={controls}
     ></video>
   );
 }
@@ -120,6 +125,7 @@ type LazyImageProps = {
   alt: string;
   className?: string;
   style?: object;
+  lazy?: boolean;
 };
 
 export function LazyImage({
@@ -128,6 +134,7 @@ export function LazyImage({
   alt,
   className,
   style,
+  lazy = true,
 }: LazyImageProps) {
   const targetRef = useRef<HTMLImageElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -156,7 +163,7 @@ export function LazyImage({
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    if (targetRef.current) {
+    if (targetRef.current && lazy) {
       observer.observe(targetRef.current);
     }
 
@@ -181,6 +188,7 @@ export function LazyImage({
       ref={targetRef}
       className={className}
       style={style}
+      src={lazy ? '' : isMobile ? mobileImg ?? pcImg : pcImg ?? mobileImg}
     />
   );
 }

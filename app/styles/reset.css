@@ -38,6 +38,24 @@ details summary {
   pointer-events: none;
 }
 
+[class*=swiper-button] {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  cursor: pointer;
+}
+[class*=swiper-button]::after {
+  display: none;
+}
+
+.swiper-button-prev {
+  transform: translateY(-50%);
+}
+
+.swiper-button-next {
+  transform: translateY(-50%) rotate(180deg);
+}
+
 @media screen and (min-width: 901px) {
   html {
     min-width: 1200px;

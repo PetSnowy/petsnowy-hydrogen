@@ -85,6 +85,10 @@
 
     }
 
+    &.index {
+      min-width: 1200px;
+    }
+
     .header-menu-desktop {
       display: flex;
       grid-gap: 20px;
