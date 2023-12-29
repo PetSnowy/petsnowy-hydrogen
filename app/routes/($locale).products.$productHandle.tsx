@@ -79,11 +79,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     throw redirectToFirstVariant({product, request});
   }
 
-  // In order to show which variants are available in the UI, we need to query
-  // all of them. But there might be a *lot*, so instead separate the variants
-  // into it's own separate query that is deferred. So there's a brief moment
-  // where variant options might show as available when they're not, but after
-  // this deferred query resolves, the UI will update.
   const variants = context.storefront.query(VARIANTS_QUERY, {
     variables: {
       handle: productHandle,
@@ -93,7 +88,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 
   const recommended = getRecommendedProducts(context.storefront, product.id);
-
 
   const firstVariant = product.variants.nodes[0];
   const selectedVariant = product.selectedVariant ?? firstVariant;
@@ -158,6 +152,8 @@ async function litterLoader(handle: string, storefront: Storefront) {
         cache: storefront.CacheLong(),
         variables: {
           id: item,
+          country: storefront.i18n.country,
+          language: storefront.i18n.language,
         },
       });
       return result;
@@ -182,6 +178,8 @@ async function litterLoader(handle: string, storefront: Storefront) {
         cache: storefront.CacheLong(),
         variables: {
           id: item,
+          country: storefront.i18n.country,
+          language: storefront.i18n.language,
         },
       });
       return result;
@@ -718,7 +716,10 @@ const GET_METAFIELD_LIST = `
 ` as const;
 
 const GET_PRODUCT_DETAILS = `
-query GetProductDetails	($id: ID!){
+query GetProductDetails	($id: ID!
+  $country: CountryCode
+  $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
 	product(id: $id) {
 		handle
 		id

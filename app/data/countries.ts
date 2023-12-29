@@ -1,4 +1,4 @@
-import type {Localizations} from '~/lib/type';
+import type { Localizations } from '~/lib/type';
 
 export const countries: Localizations = {
   default: {
@@ -73,7 +73,7 @@ export const countries: Localizations = {
     country: 'FI',
     currency: 'EUR',
   },
-  '/en-fr': {
+  '/fr-fr': {
     label: 'France (EUR €)',
     language: 'FR',
     country: 'FR',

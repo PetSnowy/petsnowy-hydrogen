@@ -1,15 +1,17 @@
 import { RemixI18n } from 'remix-i18n';
 import zh from 'public/locales/zh/common.json';
 import en from 'public/locales/en/common.json';
+import fr from 'public/locales/fr/common.json';
 
 export const i18n = new RemixI18n({
-  supportedLanguages: ['en', 'zh'],
-  fallbackLng: 'zh',
+  supportedLanguages: ['en', 'zh', 'fr'],
+  fallbackLng: 'en',
 });
 
 const locales = {
   zh,
-  en
+  en,
+  fr
 };
 
 export function getLocale(pathname: string): string {

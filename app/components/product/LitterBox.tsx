@@ -37,6 +37,8 @@ import {
 import ProductPrice from './ProductPrice';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {loader} from '~/routes/($locale).products.$productHandle';
+import {useI18n} from 'remix-i18n';
+import {useLocation} from 'react-use';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
@@ -83,6 +85,8 @@ export default function LitterBox({
 
   const [swiperContent, setSwiperContent] = useState<string[]>([]);
 
+  const {t} = useI18n();
+
   useEffect(() => {
     const unsubscribe = store.subscribe(() =>
       setSelectedColor(store.getState().value),
@@ -90,6 +94,9 @@ export default function LitterBox({
     window.innerWidth > 901
       ? setSwiperContent(swiperData)
       : setSwiperContent(mbSwiperData);
+
+    selectColor.forEach((item) => (item.name = t(item.name)));
+
     return () => unsubscribe();
   }, []);
 
@@ -102,7 +109,7 @@ export default function LitterBox({
               petsnowy
             </p>
             <p className="sub-title font-LeagueSpartanBlack lg:text-[29px] text-[#45392E] lg:mb-[13px] uppercase">
-              SNOW+ Self-cleaning Litter Box
+              {t('SNOW+ Self-cleaning Litter Box')}
             </p>
             <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px] title-desc">
               Finally, a litter box that collects all scoop ideas.
@@ -130,7 +137,7 @@ export default function LitterBox({
               petsnowy
             </p>
             <p className="sub-title font-LeagueSpartanBlack lg:text-[29px] text-[#45392E] lg:mb-[13px] uppercase">
-              SNOW+ Self-cleaning Litter Box
+              {t('SNOW+ Self-cleaning Litter Box')}
             </p>
             <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px]">
               Finally, a litter box that collects all scoop ideas.
@@ -163,6 +170,7 @@ function ProductForm({
   const [lines, setLines] = useState<
     {merchandiseId: string; quantity: number}[]
   >([]);
+
   const productRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
 
@@ -257,7 +265,6 @@ function ProductForm({
             onClick={() => handleLines(selectedVariant)}
             lines={lines}
             loading={loading}
-            disabled={false}
           >
             {/* {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'} */}
             Add to cart
@@ -361,7 +368,13 @@ function Variants({
   const params = useParams();
   const generateLink = (handle: string, link: Link[]) => {
     return `/products/${handle}?${link
-      .map((option) => `${option.name.replace(/\s/g, '+')}=${option.value}`)
+      .map(
+        (option) =>
+          `${encodeURIComponent(option.name).replace(
+            /%20/g,
+            '+',
+          )}=${encodeURIComponent(option.value)}`,
+      )
       .join('&')}`;
   };
 
@@ -401,13 +414,14 @@ function Variants({
       <div className="variants flex lg:gap-[25px]">
         {selectedVariant?.map((item, index) => {
           const link = generateLink(item.product.handle, item.selectedOptions);
+          const active = window.location.href.includes(link);
           return (
             <Link
               key={index}
               to={`${params.locale ? '/' + params.locale + link : link}`}
-              className={`block ${
-                window.location.href.includes(link) ? 'active' : ''
-              } ${!item.availableForSale ? 'disabled' : ''}`}
+              className={`block ${active ? 'active' : ''} ${
+                !item.availableForSale ? 'disabled' : ''
+              }`}
               prefetch="intent"
               preventScrollReset
               replace
@@ -481,37 +495,42 @@ function SelectColor() {
 
 function GetGift() {
   const {giftList} = useLoaderData<typeof loader>();
+  if (giftList && !giftList[0].product) {
+    return <></>;
+  }
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e] lg:mt-[26px]">
         Choose Gift
       </p>
       <div className="gift flex w-full flex-wrap lg:gap-y-[24px]">
-        {giftList!.map(({product}, index) => (
-          <div className="gift-item lg:w-[500px]" key={index}>
-            <input
-              type="radio"
-              id={product.id}
-              name="gift"
-              value={product.variants.edges[0].node.id}
-              className=""
-            />
-            <label
-              htmlFor={product.id}
-              className="lg:rounded-[13px] overflow-hidden flex"
-            >
-              <div className="gift-left lg:w-[155px] lg:h-[115px] bg-white flex items-center justify-center">
-                <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
-                  <LazyImage
-                    alt={product.handle}
-                    pcImg={product.featuredImage.url}
-                  />
+        {giftList?.map(({product}, index) => {
+          return (
+            <div className="gift-item lg:w-[500px]" key={index}>
+              <input
+                type="radio"
+                id={product.id}
+                name="gift"
+                value={product.variants.edges[0].node.id}
+                className=""
+              />
+              <label
+                htmlFor={product.id}
+                className="lg:rounded-[13px] overflow-hidden flex"
+              >
+                <div className="gift-left lg:w-[155px] lg:h-[115px] bg-white flex items-center justify-center">
+                  <div className="img-wrapper lg:w-[103px] lg:h-[103px] object-contain">
+                    <LazyImage
+                      alt={product.handle}
+                      pcImg={product.featuredImage.url}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="gift-right flex-1"></div>
-            </label>
-          </div>
-        ))}
+                <div className="gift-right flex-1"></div>
+              </label>
+            </div>
+          );
+        })}
       </div>
     </>
   );
@@ -620,6 +639,9 @@ function AddToCartButton({
   onClick?: () => void;
   loading?: boolean;
 }) {
+  // useEffect(() => {
+  //   !pathName.search ? setAvailable(true) : setAvailable(false);
+  // }, [pathName]);
   return (
     <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
