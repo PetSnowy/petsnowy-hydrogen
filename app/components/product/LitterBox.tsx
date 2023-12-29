@@ -22,7 +22,6 @@ import {
 } from 'storefrontapi.generated';
 import {
   Await,
-  Link,
   useMatches,
   useLoaderData,
   FetcherWithComponents,
@@ -39,6 +38,7 @@ import {CartForm, Money} from '@shopify/hydrogen';
 import {loader} from '~/routes/($locale).products.$productHandle';
 import {useI18n} from 'remix-i18n';
 import {useLocation} from 'react-use';
+import {Link} from '../Link';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
@@ -365,7 +365,6 @@ function Variants({
   >(null);
   const [selectedColor, setSelectedColor] = useState<number>(0);
 
-  const params = useParams();
   const generateLink = (handle: string, link: Link[]) => {
     return `/products/${handle}?${link
       .map(
@@ -418,7 +417,7 @@ function Variants({
           return (
             <Link
               key={index}
-              to={`${params.locale ? '/' + params.locale + link : link}`}
+              to={link}
               className={`block ${active ? 'active' : ''} ${
                 !item.availableForSale ? 'disabled' : ''
               }`}
