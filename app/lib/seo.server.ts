@@ -175,8 +175,9 @@ function product({
   const description = truncate(
     product?.seo?.description ?? product?.description ?? '',
   );
+  const title = product?.seo?.title ?? product?.title
   return {
-    title: product?.seo?.title ?? product?.title,
+    title: title.length > 120 ? title.substring(0, 120) : title,
     description,
     media: selectedVariant?.image,
     jsonLd: productJsonLd({ product, selectedVariant, url }),

@@ -76,7 +76,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   }
 
   if (!product.selectedVariant) {
-    throw redirectToFirstVariant({product, request});
+    // throw redirectToFirstVariant({product, request});
   }
 
   const variants = context.storefront.query(VARIANTS_QUERY, {
@@ -209,16 +209,16 @@ function redirectToFirstVariant({
   request: Request;
 }) {
   const url = new URL(request.url);
-  const searchParams = new URLSearchParams(url.search);
+  const searchParams = new URLSearchParams();
   const firstVariant = product!.variants.nodes[0];
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-  return redirect(`?${searchParams.toString()}`, 302);
+  return redirect(`${url.pathname}?${searchParams.toString()}`, 302);
 }
 
 export default function Product() {
-  const {product, shop, recommended, variants} = useLoaderData<typeof loader>();
+  const {product, shop, variants} = useLoaderData<typeof loader>();
   const {media, title, vendor, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
   const {pathname} = useLocation();

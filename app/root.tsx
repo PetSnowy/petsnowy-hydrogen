@@ -122,6 +122,10 @@ export default function App() {
     }
   }, [location]);
 
+  useEffect(() => {
+    console.log(locale);
+  }, [locale]);
+
   useAnalytics(hasUserConsent);
 
   return (
