@@ -76,7 +76,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   }
 
   if (!product.selectedVariant) {
-    // throw redirectToFirstVariant({product, request});
+    throw redirectToFirstVariant({product, request});
   }
 
   const variants = context.storefront.query(VARIANTS_QUERY, {
@@ -214,7 +214,7 @@ function redirectToFirstVariant({
   for (const option of firstVariant.selectedOptions) {
     searchParams.set(option.name, option.value);
   }
-  return redirect(`${url.pathname}?${searchParams.toString()}`, 302);
+  return redirect(`${url.pathname}?${searchParams.toString()}`);
 }
 
 export default function Product() {
