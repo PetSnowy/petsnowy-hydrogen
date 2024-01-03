@@ -16,6 +16,7 @@ module.exports = {
     'no-case-declarations': 'off',
     '@typescript-eslint/consistent-type-imports': 'off',
     'no-console': 'off',
+    'react/jsx-key': 'off',
     'prettier/prettier': [
       'error',
       {
