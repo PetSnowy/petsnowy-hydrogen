@@ -87,6 +87,12 @@ export default function LitterBox({
 
   const {t} = useI18n();
 
+  const {pathname} = useLocation();
+
+  useEffect(() => {
+    selectColor.forEach((item) => (item.name = t(item.name)));
+  }, [pathname]);
+
   useEffect(() => {
     const unsubscribe = store.subscribe(() =>
       setSelectedColor(store.getState().value),
@@ -94,9 +100,6 @@ export default function LitterBox({
     window.innerWidth > 901
       ? setSwiperContent(swiperData)
       : setSwiperContent(mbSwiperData);
-
-    selectColor.forEach((item) => (item.name = t(item.name)));
-
     return () => unsubscribe();
   }, []);
 

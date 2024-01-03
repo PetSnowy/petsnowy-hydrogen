@@ -4,8 +4,7 @@ import {useInView} from 'react-intersection-observer';
 import clsx from 'clsx';
 import type {CartBuyerIdentityInput} from '@shopify/hydrogen/storefront-api-types';
 import {CartForm} from '@shopify/hydrogen';
-
-import {Heading, Button, IconCheck} from '~/components';
+import {Heading, Button, IconCheck, Link} from '~/components';
 import type {Localizations, Locale} from '~/lib/type';
 import {DEFAULT_LOCALE} from '~/lib/utils';
 import {useRootLoaderData} from '~/root';
@@ -124,7 +123,7 @@ function Country({
         variant="primary"
         onClick={closeDropdown}
       >
-        {countryLocale.label}
+        <a href={countryUrlPath}>{countryLocale.label}</a>
         {isSelected ? (
           <span className="ml-2">
             <IconCheck />
@@ -153,7 +152,7 @@ function ChangeLocaleForm({
       }}
     >
       <>
-        <input type="hidden" name="redirectTo" value={redirectTo} />
+        {/* <input type="hidden" name="redirectTo" value={redirectTo} /> */}
         {children}
       </>
     </CartForm>

@@ -115,9 +115,9 @@ export const countries: Localizations = {
     country: 'IT',
     currency: 'EUR',
   },
-  '/en-jp': {
+  '/ja-jp': {
     label: 'Japan (JPY ¥)',
-    language: 'EN',
+    language: 'JA',
     country: 'JP',
     currency: 'JPY',
   },
