@@ -115,7 +115,7 @@ export default function LitterBox({
               {t('SNOW+ Self-cleaning Litter Box')}
             </p>
             <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px] title-desc">
-              Finally, a litter box that collects all scoop ideas.
+              {t('litter desc')}
             </p>
           </div>
           <div className="lg:sticky lg:top-[90px]">
@@ -143,7 +143,7 @@ export default function LitterBox({
               {t('SNOW+ Self-cleaning Litter Box')}
             </p>
             <p className="font-LeagueSpartan lg:text-[17px] text-[#45392E] lg:mb-[12px]">
-              Finally, a litter box that collects all scoop ideas.
+              {t('litter desc')}
             </p>
           </div>
           <ProductPrice selectedVariant={product?.selectedVariant} />
@@ -245,6 +245,8 @@ function ProductForm({
     setSelectedVariantCount(newValue);
   };
 
+  const {t} = useI18n();
+
   return (
     <div className="product-select" ref={productRef}>
       <SelectColor />
@@ -270,7 +272,7 @@ function ProductForm({
             loading={loading}
           >
             {/* {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'} */}
-            Add to cart
+            {t('Add to cart')}
             <div className={`${loading ? 'loading' : ''}`}></div>
           </AddToCartButton>
         </div>
@@ -387,6 +389,8 @@ function Variants({
 
   const [showQuestion, setShowQuestion] = useState<boolean>(false);
 
+  const {t} = useI18n();
+
   const handleQuestion = (image: string | undefined, title: string) => {
     setQuestion({image: image!, target: title});
     setShowQuestion(true);
@@ -411,7 +415,7 @@ function Variants({
   return (
     <div className="variants-wrapper">
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e]">
-        Product Set
+        {t('Product Set')}
       </p>
       <div className="variants flex lg:gap-[25px]">
         {selectedVariant?.map((item, index) => {
@@ -451,6 +455,7 @@ function Variants({
 }
 
 function SelectColor() {
+  const {t} = useI18n();
   const handleSelect = (index: number) => {
     const url = new URL(window.location.href);
     url.search = '';
@@ -461,7 +466,7 @@ function SelectColor() {
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e]">
-        Choose Color
+        {t('Choose Color')}
       </p>
       <div className="select-color flex lg:gap-x-[20px] cursor-pointer lg:mt-[10px] lg:mb-[24px]">
         {selectColor.map((item, index) => {
@@ -497,13 +502,14 @@ function SelectColor() {
 
 function GetGift() {
   const {giftList} = useLoaderData<typeof loader>();
+  const {t} = useI18n();
   if (giftList && !giftList[0].product) {
     return <></>;
   }
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e] lg:mt-[26px]">
-        Choose Gift
+        {t('Choose Gift')}
       </p>
       <div className="gift flex w-full flex-wrap lg:gap-y-[24px]">
         {giftList?.map(({product}, index) => {
@@ -542,17 +548,18 @@ const addOnsName = [
   'Waste Liner 30 Pcs',
   'Waste Liner 60 Pcs',
   'Waste Liner 120 Pcs',
-  'Filter Screen (Mini Mesh)',
+  'Cream Filter Screen (Mini Mesh)',
+  'Classic Filter Screen (Mini Mesh)',
   'Fragrance Box 3 Pcs',
 ];
 
 function AddOns() {
   const {addOnsList} = useLoaderData<typeof loader>();
-
+  const {t} = useI18n();
   return (
     <>
       <p className="font-LeagueSpartanBold lg:text-[20px] lg:mb-[20px] text-[#45392e] lg:mt-[27px]">
-        Add-Ons
+        {t('Add-Ons')}
       </p>
       <div className="addOns flex flex-wrap lg:gap-[15px]">
         {addOnsList!.map(({product}, index) => {
@@ -568,7 +575,7 @@ function AddOns() {
               />
               <label
                 htmlFor={item?.id}
-                className="lg:w-[155px] lg:h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
+                className="lg:w-[155px] lg:min-h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
               >
                 <div className="img-wrapper lg:w-[70px] lg:h-auto lg:mb-[10px] object-contain flex items-center justify-center">
                   <LazyImage
@@ -576,11 +583,10 @@ function AddOns() {
                     pcImg={item?.image?.url}
                   />
                 </div>
-                <p className="title lg:text-[13px] font-LeagueSpartan text-center text-[#616161]">
-                  {addOnsName[index]}
+                <p className="title lg:text-[13px] lg:mb-[5px] font-LeagueSpartan text-center text-[#616161]">
+                  {t(addOnsName[index])}
                 </p>
                 <div className="price">
-                  {/* <s>{product.priceRange.maxVariantPrice.amount}</s> */}
                   <span className="font-LeagueSpartanBold lg:text-[16px] text-[#616161]">
                     <Money data={item?.price!} />
                   </span>
