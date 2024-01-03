@@ -1,16 +1,14 @@
 import { RemixI18n } from 'remix-i18n';
-import zh from 'public/locales/zh/common.json';
 import en from 'public/locales/en/common.json';
 import fr from 'public/locales/fr/common.json';
 import ja from 'public/locales/ja/common.json';
 
 export const i18n = new RemixI18n({
-  supportedLanguages: ['en', 'zh', 'fr', 'ja'],
+  supportedLanguages: ['en', 'fr', 'ja'],
   fallbackLng: 'en',
 });
 
 const locales = {
-  zh,
   en,
   fr,
   ja
