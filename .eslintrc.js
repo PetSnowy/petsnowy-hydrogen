@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint/consistent-type-imports': 'off',
     'no-console': 'off',
     'react/jsx-key': 'off',
+    'react/no-array-index-key': 'off',
     'prettier/prettier': [
       'error',
       {
