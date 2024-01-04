@@ -320,6 +320,26 @@
   .new-index-honor .honor-options .options-item:last-child::after {
     display: none;
   }
+  .swiper-join .swiper {
+    width: 1060px;
+  }
+  .swiper-join [class*=swiper-button] {
+    width: 40px;
+    height: 95px;
+    background: url("~/assets/index/arrows-big.png") no-repeat center/cover;
+  }
+  .comfort a:hover i {
+    transform: translateX(8px);
+  }
+  .comfort i {
+    display: block;
+    width: 20px;
+    transition: all 0.3s ease;
+    height: 19px;
+    margin-left: 5px;
+    margin-top: -10px;
+    background: url("~/assets/index/mouse.png") no-repeat center/cover;
+  }
 }
 @media screen and (max-width: 900px) {
   .new-index-litter {
@@ -536,6 +556,12 @@
     background: #A79886;
     border-radius: 3.0666666667vw;
     column-gap: 4vw;
+  }
+  .swiper-join .swiper-container {
+    width: 100%;
+  }
+  .swiper-join .swiper {
+    width: 24.8vw;
   }
 }
 

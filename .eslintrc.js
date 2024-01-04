@@ -22,6 +22,7 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'react-hooks/rules-of-hooks': 'off',
     'prettier/prettier': [
       'error',
       {

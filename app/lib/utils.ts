@@ -1,17 +1,20 @@
-import { useLocation, useMatches } from '@remix-run/react';
-import type { MoneyV2, SelectedOption } from '@shopify/hydrogen/storefront-api-types';
+import {useLocation, useMatches} from '@remix-run/react';
+import type {
+  MoneyV2,
+  SelectedOption,
+} from '@shopify/hydrogen/storefront-api-types';
 import typographicBase from 'typographic-base';
 
-import { useRootLoaderData } from '~/root';
-import { countries } from '~/data/countries';
+import {useRootLoaderData} from '~/root';
+import {countries} from '~/data/countries';
 import type {
   ChildMenuItemFragment,
   MenuFragment,
   ParentMenuItemFragment,
 } from 'storefrontapi.generated';
 
-import type { I18nLocale } from './type';
-import { useEffect, useMemo, useState } from 'react';
+import type {I18nLocale} from './type';
+import {useEffect, useMemo, useState} from 'react';
 
 type EnhancedMenuItemProps = {
   to: string;
@@ -24,8 +27,8 @@ export type ChildEnhancedMenuItem = ChildMenuItemFragment &
 
 export type ParentEnhancedMenuItem = (ParentMenuItemFragment &
   EnhancedMenuItemProps) & {
-    items: ChildEnhancedMenuItem[];
-  };
+  items: ChildEnhancedMenuItem[];
+};
 
 export type EnhancedMenu = Pick<MenuFragment, 'id'> & {
   items: ParentEnhancedMenuItem[];
@@ -49,7 +52,7 @@ export function formatText(input?: string | React.ReactNode) {
     return input;
   }
 
-  return typographicBase(input, { locale: 'en-us' }).replace(
+  return typographicBase(input, {locale: 'en-us'}).replace(
     /\s([^\s<]+)\s*$/g,
     '\u00A0$1',
   );
@@ -85,8 +88,8 @@ function resolveToFromType(
     pathname?: string;
     type?: string;
   } = {
-      customPrefixes: {},
-    },
+    customPrefixes: {},
+  },
 ) {
   if (!pathname || !type) return '';
 
@@ -156,32 +159,31 @@ function parseItem(primaryDomain: string, env: Env, customPrefixes = {}) {
     | EnhancedMenu['items'][number]['items'][0]
     | null {
     if (!item?.url || !item?.type) {
-      // eslint-disable-next-line no-console
       console.warn('Invalid menu item.  Must include a url and type.');
       return null;
     }
 
     // extract path from url because we don't need the origin on internal to attributes
-    const { host, pathname } = new URL(item.url);
+    const {host, pathname} = new URL(item.url);
 
     const isInternalLink =
       host === new URL(primaryDomain).host || host === env.PUBLIC_STORE_DOMAIN;
 
     const parsedItem = isInternalLink
       ? // internal links
-      {
-        ...item,
-        isExternal: false,
-        target: '_self',
-        to: resolveToFromType({ type: item.type, customPrefixes, pathname }),
-      }
+        {
+          ...item,
+          isExternal: false,
+          target: '_self',
+          to: resolveToFromType({type: item.type, customPrefixes, pathname}),
+        }
       : // external links
-      {
-        ...item,
-        isExternal: true,
-        target: '_blank',
-        to: item.url,
-      };
+        {
+          ...item,
+          isExternal: true,
+          target: '_blank',
+          to: item.url,
+        };
 
     if ('items' in item) {
       return {
@@ -208,7 +210,6 @@ export function parseMenu(
   customPrefixes = {},
 ): EnhancedMenu | null {
   if (!menu?.items) {
-    // eslint-disable-next-line no-console
     console.warn('Invalid menu passed to parseMenu');
     return null;
   }
@@ -227,8 +228,9 @@ export const INPUT_STYLE_CLASSES =
   'appearance-none rounded dark:bg-transparent border focus:border-primary/50 focus:ring-0 w-full py-2 px-3 text-primary/90 placeholder:text-primary/50 leading-tight focus:shadow-outline';
 
 export const getInputStyleClasses = (isError?: string | null) => {
-  return `${INPUT_STYLE_CLASSES} ${isError ? 'border-red-500' : 'border-primary/20'
-    }`;
+  return `${INPUT_STYLE_CLASSES} ${
+    isError ? 'border-red-500' : 'border-primary/20'
+  }`;
 };
 
 export function statusMessage(status: string) {
@@ -287,25 +289,26 @@ export function getLocaleFromRequest(request: Request): I18nLocale {
 
   return countries[firstPathPart]
     ? {
-      ...countries[firstPathPart],
-      pathPrefix: firstPathPart,
-    }
+        ...countries[firstPathPart],
+        pathPrefix: firstPathPart,
+      }
     : {
-      ...countries['default'],
-      pathPrefix: '',
-    };
+        ...countries['default'],
+        pathPrefix: '',
+      };
 }
 
 export function usePrefixPathWithLocale(path: string) {
   const rootData = useRootLoaderData();
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
 
-  return `${selectedLocale.pathPrefix}${path.startsWith('/') ? path : '/' + path
-    }`;
+  return `${selectedLocale.pathPrefix}${
+    path.startsWith('/') ? path : '/' + path
+  }`;
 }
 
 export function useIsHomePath() {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
   const rootData = useRootLoaderData();
   const selectedLocale = rootData?.selectedLocale ?? DEFAULT_LOCALE;
   const strippedPathname = pathname.replace(selectedLocale.pathPrefix, '');
@@ -343,7 +346,7 @@ export function useVariantUrl(
   handle: string,
   selectedOptions: SelectedOption[],
 ) {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
 
   return useMemo(() => {
     return getVariantUrl({
@@ -382,7 +385,6 @@ export function getVariantUrl({
   return path + (searchString ? '?' + searchParams.toString() : '');
 }
 
-
 // 获取header active 导航条的高度
 export const getActiveHeaderHeight = () => {
   const [height, setHeight] = useState(0);
@@ -399,8 +401,8 @@ export const getActiveHeaderHeight = () => {
       window.removeEventListener('resize', updateHeight);
     };
   }, []);
-  return height
-}
+  return height;
+};
 
 //判断是否是移动端
 
@@ -416,29 +418,31 @@ export const handleResize = () => {
     return () => window.removeEventListener('resize', resize);
   }, []);
   return isMobile;
-}
+};
 
 function stringify(data: any) {
-  const pairs = Object.entries(data)
-  const qs = pairs.map(([k, v]: any) => {
-    let noValue = false
-    if (v === null || v === undefined || typeof v === 'object') {
-      noValue = true
-    }
-    return `${encodeURIComponent(k)}=${noValue ? '' : encodeURIComponent(v)}`
-  }).join('&')
-  return qs
+  const pairs = Object.entries(data);
+  const qs = pairs
+    .map(([k, v]: any) => {
+      let noValue = false;
+      if (v === null || v === undefined || typeof v === 'object') {
+        noValue = true;
+      }
+      return `${encodeURIComponent(k)}=${noValue ? '' : encodeURIComponent(v)}`;
+    })
+    .join('&');
+  return qs;
 }
 
-export function jsonp({ url, onData, params }: any) {
-  const script = document.createElement('script')
+export function jsonp({url, onData, params}: any) {
+  const script = document.createElement('script');
 
   // 一、为了避免全局污染，使用一个随机函数名
-  const cbFnName = `JSONP_PADDING_${Math.random().toString().slice(2)}`
+  const cbFnName = `JSONP_PADDING_${Math.random().toString().slice(2)}`;
   // 二、默认 callback 函数为 cbFnName
-  script.src = `${url}?${stringify({ callback: cbFnName, ...params })}`
+  script.src = `${url}?${stringify({callback: cbFnName, ...params})}`;
   // 三、使用 onData 作为 cbFnName 回调函数，接收数据
   window[cbFnName as any] = onData;
 
-  document.body.appendChild(script)
+  document.body.appendChild(script);
 }

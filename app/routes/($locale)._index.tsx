@@ -16,20 +16,10 @@ import SwiperVideo, {
   type Data as SwiperVideoData,
 } from '~/components/index/SwiperVideo';
 import Honor from '~/components/index/Honor';
-import SwiperVideoImg1 from '~/assets/index/index-video-swiper-1.png';
-import SwiperVideoImg2 from '~/assets/index/index-video-swiper-2.png';
-import SwiperVideoImg3 from '~/assets/index/index-video-swiper-3.png';
-import SwiperVideoImg4 from '~/assets/index/index-video-swiper-4.png';
-import SwiperVideoImg5 from '~/assets/index/index-video-swiper-5.png';
-import SwiperVideoImg6 from '~/assets/index/index-video-swiper-6.png';
-import SwiperVideoImg7 from '~/assets/index/index-video-swiper-7.png';
-import SwiperMbVideoImg1 from '~/assets/index/mb-index-video-swiper-1.png';
-import SwiperMbVideoImg2 from '~/assets/index/mb-index-video-swiper-2.png';
-import SwiperMbVideoImg3 from '~/assets/index/mb-index-video-swiper-3.png';
-import SwiperMbVideoImg4 from '~/assets/index/mb-index-video-swiper-4.png';
-import SwiperMbVideoImg5 from '~/assets/index/mb-index-video-swiper-5.png';
-import SwiperMbVideoImg6 from '~/assets/index/mb-index-video-swiper-6.png';
-import SwiperMbVideoImg7 from '~/assets/index/mb-index-video-swiper-7.png';
+import Reported from '~/components/index/Reported';
+import Inventory from '~/components/index/Inventory';
+import SwiperJoin from '~/components/index/SwiperJoin';
+import Comfort from '~/components/index/Comfort';
 
 type IP = {
   country_code: CountryCode;
@@ -92,44 +82,44 @@ function findCode(entries: any[], code: string) {
 
 const swiperVideoData: SwiperVideoData[] = [
   {
-    pcImg: SwiperVideoImg1,
-    mbImg: SwiperMbVideoImg1,
+    pcImg: require('~/assets/index/index-video-swiper-1.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-1.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/356ba8a50bb547e3ab6e80529cf2f47e.mp4',
   },
   {
-    pcImg: SwiperVideoImg2,
-    mbImg: SwiperMbVideoImg2,
+    pcImg: require('~/assets/index/index-video-swiper-2.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-2.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/ec9a08a5764c47beb88447699b56b704.mp4',
   },
   {
-    pcImg: SwiperVideoImg3,
-    mbImg: SwiperMbVideoImg3,
+    pcImg: require('~/assets/index/index-video-swiper-3.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-3.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/5f38abcedf0f4825bba962ad8b07013c.mp4',
   },
   {
-    pcImg: SwiperVideoImg4,
-    mbImg: SwiperMbVideoImg4,
+    pcImg: require('~/assets/index/index-video-swiper-4.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-4.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/93daf5c9770e4fe797f8f10d160f706e.mp4',
   },
   {
-    pcImg: SwiperVideoImg5,
-    mbImg: SwiperMbVideoImg5,
+    pcImg: require('~/assets/index/index-video-swiper-5.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-5.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/dfe0987fa314402ba83e72c5b4309c98.mp4',
   },
   {
-    pcImg: SwiperVideoImg6,
-    mbImg: SwiperMbVideoImg6,
+    pcImg: require('~/assets/index/index-video-swiper-6.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-6.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/cab9e68aabdd40368daf52cc25449744.mp4',
   },
   {
-    pcImg: SwiperVideoImg7,
-    mbImg: SwiperMbVideoImg7,
+    pcImg: require('~/assets/index/index-video-swiper-7.png'),
+    mbImg: require('~/assets/index/mb-index-video-swiper-7.png'),
     alt: 'litter box',
     url: 'https://cdn.shopify.com/videos/c/o/v/82eefb89f78340e882fb267307d59cbc.mov',
   },
@@ -149,6 +139,10 @@ export default function Homepage() {
       <ProductList />
       <SwiperVideo data={swiperVideoData} />
       <Honor />
+      <Reported />
+      <Inventory />
+      <SwiperJoin />
+      <Comfort />
     </>
   );
 }

@@ -13,9 +13,9 @@ export default {
         shopPay: 'rgb(var(--color-shop-pay) / <alpha-value>)',
       },
       screens: {
-        lg: { min: "901px" },
-        sm: { max: "900px" },
-        md: { min: '768px' }
+        lg: {min: '901px'},
+        sm: {max: '900px'},
+        md: {min: '768px'},
       },
       spacing: {
         nav: 'var(--height-nav)',
@@ -33,12 +33,12 @@ export default {
       fontFamily: {
         sans: ['Helvetica Neue', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         serif: ['"IBMPlexSerif"', 'Palatino', 'ui-serif'],
-        HelveticaBold: ["HelveticaBold"],
-        Helvetica: ["Helvetica"],
-        HelveticaNowDisplayXBlk: ["HelveticaNowDisplayXBlk"],
-        LeagueSpartan: ["LeagueSpartan"],
-        LeagueSpartanBold: ["LeagueSpartanBold"],
-        LeagueSpartanBlack: ["LeagueSpartanBlack"]
+        HelveticaBold: ['HelveticaBold'],
+        Helvetica: ['Helvetica'],
+        HelveticaNowDisplayXBlk: ['HelveticaNowDisplayXBlk'],
+        LeagueSpartan: ['LeagueSpartan'],
+        LeagueSpartanBold: ['LeagueSpartanBold'],
+        LeagueSpartanBlack: ['LeagueSpartanBlack'],
       },
       fontSize: {
         display: ['var(--font-size-display)', '1.1'],

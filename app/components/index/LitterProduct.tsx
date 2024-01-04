@@ -2,6 +2,7 @@ import {Fragment, useEffect, useRef} from 'react';
 import cartImg from '~/assets/index/cat-pc.png';
 import cartImgMb from '~/assets/index/cat-mb.png';
 import {LazyImage} from '~/components/Common';
+import {Link} from '../Link';
 
 export default function LitterProduct({top}: {top: number}) {
   const options = [
@@ -82,9 +83,13 @@ export default function LitterProduct({top}: {top: number}) {
               );
             })}
           </div>
-          <a href="/products/snow-self-cleaning-litter-box" className="button">
+          <Link
+            to={'/products/snow-self-cleaning-litter-box'}
+            className="button"
+            prefetch="intent"
+          >
             Order Now
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -405,6 +405,36 @@
       }
     }
   }
+
+  .swiper-join {
+    .swiper {
+      width: 1060px;
+    }
+
+    [class *='swiper-button'] {
+      width: 40px;
+      height: 95px;
+      background: url('~/assets/index/arrows-big.png') no-repeat center/cover;
+    }
+  }
+
+  .comfort {
+    a:hover {
+      i {
+        transform: translateX(8px);
+      }
+    }
+
+    i {
+      display: block;
+      width: 20px;
+      transition: all 0.3s ease;
+      height: 19px;
+      margin-left: 5px;
+      margin-top: -10px;
+      background: url('~/assets/index/mouse.png') no-repeat center/cover;
+    }
+  }
 }
 
 
@@ -665,6 +695,16 @@
         border-radius: vw(23px);
         column-gap: vw(30px);
       }
+    }
+  }
+
+  .swiper-join {
+    .swiper-container {
+      width: 100%;
+    }
+
+    .swiper {
+      width: vw(186px);
     }
   }
 }
