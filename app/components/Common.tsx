@@ -135,6 +135,7 @@ export function LazyImage({
   className,
   style,
   lazy = true,
+  ...props
 }: LazyImageProps) {
   const targetRef = useRef<HTMLImageElement | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -189,6 +190,7 @@ export function LazyImage({
       className={className}
       style={style}
       src={lazy ? '' : isMobile ? mobileImg ?? pcImg : pcImg ?? mobileImg}
+      {...props}
     />
   );
 }

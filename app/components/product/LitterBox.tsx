@@ -401,8 +401,6 @@ function Variants({
       item.title.includes(selectColor[selectedColor].name),
     );
     setSelectedVariant(filteredVariants);
-    console.log(selectColor);
-    console.log(filteredVariants, selectColor[selectedColor].name, variants);
   }, [selectedColor]);
 
   useEffect(() => {

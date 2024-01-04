@@ -4,9 +4,6 @@ import {
   type LoaderFunctionArgs,
   type AppLoadContext,
   type SerializeFrom,
-  ActionFunction,
-  redirect,
-  ActionFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {
   isRouteErrorResponse,
@@ -24,7 +21,6 @@ import {
 } from '@remix-run/react';
 import {ShopifySalesChannel, Seo, useNonce} from '@shopify/hydrogen';
 import invariant from 'tiny-invariant';
-
 import {Layout} from '~/components';
 import {seoPayload} from '~/lib/seo.server';
 import {cssBundleHref} from '@remix-run/css-bundle';
@@ -40,19 +36,17 @@ import {useAnalytics} from './hooks/useAnalytics';
 import {useI18n} from 'remix-i18n';
 import {useEffect} from 'react';
 import {getLocale} from './i18n';
-
-// This is important to avoid re-fetching root queries on sub-navigations
+import aosStyle from 'aos/dist/aos.css';
+import AOS from 'aos';
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   formMethod,
   currentUrl,
   nextUrl,
 }) => {
-  // revalidate when a mutation is performed e.g add to cart, login...
   if (formMethod && formMethod !== 'GET') {
     return true;
   }
 
-  // revalidate when manually revalidating via useRevalidator
   if (currentUrl.toString() === nextUrl.toString()) {
     return true;
   }
@@ -75,6 +69,7 @@ export const links: LinksFunction = () => {
     {rel: 'stylesheet', href: swiperStyle},
     {rel: 'stylesheet', href: font},
     {rel: 'stylesheet', href: reset},
+    {rel: 'stylesheet', href: aosStyle},
     ...(cssBundleHref ? [{rel: 'stylesheet', href: cssBundleHref}] : []),
   ];
 };
@@ -120,6 +115,7 @@ export default function App() {
     if (locale !== i18n.locale()) {
       i18n.locale(locale);
     }
+    AOS.init(); // 初始化 AOS
   }, [location]);
 
   useAnalytics(hasUserConsent);

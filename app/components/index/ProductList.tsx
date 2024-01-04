@@ -45,7 +45,11 @@ export default function ProductList() {
               alt={alt}
               pcImg={pcImg}
               mobileImg={mbImg}
-              className="lg:w-[264px] lg:h-[346px]"
+              className="lg:w-[264px] lg:h-[346px] aos-init aos-animate"
+              data-aos="fade-up"
+              data-aos-duration={800}
+              data-aos-offset={350}
+              data-aos-delay={100 * index}
             />
           </Link>
         ))}
