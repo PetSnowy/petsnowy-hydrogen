@@ -91,6 +91,7 @@ export default function LitterBox({
 
   useEffect(() => {
     selectColor.forEach((item) => (item.name = t(item.name)));
+    console.log(selectColor);
   }, [pathname]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { RemixI18n } from 'remix-i18n';
+import {RemixI18n} from 'remix-i18n';
 import en from 'public/locales/en/common.json';
 import fr from 'public/locales/fr/common.json';
 import ja from 'public/locales/ja/common.json';
@@ -11,7 +11,7 @@ export const i18n = new RemixI18n({
 const locales = {
   en,
   fr,
-  ja
+  ja,
 };
 
 export function getLocale(pathname: string): string {

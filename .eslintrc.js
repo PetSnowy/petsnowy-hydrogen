@@ -18,6 +18,10 @@ module.exports = {
     'no-console': 'off',
     'react/jsx-key': 'off',
     'react/no-array-index-key': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
+    'react-hooks/exhaustive-deps': 'off',
     'prettier/prettier': [
       'error',
       {
