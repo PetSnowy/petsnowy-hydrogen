@@ -91,7 +91,6 @@ export default function LitterBox({
 
   useEffect(() => {
     selectColor.forEach((item) => (item.name = t(item.name)));
-    console.log(selectColor);
   }, [pathname]);
 
   useEffect(() => {
@@ -399,12 +398,15 @@ function Variants({
   const closeQuestion = (value: boolean) => {
     setShowQuestion(value);
   };
+
+  const {pathname} = useLocation();
   useEffect(() => {
     const filteredVariants = variants.filter((item) =>
       item.title.includes(selectColor[selectedColor].name),
     );
     setSelectedVariant(filteredVariants);
-  }, [selectedColor]);
+    console.log(filteredVariants);
+  }, [selectedColor, pathname]);
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() =>
