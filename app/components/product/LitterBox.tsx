@@ -395,15 +395,15 @@ function Variants({
     setShowQuestion(value);
   };
 
-  const {pathname} = useLocation();
   useEffect(() => {
+    selectColor.forEach((item) => (item.name = t(item.name)));
     const filteredVariants = variants.filter((item) =>
       item.title.includes(selectColor[selectedColor].name),
     );
     setSelectedVariant(filteredVariants);
     console.log(selectColor);
     console.log(filteredVariants, selectColor[selectedColor].name, variants);
-  }, [selectedColor, pathname]);
+  }, [selectedColor]);
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() =>
