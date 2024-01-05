@@ -11,7 +11,7 @@ import mbProductLitter5 from '~/assets/product/mb-product-litter-5.png';
 import productLitter6 from '~/assets/product/product-litter-6.png';
 import mbProductLitter6 from '~/assets/product/mb-product-litter-6.png';
 
-import {LazyImage} from '../Common';
+import {LazyImage} from '../../Common';
 
 export default function ProductLitter() {
   return (
@@ -30,7 +30,9 @@ export default function ProductLitter() {
               <p
                 className="litter-title aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 A Fresh Start to
                 <br />
@@ -39,7 +41,9 @@ export default function ProductLitter() {
               <p
                 className="litter-desc aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 Everyday, PetSnowy filters out unwanted litters and maintains a
                 clean, hygienic place for your cats. Want to change the whole
@@ -66,14 +70,18 @@ export default function ProductLitter() {
               <p
                 className="litter-title aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 You have cats AND your house smells good!
               </p>
               <p
                 className="litter-desc aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 <span className="special">3-Stage Deodorization</span> TiO2
                 System <span className="thick">decomposes</span> bacteria and
@@ -92,7 +100,9 @@ export default function ProductLitter() {
               <p
                 className="litter-title aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 Pull to pack
                 <br />
@@ -101,7 +111,9 @@ export default function ProductLitter() {
               <p
                 className="litter-desc aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 Patented self-packing design automatically pack the waste for
                 you so you can keep your hands and your nose clean. Avoid direct
@@ -128,7 +140,9 @@ export default function ProductLitter() {
               <p
                 className="litter-title aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 Max the good,
                 <br />
@@ -140,7 +154,9 @@ export default function ProductLitter() {
               <p
                 className="litter-desc aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 *Anti-tracking curved walkway design, keeps the litter in and
                 your floor clean. Trap litter at its source with the included
@@ -161,7 +177,9 @@ export default function ProductLitter() {
               <p
                 className="litter-desc aos-init aos-animate"
                 data-aos="fade-up"
-                data-aos-duration="800"
+                data-aos-duration={800}
+                data-aos-offset={100}
+                data-aos-delay={100}
               >
                 *Magnetic assembly design maximizes convenience by eliminating
                 the hassle of assembling and disassembling, with no worries over

@@ -13,7 +13,7 @@ import litterSwiper4 from '~/assets/product/litter-swiper-4.png';
 import litterSwiper5 from '~/assets/product/litter-swiper-5.png';
 import litterSwiper6 from '~/assets/product/litter-swiper-6.png';
 import litterSwiper7 from '~/assets/product/litter-swiper-7.png';
-import {LazyImage} from '../Common';
+import {LazyImage} from '../../Common';
 import {
   ProductQuery,
   ProductVariantFragmentFragment,
@@ -32,11 +32,11 @@ import {
   CartLineInput,
   ProductVariant,
 } from '@shopify/hydrogen/storefront-api-types';
-import ProductPrice from './ProductPrice';
+import ProductPrice from '../ProductPrice';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {loader} from '~/routes/($locale).products.$productHandle';
 import {useI18n} from 'remix-i18n';
-import {Link} from '../Link';
+import {Link} from '../../Link';
 
 const selectColor = [
   {name: 'Classic', imageUrl: classicProductImg, showImg: classicShowImg},
