@@ -1,36 +1,28 @@
-import pcImg1 from '~/assets/index/product-list-1.png';
-import pcImg2 from '~/assets/index/product-list-2.png';
-import pcImg3 from '~/assets/index/product-list-3.png';
-import pcImg4 from '~/assets/index/product-list-4.png';
-import mbImg1 from '~/assets/index/mb-product-list-1.png';
-import mbImg2 from '~/assets/index/mb-product-list-2.png';
-import mbImg3 from '~/assets/index/mb-product-list-3.png';
-import mbImg4 from '~/assets/index/mb-product-list-4.png';
 import {Link} from '../Link';
 import {LazyImage} from '../Common';
 
 const productListImg = [
   {
-    pcImg: pcImg1,
-    mbImg: mbImg1,
+    pcImg: require('~/assets/index/product-list-1.png'),
+    mbImg: require('~/assets/index/mb-product-list-1.png'),
     url: '/products/snow-water-fountain',
     alt: 'snow-water-fountain',
   },
   {
-    pcImg: pcImg2,
-    mbImg: mbImg2,
+    pcImg: require('~/assets/index/product-list-2.png'),
+    mbImg: require('~/assets/index/mb-product-list-2.png'),
     url: '/products/snow-pet-feeder',
     alt: 'snow-water-fountain',
   },
   {
-    pcImg: pcImg3,
-    mbImg: mbImg3,
+    pcImg: require('~/assets/index/product-list-3.png'),
+    mbImg: require('~/assets/index/mb-product-list-3.png'),
     url: '/products/snow-roly-poly-cat-toy',
     alt: 'snow-roly-poly-cat-toy',
   },
   {
-    pcImg: pcImg4,
-    mbImg: mbImg4,
+    pcImg: require('~/assets/index/product-list-4.png'),
+    mbImg: require('~/assets/index/mb-product-list-4.png'),
     url: '/collections/accessories',
     alt: 'accessories',
   },
@@ -48,7 +40,7 @@ export default function ProductList() {
               className="lg:w-[264px] lg:h-[346px] aos-init aos-animate transition-all duration-300 ease"
               data-aos="fade-up"
               data-aos-duration={800}
-              data-aos-offset={350}
+              data-aos-offset={100}
               data-aos-delay={100 * index}
             />
           </Link>

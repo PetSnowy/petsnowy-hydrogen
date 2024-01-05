@@ -557,11 +557,58 @@
     border-radius: 3.0666666667vw;
     column-gap: 4vw;
   }
+  .swiper-join {
+    width: 100%;
+  }
+  .swiper-join .container {
+    padding: 4.6666666667vw 0px 5.8666666667vw;
+  }
+  .swiper-join p {
+    margin-bottom: 4vw;
+  }
   .swiper-join .swiper-container {
     width: 100%;
   }
   .swiper-join .swiper {
+    width: 100vw;
+  }
+  .swiper-join .swiper img {
     width: 24.8vw;
+  }
+  .swiper-join .swiper .swiper-slide {
+    width: 24.8vw;
+  }
+  .inventory {
+    padding-bottom: 9.3333333333vw;
+  }
+  .inventory a {
+    width: 30.6666666667vw;
+    height: 7.7333333333vw;
+    border-radius: 3.8666666667vw;
+    right: 3.4666666667vw;
+    bottom: 4vw;
+    font-size: 3.4666666667vw;
+  }
+  .comfort {
+    padding: 6.6666666667vw 0px;
+  }
+  .comfort img {
+    border-radius: 4vw;
+  }
+  .comfort a {
+    width: 22vw;
+    height: 4.1333333333vw;
+    border-radius: 1.7333333333vw;
+    font-size: 2.4vw;
+    left: 16vw;
+    bottom: 6.6666666667vw;
+  }
+  .comfort a i {
+    width: 1.6vw;
+    height: 1.6vw;
+    margin-left: 0.6666666667vw;
+    margin-top: -0.6666666667vw;
+    background: url("~/assets/index/mouse.png") no-repeat center/cover;
   }
 }
 

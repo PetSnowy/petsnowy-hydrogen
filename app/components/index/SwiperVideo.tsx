@@ -3,6 +3,7 @@ import {LazyImage, Video} from '../Common';
 import {useRef, useState} from 'react';
 import {Mousewheel, Pagination} from 'swiper/modules';
 import type SwiperType from 'swiper';
+import {handleResize} from '~/lib/utils';
 
 export type Data = {
   pcImg: string;
@@ -16,6 +17,7 @@ export default function SwiperVideo({data}: {data: Data[]}) {
   const [showVideoIndex, setShowVideoIndex] = useState<number>(-1);
   const swiperVideo = useRef<SwiperRef | null>(null);
   const [videoEl, setVideoEl] = useState<HTMLVideoElement[] | null>(null);
+  const isMobile = handleResize();
 
   const handleIndex = (index: number) => {
     if (index === showVideoIndex) return;
@@ -52,7 +54,7 @@ export default function SwiperVideo({data}: {data: Data[]}) {
       <div className="container lg:p-[40px] bg-[#f6f3ec] lg:rounded-[36px] flex items-center justify-between lg:gap-x-[40px]">
         <div className="word flex-shrink-0"></div>
         <div className="content">
-          <Swiper slidesPerView="auto" spaceBetween={20}>
+          <Swiper slidesPerView="auto" spaceBetween={isMobile ? 10 : 20}>
             {data.length &&
               data.map(({pcImg, mbImg, alt}, index) => (
                 <SwiperSlide key={index} onClick={() => handleIndex(index)}>

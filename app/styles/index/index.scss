@@ -699,12 +699,69 @@
   }
 
   .swiper-join {
+    $width: vw(186px);
+    width: 100%;
+
+    .container {
+      padding: vw(35px) 0px vw(44px);
+    }
+
+    p {
+      margin-bottom: vw(30px);
+    }
+
     .swiper-container {
       width: 100%;
     }
 
     .swiper {
-      width: vw(186px);
+      width: vw(750px);
+
+      img {
+        width: $width;
+      }
+
+      .swiper-slide {
+        width: $width;
+      }
+    }
+  }
+
+  .inventory {
+    padding-bottom: vw(70px);
+
+    a {
+      width: vw(230px);
+      height: vw(58px);
+      border-radius: vw(29px);
+      right: vw(26px);
+      bottom: vw(30px);
+      font-size: vw(26px);
+    }
+  }
+
+  .comfort {
+    padding: vw(50px) 0px;
+
+    img {
+      border-radius: vw(30px);
+    }
+
+    a {
+      width: vw(165px);
+      height: vw(31px);
+      border-radius: vw(13px);
+      font-size: vw(18px);
+      left: vw(120px);
+      bottom: vw(50px);
+
+      i {
+        width: vw(12px);
+        height: vw(12px);
+        margin-left: vw(5px);
+        margin-top: vw(-5px);
+        background: url('~/assets/index/mouse.png') no-repeat center/cover;
+      }
     }
   }
 }

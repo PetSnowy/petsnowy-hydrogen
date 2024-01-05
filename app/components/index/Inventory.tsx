@@ -6,7 +6,7 @@ import {Link} from '../Link';
 
 export default function Inventory() {
   return (
-    <div className="lg:pt-[80px] lg:pb-[100px] bg-[#e9e0cf]">
+    <div className="inventory lg:pt-[80px] lg:pb-[100px] bg-[#e9e0cf]">
       <div className="container relative">
         <LazyImage alt="petsnowy" pcImg={inventory} mobileImg={mbInventory} />
         <Link
