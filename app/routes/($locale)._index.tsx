@@ -80,7 +80,7 @@ function findCode(entries: any[], code: string) {
   return entries.find(([_, value]) => value.country === code) || ['', null];
 }
 
-const swiperVideoData: SwiperVideoData[] = [
+export const swiperVideoData: SwiperVideoData[] = [
   {
     pcImg: require('~/assets/index/index-video-swiper-1.png'),
     mbImg: require('~/assets/index/mb-index-video-swiper-1.png'),

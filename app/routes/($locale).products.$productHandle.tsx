@@ -42,18 +42,20 @@ import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
-
 import {PageRenderer, Video} from '~/components/Common';
 import LitterBox from '~/components/product/LitterBox';
 import LitterProductVideoImg from '~/assets/product/video-banner-litter-box.png';
 import mbLitterProductVideoImg from '~/assets/product/mb_product-video_img.png';
-import productStyle from '~/styles/product/index.css';
+import litterBoxStyle from '~/styles/product/litter-box.css';
 import ProductPrice from '~/components/product/ProductPrice';
+import {swiperVideoData} from './($locale)._index';
+import SwiperVideo from '~/components/index/SwiperVideo';
+import ProductLitter from '~/components/product/ProductLitter';
 
 export const headers = routeHeaders;
 
 export const links: LinksFunction = () => {
-  return [{rel: 'stylesheet', href: productStyle}];
+  return [{rel: 'stylesheet', href: litterBoxStyle}];
 };
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -235,6 +237,8 @@ export default function Product() {
           height={`calc(100vh - ${getActiveHeaderHeight()}px)`}
         />,
         <LitterBox product={product} variants={variants} />,
+        <SwiperVideo data={swiperVideoData} />,
+        <ProductLitter />,
       ],
     ],
     [
@@ -306,16 +310,6 @@ export default function Product() {
         pageComponents={componentsMap}
         excludedPages={['snow-self-cleaning-litter-box']}
       />
-      {/* <Suspense fallback={<Skeleton className="h-32" />}>
-        <Await
-          errorElement="There was a problem loading related products"
-          resolve={recommended}
-        >
-          {(products) => (
-            <ProductSwimlane title="Related Products" products={products} />
-          )}
-        </Await>
-      </Suspense> */}
     </>
   );
 }

@@ -13,7 +13,6 @@ import litterSwiper4 from '~/assets/product/litter-swiper-4.png';
 import litterSwiper5 from '~/assets/product/litter-swiper-5.png';
 import litterSwiper6 from '~/assets/product/litter-swiper-6.png';
 import litterSwiper7 from '~/assets/product/litter-swiper-7.png';
-
 import {LazyImage} from '../Common';
 import {
   ProductQuery,
@@ -37,7 +36,6 @@ import ProductPrice from './ProductPrice';
 import {CartForm, Money} from '@shopify/hydrogen';
 import {loader} from '~/routes/($locale).products.$productHandle';
 import {useI18n} from 'remix-i18n';
-import {useLocation} from 'react-use';
 import {Link} from '../Link';
 
 const selectColor = [
@@ -100,7 +98,7 @@ export default function LitterBox({
   }, []);
 
   return (
-    <div className="LitterBox lg:pt-[44px] lg:pb-[125px]">
+    <div className="LitterBox lg:pt-[44px] lg:pb-[95px]">
       <div className="container flex lg:gap-x-[30px] sm:flex-wrap">
         <div className="show-box">
           <div className="lg:hidden">

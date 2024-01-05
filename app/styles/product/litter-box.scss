@@ -4,6 +4,9 @@
 
 $border-color: #f0b42d;
 $background: #e9e0cf;
+$font-color:#504030;
+$font-emphasize:#d75f23;
+
 
 .LitterBox {
   background: $background;
@@ -32,6 +35,89 @@ $background: #e9e0cf;
     }
   }
 }
+
+.product-litter {
+  overflow: hidden;
+
+  img {
+    display: block;
+    position: absolute;
+  }
+
+  .litter-img img,
+  .litter-img picture {
+    position: static;
+  }
+
+
+  .litter-container {
+    position: relative;
+    display: flex;
+  }
+
+  .litter-content {
+    z-index: 1;
+
+    .litter-title {
+      color: $font-color;
+      font-family: HelveticaNowDisplayXBlk;
+
+      &::first-letter {
+        color: $font-emphasize;
+      }
+    }
+
+    .litter-desc {
+      color: #504030;
+      font-family: LeagueSpartan;
+    }
+
+    .special {
+      font-family: HelveticaNowDisplayXBlk;
+      display: block;
+
+      &::first-letter {
+        color: $font-emphasize;
+      }
+    }
+
+    .thick {
+      font-weight: 900;
+    }
+  }
+
+
+  .litter-3 {
+
+    .litter-content {
+      margin-left: auto;
+      text-align: end;
+    }
+  }
+
+
+  .litter-5 {
+    .litter-content {
+      margin-left: auto;
+      text-align: end;
+    }
+
+    .litter-desc {
+      margin-left: auto;
+    }
+  }
+
+  .litter-6 {
+    .litter-content {
+      margin-left: auto;
+    }
+
+    .litter-desc {
+      text-align: end;
+    }
+  }
+}
+
 
 // pc端
 @media screen and (min-width: 901px) {
@@ -233,6 +319,138 @@ $background: #e9e0cf;
       right: 10px;
     }
 
+  }
+
+  .product-litter {
+
+    .litter-img img {
+      width: 1200px;
+    }
+
+
+    .litter-content {
+      height: 400px;
+
+      .litter-title {
+        line-height: 60px;
+        font-size: 57px;
+      }
+
+      .litter-desc {
+        font-size: 23px;
+        line-height: 35px;
+      }
+
+      .special {
+        font-size: 30px;
+      }
+
+      .thick {
+        font-weight: 900;
+      }
+    }
+
+
+    .litter-2 {
+      img {
+        width: 504px;
+        top: -107px;
+        right: 58px;
+      }
+
+      .litter-content {
+        margin: 95px 0px 0px 40px;
+
+        .litter-desc {
+          width: 467px;
+          margin-top: 14px;
+        }
+      }
+    }
+
+    .litter-3 {
+      img {
+        width: 726px;
+        top: 59px;
+        left: -13px;
+      }
+
+      .litter-content {
+        width: 461px;
+        margin-top: 112px;
+      }
+
+      .litter-desc {
+        margin-top: 49px;
+      }
+    }
+
+    .litter-4 {
+
+      img {
+        width: 738px;
+        right: 0px;
+        top: 108px;
+      }
+
+      .litter-content {
+        margin-top: 198px;
+        width: 771px;
+        margin-left: 10px;
+      }
+
+      .litter-desc {
+        margin-top: 20px;
+        width: 500px;
+      }
+    }
+
+    .litter-5 {
+
+      img {
+        width: 516px;
+        top: 200px;
+        left: 20px;
+      }
+
+      .litter-content {
+        margin-top: 186px;
+        width: 672px;
+      }
+
+      .litter-title {
+        font-size: 79px;
+        line-height: 90px;
+      }
+
+      .litter-desc {
+        margin-top: 79px;
+        width: 512px;
+        font-size: 27px;
+      }
+    }
+
+    .litter-6 {
+      .litter-container {
+        height: 700px;
+      }
+
+      img {
+        width: 516px;
+        top: 256px;
+        left: 20px;
+      }
+
+      .litter-content {
+        width: 500px;
+        margin-top: 114px;
+      }
+
+      .litter-desc {
+        margin-top: 178px;
+        font-size: 27px;
+      }
+    }
   }
 }
 
@@ -634,6 +852,158 @@ $background: #e9e0cf;
       div {
         width: vw(50px);
         font-size: vw(38px);
+      }
+    }
+  }
+
+  .product-litter {
+
+    .litter-img img {
+      width: 100%;
+    }
+
+    .litter-2 {
+
+      img {
+        width: vw(390px);
+        top: vw(-20px);
+        right: vw(35px);
+      }
+
+      .litter-content {
+        margin: vw(56px) 0px 0px vw(50px);
+
+        .litter-title {
+          font-size: vw(36px);
+          width: vw(299px);
+          line-height: vw(39px);
+        }
+
+        .litter-desc {
+          width: vw(312px);
+          margin-top: vw(16px);
+          font-size: vw(19px);
+          line-height: vw(25px);
+        }
+      }
+    }
+
+    .litter-3 {
+      padding-top: vw(116px);
+      padding-bottom: vw(85px);
+
+      .litter-container {
+        flex-direction: column;
+      }
+
+      img {
+        width: vw(535px);
+        position: static;
+        margin: 0px auto;
+      }
+
+      .litter-content {
+        display: flex;
+        flex-direction: row-reverse;
+        margin-top: vw(36px);
+      }
+
+      .litter-title {
+        width: vw(280px);
+        font-size: vw(35px);
+        line-height: vw(35px);
+        text-align: left;
+        padding-left: vw(22px);
+      }
+
+      .litter-desc {
+        width: vw(458px);
+        font-size: vw(26px);
+        line-height: vw(35px);
+        padding-right: 26px;
+        border-right: vw(2px) solid #CBC1AA;
+        text-align: right;
+      }
+    }
+
+    .litter-4 {
+      margin-bottom: vw(68px);
+
+
+      img {
+        width: vw(441px);
+        top: 0px;
+        right: vw(35px);
+      }
+
+      .litter-content {
+        padding-top: vw(24px);
+        margin-left: vw(39px);
+      }
+
+      .litter-title {
+        margin-bottom: vw(14px);
+        width: vw(376px);
+        font-size: vw(34px);
+        line-height: vw(38px);
+      }
+
+      .litter-desc {
+        width: vw(342px);
+        font-size: vw(19px);
+        line-height: vw(25px);
+      }
+    }
+
+    .litter-5 {
+      margin-bottom: vw(31px);
+
+      img {
+        width: vw(339px);
+        top: 0px;
+        left: vw(36px);
+      }
+
+      .litter-content {
+        margin-right: vw(34px);
+        padding-top: vw(47px);
+      }
+
+      .litter-title {
+        width: vw(600px);
+        font-size: vw(48px);
+        line-height: vw(48px);
+        margin-bottom: vw(48px);
+        margin-left: auto;
+      }
+
+      .litter-desc {
+        width: vw(299px);
+        font-size: vw(19px);
+        margin-top: vw(48px);
+        line-height: vw(24px);
+      }
+    }
+
+    .litter-6 {
+      padding-bottom: vw(160px);
+
+
+      img {
+        width: vw(338px);
+        top: 0px;
+        left: vw(36px);
+      }
+
+      .litter-content {
+        margin-top: vw(23px);
+      }
+
+      .litter-desc {
+        width: vw(304px);
+        font-size: vw(19px);
+        line-height: vw(24px);
+        margin-right: vw(36px);
       }
     }
   }

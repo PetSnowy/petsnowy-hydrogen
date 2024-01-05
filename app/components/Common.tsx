@@ -23,6 +23,8 @@ export function PageRenderer({
   const shouldRenderCommonComponents =
     !excludedPages || !excludedPages.includes(router!);
 
+  console.log(currentPageComponents);
+
   return (
     <>
       {currentPageComponents?.map((component, index) => (

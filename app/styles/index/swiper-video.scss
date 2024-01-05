@@ -1,0 +1,117 @@
+@function vw($px-vw, $base-vw: 750px) {
+  @return calc(($px-vw * 100vw) / $base-vw);
+}
+
+.swiper-video {
+  .swiper-slide {
+    width: fit-content;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  .swiper-video {
+    .word {
+      background: url('~/assets/index/swiper-video-word.png') no-repeat center/cover;
+      width: 233px;
+      height: 147px;
+    }
+
+    .img-wrapper {
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+
+      &:hover img {
+        transform: scale(1.1);
+        transition: all 0.3s ease;
+      }
+    }
+
+    .video-container {
+      width: 465px;
+      height: 756px;
+      background: #000;
+      right: 20px;
+      bottom: 20px;
+      z-index: 10;
+      border-radius: 12px;
+      overflow: hidden;
+
+      .swiper-wrapper {
+        width: 465px;
+        height: 756px;
+      }
+
+      video {
+        width: 465px;
+        height: 756px;
+        object-fit: contain;
+      }
+    }
+
+    .close {
+      width: 40px;
+      height: 40px;
+      background: url('~/assets/index/close-product.png') no-repeat center/cover;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      z-index: 5;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .swiper-video {
+    .container {
+      padding: vw(30px) vw(38px);
+      column-gap: vw(33px);
+    }
+
+    .word {
+      width: vw(150px);
+      height: vw(90px);
+      background: url('~/assets/index/mb-swiper-video-word.png') no-repeat center/cover;
+    }
+
+    .content img {
+      width: vw(116px);
+      height: vw(142px);
+      border-radius: vw(20px);
+    }
+
+    .video-container {
+      width: vw(640px);
+      height: calc(100vh - 100px);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      background: #000;
+      border-radius: vw(20px);
+      overflow: hidden;
+
+      .close {
+        top: vw(20px);
+        right: vw(20px);
+        width: vw(60px);
+        height: vw(60px);
+        background: url('~/assets/index/close-product.png') no-repeat center/cover;
+        z-index: 20;
+      }
+
+      .swiper-wrapper {
+        width: vw(640px);
+        height: calc(100vh - 100px);
+
+        video {
+          width: 100%;
+          height: 100%;
+          background: #000;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+}

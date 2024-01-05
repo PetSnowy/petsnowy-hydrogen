@@ -4,6 +4,7 @@ import {useRef, useState} from 'react';
 import {Mousewheel, Pagination} from 'swiper/modules';
 import type SwiperType from 'swiper';
 import {handleResize} from '~/lib/utils';
+import '~/styles/index/swiper-video.css';
 
 export type Data = {
   pcImg: string;

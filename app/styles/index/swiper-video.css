@@ -1,0 +1,96 @@
+.swiper-video .swiper-slide {
+  width: fit-content;
+}
+
+@media screen and (min-width: 901px) {
+  .swiper-video .word {
+    background: url("~/assets/index/swiper-video-word.png") no-repeat center/cover;
+    width: 233px;
+    height: 147px;
+  }
+  .swiper-video .img-wrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+  .swiper-video .img-wrapper:hover img {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+  }
+  .swiper-video .video-container {
+    width: 465px;
+    height: 756px;
+    background: #000;
+    right: 20px;
+    bottom: 20px;
+    z-index: 10;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .swiper-video .video-container .swiper-wrapper {
+    width: 465px;
+    height: 756px;
+  }
+  .swiper-video .video-container video {
+    width: 465px;
+    height: 756px;
+    object-fit: contain;
+  }
+  .swiper-video .close {
+    width: 40px;
+    height: 40px;
+    background: url("~/assets/index/close-product.png") no-repeat center/cover;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    z-index: 5;
+  }
+}
+@media screen and (max-width: 900px) {
+  .swiper-video .container {
+    padding: 4vw 5.0666666667vw;
+    column-gap: 4.4vw;
+  }
+  .swiper-video .word {
+    width: 20vw;
+    height: 12vw;
+    background: url("~/assets/index/mb-swiper-video-word.png") no-repeat center/cover;
+  }
+  .swiper-video .content img {
+    width: 15.4666666667vw;
+    height: 18.9333333333vw;
+    border-radius: 2.6666666667vw;
+  }
+  .swiper-video .video-container {
+    width: 85.3333333333vw;
+    height: calc(100vh - 100px);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: #000;
+    border-radius: 2.6666666667vw;
+    overflow: hidden;
+  }
+  .swiper-video .video-container .close {
+    top: 2.6666666667vw;
+    right: 2.6666666667vw;
+    width: 8vw;
+    height: 8vw;
+    background: url("~/assets/index/close-product.png") no-repeat center/cover;
+    z-index: 20;
+  }
+  .swiper-video .video-container .swiper-wrapper {
+    width: 85.3333333333vw;
+    height: calc(100vh - 100px);
+  }
+  .swiper-video .video-container .swiper-wrapper video {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    object-fit: cover;
+  }
+}
+
+/*# sourceMappingURL=swiper-video.css.map */
