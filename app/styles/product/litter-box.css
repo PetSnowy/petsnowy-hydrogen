@@ -544,6 +544,9 @@
     height: auto;
     overflow: hidden;
   }
+  .LitterBox .swiper-container .swiper {
+    height: 73.3333333333vw;
+  }
   .LitterBox .swiper-container img {
     width: 90.6666666667vw;
     height: 59.4666666667vw;
@@ -569,7 +572,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    column-gap: 2.1333333333vw;
+    column-gap: 1.3333333333vw;
   }
   .LitterBox .swiper-container .swiper-pagination-bullet {
     display: block;
@@ -592,7 +595,6 @@
   }
   .LitterBox .product-price s {
     color: #7E6E5F;
-    margin-left: 2.1333333333vw;
   }
   .LitterBox .product-price s div {
     color: #7E6E5F;

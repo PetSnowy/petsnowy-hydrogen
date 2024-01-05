@@ -571,7 +571,7 @@ function AddOns() {
               />
               <label
                 htmlFor={item?.id}
-                className="lg:w-[155px] lg:min-h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border"
+                className="lg:w-[155px] lg:min-h-[143px] lg:bg-white lg:rounded-[12px] flex items-center justify-center flex-wrap lg:p-[10px] box-border h-full"
               >
                 <div className="img-wrapper lg:w-[70px] lg:h-auto lg:mb-[10px] object-contain flex items-center justify-center">
                   <LazyImage

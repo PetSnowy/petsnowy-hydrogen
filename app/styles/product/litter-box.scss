@@ -725,6 +725,10 @@ $color: #a19488;
       height: auto;
       overflow: hidden;
 
+      .swiper {
+        height: vw(550px);
+      }
+
       img {
         width: vw(680px);
         height: vw(446px);
@@ -754,7 +758,7 @@ $color: #a19488;
         display: flex;
         align-items: center;
         justify-content: center;
-        column-gap: vw(16px);
+        column-gap: vw(10px);
       }
 
       .swiper-pagination-bullet {
@@ -782,7 +786,6 @@ $color: #a19488;
 
       s {
         color: #7E6E5F;
-        margin-left: vw(16px);
 
         div {
           color: #7E6E5F;
