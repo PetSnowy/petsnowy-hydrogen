@@ -34,17 +34,6 @@ function ContactForm({Form}: {Form: typeof FormType}) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-
-    // Perform your form submission logic here
-
-    // Example: Log form data
-    console.log('Name:', form.name);
-    console.log('Email:', form.email.value);
-    console.log('Subject:', form.subject.value);
-    console.log('Date:', form.date.value);
-    console.log('Message:', form.message.value);
-
-    // Reset the form
     form.reset();
   };
 
