@@ -27,24 +27,32 @@ export default function Contact() {
     </div>
   );
 }
+
 function ContactForm({Form}: {Form: typeof FormType}) {
   const yyyyMmDd = new Date().toISOString().split('T')[0];
-  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (isRecaptchaVerified) {
-      form.submit();
+      form.submit(); // 提交表单
       form.reset();
     } else {
       console.log('Please complete the reCAPTCHA verification.');
     }
   };
 
-  const handleRecaptchaVerify = () => {
-    setIsRecaptchaVerified(true);
+  const handleButtonClick = () => {
+    recaptchaRef.current?.executeAsync().then((token) => {
+      if (token) {
+        console.log(token);
+        setIsRecaptchaVerified(true);
+      } else {
+        console.log('Please complete the reCAPTCHA verification.');
+      }
+    });
   };
 
   return (
@@ -64,12 +72,13 @@ function ContactForm({Form}: {Form: typeof FormType}) {
       <input type="text" hidden name="date" defaultValue={yyyyMmDd} />
       <textarea name="message" required />
       <br />
-      <button type="submit">Send</button>
+      <button type="button" onClick={handleButtonClick}>
+        Send
+      </button>
       <ReCAPTCHA
-        ref={recaptchaRef as React.RefObject<ReCAPTCHA>}
+        ref={recaptchaRef}
         sitekey="6Le7KqknAAAAAHu_OjuH_Lg3Bl7xSUQb2kKVC2fh"
         size="invisible"
-        onChange={handleRecaptchaVerify}
       />
     </Form>
   );
