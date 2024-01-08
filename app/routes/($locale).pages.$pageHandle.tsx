@@ -3,10 +3,10 @@ import type {Page as PageType} from '@shopify/hydrogen/storefront-api-types';
 import {useLoaderData, useLocation} from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import Contact from '~/components/contact/Contact';
-import {PageHeader} from '~/components';
 import {routeHeaders} from '~/data/cache';
 import {seoPayload} from '~/lib/seo.server';
 import {PageRenderer} from '~/components/Common';
+import Banner from '~/components/aboutUs/Banner';
 
 export const headers = routeHeaders;
 
@@ -29,7 +29,10 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   return json({page, seo});
 }
 
-const componentsMap = new Map([['contact', [<Contact />]]]);
+const componentsMap = new Map([
+  ['contact', [<Contact />]],
+  ['about-us', [<Banner />]],
+]);
 
 export default function Page() {
   const {pathname} = useLocation();
