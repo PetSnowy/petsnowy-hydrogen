@@ -1,5 +1,5 @@
 import {useFetcher, type Form as FormType} from '@remix-run/react';
-import {useRef} from 'react';
+import {useRef, useState} from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Contact() {
@@ -30,11 +30,21 @@ export default function Contact() {
 function ContactForm({Form}: {Form: typeof FormType}) {
   const yyyyMmDd = new Date().toISOString().split('T')[0];
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    form.reset();
+    if (isRecaptchaVerified) {
+      form.submit();
+      form.reset();
+    } else {
+      console.log('Please complete the reCAPTCHA verification.');
+    }
+  };
+
+  const handleRecaptchaVerify = () => {
+    setIsRecaptchaVerified(true);
   };
 
   return (
@@ -59,6 +69,7 @@ function ContactForm({Form}: {Form: typeof FormType}) {
         ref={recaptchaRef as React.RefObject<ReCAPTCHA>}
         sitekey="6Le7KqknAAAAAHu_OjuH_Lg3Bl7xSUQb2kKVC2fh"
         size="invisible"
+        onChange={handleRecaptchaVerify}
       />
     </Form>
   );
