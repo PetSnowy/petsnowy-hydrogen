@@ -5,6 +5,7 @@
 import type {WithCache, HydrogenCart} from '@shopify/hydrogen';
 import type {Storefront} from '~/lib/type';
 import type {HydrogenSession} from '~/lib/session.server';
+import type {AdminClient} from "~/lib/createAdminClient";
 
 declare global {
   /**
@@ -21,6 +22,8 @@ declare global {
     PRIVATE_STOREFRONT_API_TOKEN: string;
     PUBLIC_STORE_DOMAIN: string;
     PUBLIC_STOREFRONT_ID: string;
+    PRIVATE_ADMIN_API_TOKEN: string;
+    PRIVATE_ADMIN_API_VERSION: string;
   }
 }
 
@@ -34,6 +37,7 @@ declare module '@shopify/remix-oxygen' {
     storefront: Storefront;
     cart: HydrogenCart;
     env: Env;
+    admin: AdminClient;
   }
 
   /**
@@ -43,6 +47,3 @@ declare module '@shopify/remix-oxygen' {
     customerAccessToken: string;
   }
 }
-
-// Needed to make this file a module.
-export {};
