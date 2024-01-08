@@ -19,8 +19,6 @@ export function createAdminClient({
   privateAdminToken: string;
   storeDomain: string;
 }) {
-  console.log(storeDomain, adminApiVersion, privateAdminToken);
-
   const admin: AdminClient = async function (
     query: string | null,
     {
@@ -55,9 +53,11 @@ export function createAdminClient({
     }
 
     const response = (await request.json()) as AdminAPIResponse;
+
     if (response?.errors?.length) {
       throw new Error(response.errors[0].message);
     }
+
     return response.data;
   };
 

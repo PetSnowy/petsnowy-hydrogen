@@ -83,14 +83,11 @@ async function createContactFormEntry({
   const {metaobjectUpsert} = await context.admin(METAOBJECT_UPSERT, {
     variables: {handle: metaobjectHandle, metaobject},
   });
-  console.log(metaobjectUpsert, 'metaobjectUpsert');
 
   if (metaobjectUpsert.userErrors.length > 0) {
     const error = metaobjectUpsert.userErrors[0];
     return {form: null, error};
   }
-
-  console.log(metaobjectUpsert.metaobject, 'metaobject');
 
   return {form: metaobjectUpsert.metaobject, error: null};
 }
