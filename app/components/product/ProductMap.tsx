@@ -18,6 +18,30 @@ import ProductInventory from './litter-box/ProductInventory';
 import Quiet from './litter-box/Quiet';
 import specsImg from '~/assets/product/specs.png';
 import mbSpecsImg from '~/assets/product/mb_specs.png';
+import ComfortFuture from './litter-box/ComfortFuture';
+
+const litterComfortFutureData = [
+  {
+    pcImg: require('~/assets/product/litter-feature-1.png'),
+    alt: 'petsnowy',
+  },
+  {
+    pcImg: require('~/assets/product/litter-feature-2.png'),
+    alt: 'petsnowy',
+  },
+  {
+    pcImg: require('~/assets/product/litter-feature-3.png'),
+    alt: 'petsnowy',
+  },
+  {
+    pcImg: require('~/assets/product/litter-feature-4.png'),
+    alt: 'petsnowy',
+  },
+  {
+    pcImg: require('~/assets/product/litter-feature-5.png'),
+    alt: 'petsnowy',
+  },
+];
 
 export default function ProductMap() {
   const {product, variants, shop} = useLoaderData<typeof loader>();
@@ -33,7 +57,7 @@ export default function ProductMap() {
           pcPoster={LitterProductVideoImg}
           mbDataSrc="https://cdn.shopify.com/videos/c/o/v/8ebcb13e4a354fafb21ac5cee19f6d0d.mp4"
           mbPoster={mbLitterProductVideoImg}
-          height={`calc(100vh - ${getActiveHeaderHeight()}px)`}
+          height={`100vh`}
         />,
         <LitterBox product={product} variants={variants} />,
         <SwiperVideo data={swiperVideoData} />,
@@ -46,6 +70,7 @@ export default function ProductMap() {
             <LazyImage pcImg={specsImg} alt="specs" mobileImg={mbSpecsImg} />
           </div>
         </div>,
+        <ComfortFuture data={litterComfortFutureData} />,
       ],
     ],
     [

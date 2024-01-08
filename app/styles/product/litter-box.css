@@ -461,6 +461,36 @@
   .product-quiet .quite-img {
     width: 551px;
   }
+  .comfort-future .first {
+    border-radius: 8px;
+  }
+  .comfort-future .left {
+    display: flex;
+    flex-direction: column;
+  }
+  .comfort-future .left p {
+    margin-bottom: auto;
+  }
+  .comfort-future .left a {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+  }
+  .comfort-future .residue {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 30px;
+  }
+  .comfort-future .residue > div {
+    border-radius: 8px;
+  }
+  .comfort-future img {
+    transition: all 0.3s linear;
+  }
+  .comfort-future img:hover {
+    transform: scale(1.1);
+  }
 }
 @media screen and (max-width: 900px) {
   .LitterBox {
@@ -1005,6 +1035,37 @@
   }
   .product-inventory {
     padding: 5.3333333333vw 0px 7.0666666667vw;
+  }
+  .comfort-future {
+    padding: 8vw 0px;
+  }
+  .comfort-future .container {
+    flex-direction: column;
+  }
+  .comfort-future .left {
+    margin-bottom: 5.3333333333vw;
+  }
+  .comfort-future .left p {
+    font-size: 4vw;
+    margin-bottom: 2.6666666667vw;
+  }
+  .comfort-future .left a {
+    display: flex;
+    align-items: center;
+    column-gap: 4vw;
+  }
+  .comfort-future .left a span {
+    font-size: 4vw;
+  }
+  .comfort-future .right {
+    flex-direction: column;
+  }
+  .comfort-future .residue {
+    margin-top: 4vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 4vw;
   }
 }
 

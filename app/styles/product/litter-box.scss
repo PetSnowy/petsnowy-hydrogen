@@ -621,7 +621,46 @@ $color: #a19488;
     }
   }
 
+  .comfort-future {
+    .first {
+      border-radius: 8px;
+    }
 
+    .left {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        margin-bottom: auto;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        column-gap: 20px;
+      }
+    }
+
+    .residue {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 30px;
+
+      &>div {
+        border-radius: 8px;
+      }
+    }
+
+    img {
+      transition: all .3s linear;
+
+    }
+
+    img:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 
 // 移动端
@@ -1301,4 +1340,42 @@ $color: #a19488;
     padding: vw(40px) 0px vw(53px);
   }
 
+  .comfort-future {
+    padding: vw(60px) 0px;
+
+    .container {
+      flex-direction: column;
+    }
+
+    .left {
+      p {
+        font-size: vw(30px);
+        margin-bottom: vw(20px);
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        column-gap: vw(30px);
+
+        span {
+          font-size: vw(30px);
+        }
+      }
+
+      margin-bottom: vw(40px);
+    }
+
+    .right {
+      flex-direction: column;
+    }
+
+    .residue {
+      margin-top: vw(30px);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: vw(30px);
+    }
+  }
 }

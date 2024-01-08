@@ -1,5 +1,5 @@
 import {useFetcher, type Form as FormType} from '@remix-run/react';
-import {LegacyRef, useRef} from 'react';
+import {useRef} from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Contact() {
