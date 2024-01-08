@@ -1,4 +1,7 @@
 import {useFetcher, type Form as FormType} from '@remix-run/react';
+import {LegacyRef, useRef} from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 export default function Contact() {
   const {Form, ...fetcher} = useFetcher<any>();
   const data = fetcher?.data;
@@ -26,8 +29,27 @@ export default function Contact() {
 }
 function ContactForm({Form}: {Form: typeof FormType}) {
   const yyyyMmDd = new Date().toISOString().split('T')[0];
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    // Perform your form submission logic here
+
+    // Example: Log form data
+    console.log('Name:', form.name);
+    console.log('Email:', form.email.value);
+    console.log('Subject:', form.subject.value);
+    console.log('Date:', form.date.value);
+    console.log('Message:', form.message.value);
+
+    // Reset the form
+    form.reset();
+  };
+
   return (
-    <Form action="/api/contact-form" method="post">
+    <Form action="/api/contact-form" method="post" onSubmit={handleSubmit}>
       <fieldset>
         <label htmlFor="name">Name</label>
         <input type="text" name="name" required />
@@ -44,6 +66,11 @@ function ContactForm({Form}: {Form: typeof FormType}) {
       <textarea name="message" required />
       <br />
       <button type="submit">Send</button>
+      <ReCAPTCHA
+        ref={recaptchaRef as React.RefObject<ReCAPTCHA>}
+        sitekey="6Le7KqknAAAAAHu_OjuH_Lg3Bl7xSUQb2kKVC2fh"
+        size="invisible"
+      />
     </Form>
   );
 }
